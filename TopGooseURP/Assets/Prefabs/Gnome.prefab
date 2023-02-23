@@ -164,7 +164,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: cedb73ba7e6f01846bdfd196e2f07ba9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -218,7 +218,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  explosionPrefab: {fileID: 7782371525680418044, guid: a882c6eae545ac847a0922854d3ade8e, type: 3}
+  explosionPrefab: {fileID: 7782371525680418044, guid: a882c6eae545ac847a0922854d3ade8e,
+    type: 3}
 --- !u!54 &6206321060149187646
 Rigidbody:
   m_ObjectHideFlags: 0
