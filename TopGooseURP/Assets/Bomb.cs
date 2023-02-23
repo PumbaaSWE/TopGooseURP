@@ -26,14 +26,15 @@ public class Bomb : MonoBehaviour
             GameObject explosion = Instantiate(explosionPrefab, hit.point, rotation * explosionPrefab.transform.rotation);
             //explosion.GetComponent<Explode>().ExplodeNow();
             StartCoroutine(ReturnToPool(explosion));
+            Destroy(explosion, 20);
+            Destroy(gameObject,5);
             gameObject.SetActive(false);
-            Destroy(explosion, 5);
         }
     }
 
     private IEnumerator ReturnToPool(GameObject explosion)
     {
-        yield return new WaitForSeconds(3);
-        Destroy(gameObject);
+        yield return new WaitForSeconds(20);
+        //retur explosion to pool?
     }
 }
