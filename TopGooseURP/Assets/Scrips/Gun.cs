@@ -20,7 +20,9 @@ public class Gun : MonoBehaviour
     public float Heat { get { return Mathf.Clamp(heat, 0, 1); } }
 
     public bool Fire { get; set; }
-    
+
+    public float FireRate { get { return fireRate; } }
+
     // Start is called before the first frame update
     void Start()
     {
