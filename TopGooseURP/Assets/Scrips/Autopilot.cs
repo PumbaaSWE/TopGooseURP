@@ -78,9 +78,9 @@ public class Autopilot : MonoBehaviour
         Vector3 localFlyTarget = aircraft.InverseTransformPoint(flyTarget).normalized;
         float angleOffTarget = Vector3.Angle(aircraft.forward, flyTarget - aircraft.position);
 
-        yaw = yawPID.UpdatePID(0, localFlyTarget.x, dt);
+        yaw = yawPID.UpdatePID(-localFlyTarget.x, 0 , dt);
 
-        pitch = pitchPID.UpdatePID(0, -localFlyTarget.y, dt);
+        pitch = pitchPID.UpdatePID(localFlyTarget.y, 0, dt);
 
         float agressiveRoll = Mathf.Clamp(localFlyTarget.x, -1f, 1f);
 
