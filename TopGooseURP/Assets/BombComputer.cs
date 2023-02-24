@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Rendering.Universal;
 
 public class BombComputer : MonoBehaviour
@@ -23,22 +24,24 @@ public class BombComputer : MonoBehaviour
         Vector3 initialPos = transform.position;
         Vector3 initialVel = rb.velocity * timeStep;
         Vector3 gravity = Physics.gravity;
+        bool hitGround = false;
         for (int i = 0; i < length; i++)
         {
-            if(Physics.Raycast(initialPos, initialVel, out RaycastHit hit, initialVel.magnitude*1.05f, layer))
+            initialVel += timeStep * timeStep * gravity;
+            if (Physics.Raycast(initialPos, initialVel, out RaycastHit hit, initialVel.magnitude, layer))
             {
                 if(decalProjector)
                     decalProjector.transform.position = hit.point;
-                
+
+                //Debug.DrawLine(hit.point, hit.point+Vector3.up*10, Color.yellow);
+                hitGround = true;
                 break;
             }
-            else
-            {
-                Vector3 prevPos = initialPos;
-                initialVel += gravity * timeStep * timeStep;
-                initialPos += initialVel;
-                Debug.DrawLine(prevPos, initialPos);
-            }
+            Debug.DrawLine(initialPos, initialPos + initialVel, Color.magenta);
+            initialPos += initialVel;
+            //Debug.DrawLine(prevPos, initialPos);
+            
         }
+        Debug.Assert(hitGround, "Why not hit ground?");
     }
 }

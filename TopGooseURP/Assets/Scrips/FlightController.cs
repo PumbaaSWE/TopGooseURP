@@ -124,8 +124,8 @@ public class FlightController : MonoBehaviour
         Velocity = Rigidbody.velocity;
         LocalVelocity = invRotation * Velocity;
 
-        Debug.DrawLine(transform.position, transform.position + transform.forward * 5, Color.blue);
-        Debug.DrawLine(transform.position, transform.position + Velocity * 5, Color.yellow);
+        //Debug.DrawLine(transform.position, transform.position + transform.forward * 5, Color.blue);
+        //Debug.DrawLine(transform.position, transform.position + Velocity * 5, Color.yellow);
 
         LocalAngularVelocity = invRotation * Rigidbody.angularVelocity;
         CalculateAngleOfAttack();
@@ -185,8 +185,8 @@ public class FlightController : MonoBehaviour
         Vector3 dragDirection = -liftVelocity.normalized;
         Vector3 inducedDrag = dragForce * inducedDragPower * v2 * dragDirection;
 
-        Debug.DrawLine(transform.position, transform.position+lift, Color.green);
-        Debug.DrawLine(transform.position, transform.position + inducedDrag, Color.red);
+        //Debug.DrawLine(transform.position, transform.position+lift, Color.green);
+        //Debug.DrawLine(transform.position, transform.position + inducedDrag, Color.red);
 
         return lift + inducedDrag;
     }
