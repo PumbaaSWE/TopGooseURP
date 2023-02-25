@@ -6,16 +6,27 @@ using UnityEngine.Rendering.Universal;
 
 public class BombComputer : MonoBehaviour
 {
-    public DecalProjector decalProjector;
-    Rigidbody rb;
-    public int length = 100;
-    public LayerMask layer;
-    public float timeStep = .5f;
+    [Tooltip("What is projected on the ground")]
+    [SerializeField] private DecalProjector decalProjector;
+    [Tooltip("Where are bombs dropped from? Uses objects transform if empty")]
+    [SerializeField] private Transform dropPoint;
+    [Tooltip("How many iterations, related to how far down do we search for impact")]
+    [SerializeField] private int length = 100;
+    [Tooltip("Where to stop, dont apply on units etc.")]
+    [SerializeField] private LayerMask layer;
+    [Tooltip("High is more effective and reach further but less accurate")]
+    [SerializeField] private float timeStep = .5f;
+
+    private Rigidbody rb;
 
     void Start()
     {
         //decalProjector = GetComponentInChildren<DecalProjector>();
         rb = GetComponent<Rigidbody>();
+        if (!dropPoint)
+        {
+            dropPoint = transform;
+        }
     }
 
     // Update is called once per frame
@@ -24,7 +35,6 @@ public class BombComputer : MonoBehaviour
         Vector3 initialPos = transform.position;
         Vector3 initialVel = rb.velocity * timeStep;
         Vector3 gravity = Physics.gravity;
-        bool hitGround = false;
         for (int i = 0; i < length; i++)
         {
             initialVel += timeStep * timeStep * gravity;
@@ -32,16 +42,10 @@ public class BombComputer : MonoBehaviour
             {
                 if(decalProjector)
                     decalProjector.transform.position = hit.point;
-
-                //Debug.DrawLine(hit.point, hit.point+Vector3.up*10, Color.yellow);
-                hitGround = true;
                 break;
             }
             Debug.DrawLine(initialPos, initialPos + initialVel, Color.magenta);
-            initialPos += initialVel;
-            //Debug.DrawLine(prevPos, initialPos);
-            
+            initialPos += initialVel;     
         }
-        Debug.Assert(hitGround, "Why not hit ground?");
     }
 }

@@ -12,10 +12,10 @@ public static class TargetingMath
     /// <param name="pSpeed">projectile speed</param>
     /// <param name="location">impact location</param>
     /// <param name="tti">time to impact in seconds</param>
-    /// <returns>true if impact can occur, otherwise false</returns>
+    /// <returns>true if impact can occur, otherwise false with location set to tPos</returns>
     public static bool ComputeImpact(Vector3 tPos, Vector3 tVel, Vector3 pPos, float pSpeed, out Vector3 location, out float tti)
     {
-        location = Vector3.zero;
+        location = tPos;
         tti = 0;
 
         Vector3 relPos = tPos - pPos; //relative position

@@ -29,6 +29,12 @@ public class ManualFlightInput : MonoBehaviour
     [Tooltip("How far the boresight and mouse flight are from the aircraft")]
     [SerializeField] private float aimDistance = 500f;
 
+    [Tooltip("Deadzone like, not too relevant for keyboard")]
+    [SerializeField][Range(0,1)] private float inputThreshold = .25f;
+
+    [Tooltip("When looking up or down stop aligning with horizon and align with local up")]
+    [SerializeField][Range(0, 1)] private float camAlignThreshold = .9f;
+
     [Space]
     [Tooltip("How far the boresight and mouse flight are from the aircraft")]
     [SerializeField] private bool showDebugInfo = false;
@@ -106,16 +112,7 @@ public class ManualFlightInput : MonoBehaviour
 
     private void Update()
     {
-        //if (useFixed == false)
-            //UpdateCameraPos();
-        //RotateRig();
-
-        //float pitch = Input.GetAxis("Vertical");
-
-        //float pitch = Input.GetAxis("Mouse Y") * mouseYsens * Time.deltaTime;
-        //float yaw = Input.GetAxis("Horizontal");
-        //float roll = -Input.GetAxis("Mouse X") * mouseXsens * Time.deltaTime;
-
+        //this should not be here
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -125,49 +122,9 @@ public class ManualFlightInput : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
             }
         }
-        //if (Input.GetKey(KeyCode.Space))
-        //{
-        //    pitch = -1;
-        //}
 
-        //if (Input.GetKeyDown(KeyCode.P))
-        //{
-        //    controller.DisableInput = !controller.DisableInput;
-        //}
-
-        //// When the player commands their own stick input, it should override what the
-        //// autopilot is trying to do.
-        bool rollOverride = false;
-        bool pitchOverride = false;
-
-        float keyboardRoll = -Input.GetAxis("Horizontal");
-        if (Mathf.Abs(keyboardRoll) > .25f)
-        {
-            rollOverride = true;
-        }
-
-        float keyboardPitch = Input.GetAxis("Vertical");
-        if (Mathf.Abs(keyboardPitch) > .25f)
-        {
-            pitchOverride = true;
-            rollOverride = true;
-        }
-
-        // Calculate the autopilot stick inputs.
-        float autoYaw = 0f;
-        float autoPitch = 0f;
-        float autoRoll = 0f;
-        pilot.RunAutopilot(MouseAimPos, out autoPitch, out autoYaw, out autoRoll);
-
-        // Use either keyboard or autopilot input.
-        float yaw = autoYaw;
-        float pitch = (pitchOverride) ? keyboardPitch : autoPitch;
-        float roll = (rollOverride) ? keyboardRoll : autoRoll;
-        if (!useAdvancedAutopilot)
-        {
-            Vector3 input = new(pitch, yaw, roll);
-            controller.SetControlInput(input);
-        }
+       
+        
     }
     private void LateUpdate()
     {
@@ -182,14 +139,46 @@ public class ManualFlightInput : MonoBehaviour
     {
         if (useFixed == true)
             UpdateCameraPos();
-        if (useAdvancedAutopilot)
-            HandleAutopilot(Time.fixedDeltaTime);
+        HandleFlightInput(Time.fixedDeltaTime);
     }
 
-    private void HandleAutopilot(float dt)
+    private void HandleFlightInput(float dt)
     {
-        pilot.RunAdvancedAutopilot(MouseAimPos, dt);
-        controller.SetControlInput(pilot.Output);
+        bool rollOverride = false;
+        bool pitchOverride = false;
+
+        float keyboardRoll = -Input.GetAxisRaw("Horizontal");
+        if (Mathf.Abs(keyboardRoll) > inputThreshold)
+        {
+            rollOverride = true;
+        }
+
+        float keyboardPitch = Input.GetAxisRaw("Vertical");
+        if (Mathf.Abs(keyboardPitch) > inputThreshold)
+        {
+            pitchOverride = true;
+            rollOverride = true; // why?
+        }
+
+        float autoPitch;
+        float autoYaw;
+        float autoRoll;
+
+        if (!useAdvancedAutopilot)
+        {
+            pilot.RunAutopilot(MouseAimPos, out autoPitch, out autoYaw, out autoRoll);
+        }
+        else
+        {
+            pilot.RunAdvancedAutopilot2(MouseAimPos, dt, out autoPitch, out autoYaw, out autoRoll);
+        }
+
+        float yaw = autoYaw;
+        float pitch = (pitchOverride) ? keyboardPitch : autoPitch;
+        float roll = (rollOverride) ? keyboardRoll : autoRoll;
+
+        Vector3 input = new(pitch, yaw, roll);
+        controller.SetControlInput(input);
     }
 
 
@@ -224,13 +213,10 @@ public class ManualFlightInput : MonoBehaviour
         // The up vector of the camera normally is aligned to the horizon. However, when
         // looking straight up/down this can feel a bit weird. At those extremes, the camera
         // stops aligning to the horizon and instead aligns to itself.
-        Vector3 upVec = (Mathf.Abs(mouseAim.forward.y) > 0.9f) ? cameraRig.up : Vector3.up;
+        Vector3 upVec = (Mathf.Abs(mouseAim.forward.y) > camAlignThreshold) ? cameraRig.up : Vector3.up;
 
         // Smoothly rotate the camera to face the mouse aim.
-        cameraRig.rotation = Damp(cameraRig.rotation,
-                                  Quaternion.LookRotation(mouseAim.forward, upVec),
-                                  camSmoothSpeed,
-                                  Time.deltaTime);
+        cameraRig.rotation = Damp(cameraRig.rotation, Quaternion.LookRotation(mouseAim.forward, upVec), camSmoothSpeed, Time.deltaTime);
     }
 
     private Vector3 GetFrozenMouseAimPos()

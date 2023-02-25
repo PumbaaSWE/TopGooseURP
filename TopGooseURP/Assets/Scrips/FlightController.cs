@@ -24,10 +24,6 @@ public class FlightController : MonoBehaviour
     [Tooltip("x: pitch, y: yaw, z: roll")][SerializeField] private Vector3 turnAcceleration = new(99, 99, 99);
     [Tooltip("Set to one if unsure")][SerializeField] private AnimationCurve steeringCurve;
 
-    [Header("Autopiloting")]
-    [Tooltip("Strength for autopilot flight.")][SerializeField] private float strength = 5f;
-    [Tooltip("Angle at which airplane banks fully into target.")][SerializeField] private float aggressiveTurnAngle = 10f;
-
 
     public Vector3 Velocity { get; private set; }
     public Vector3 LocalVelocity { get; private set; }
@@ -118,15 +114,12 @@ public class FlightController : MonoBehaviour
         Rigidbody.AddRelativeTorque(correction * Mathf.Deg2Rad, ForceMode.VelocityChange);
     }
 
+
     private void UpdateState(float dt) //dt needed?
     {
         Quaternion invRotation = Quaternion.Inverse(Rigidbody.rotation);
         Velocity = Rigidbody.velocity;
         LocalVelocity = invRotation * Velocity;
-
-        //Debug.DrawLine(transform.position, transform.position + transform.forward * 5, Color.blue);
-        //Debug.DrawLine(transform.position, transform.position + Velocity * 5, Color.yellow);
-
         LocalAngularVelocity = invRotation * Rigidbody.angularVelocity;
         CalculateAngleOfAttack();
     }
@@ -159,22 +152,20 @@ public class FlightController : MonoBehaviour
     //to not rotate out of control...
     private void UpdateAngularDrag()
     {
-        var av = LocalAngularVelocity;
-        var drag = av.sqrMagnitude * -av.normalized;    //squared, opposite direction of angular velocity
+        Vector3 av = LocalAngularVelocity;
+        Vector3 drag = av.sqrMagnitude * -av.normalized;    //squared, opposite direction of angular velocity
         Rigidbody.AddRelativeTorque(Vector3.Scale(drag, angularDrag), ForceMode.Acceleration);  //ignore rigidbody mass
     }
 
     private Vector3 CalculateLift(float angleOfAttack, Vector3 rightAxis, float liftPower, float inducedDragPower, AnimationCurve aoaCurve)
     {
         Vector3 liftVelocity = Vector3.ProjectOnPlane(LocalVelocity, rightAxis);    //project velocity onto YZ plane -> sweep angles and stuff?
-        float v2 = liftVelocity.sqrMagnitude;                                     //square of velocity
+        float velocitySqrd = liftVelocity.sqrMagnitude;
 
         //lift = velocity^2 * coefficient * liftPower
         //coefficient varies with AOA
         float liftCoefficient = aoaCurve.Evaluate(angleOfAttack * Mathf.Rad2Deg);
-        float liftForce = v2 * liftCoefficient * liftPower;
-
-        //Debug.Log("Lift Coefficient:" + liftCoefficient + ", at:" + angleOfAttack + ", deg:" + angleOfAttack * Mathf.Rad2Deg);
+        float liftForce = velocitySqrd * liftCoefficient * liftPower;
 
         //lift is perpendicular to velocity
         Vector3 liftDirection = Vector3.Cross(liftVelocity.normalized, rightAxis);
@@ -183,10 +174,7 @@ public class FlightController : MonoBehaviour
         //induced drag varies with square of lift coefficient
         float dragForce = liftCoefficient * liftCoefficient;
         Vector3 dragDirection = -liftVelocity.normalized;
-        Vector3 inducedDrag = dragForce * inducedDragPower * v2 * dragDirection;
-
-        //Debug.DrawLine(transform.position, transform.position+lift, Color.green);
-        //Debug.DrawLine(transform.position, transform.position + inducedDrag, Color.red);
+        Vector3 inducedDrag = dragForce * inducedDragPower * velocitySqrd * dragDirection;
 
         return lift + inducedDrag;
     }
@@ -201,51 +189,5 @@ public class FlightController : MonoBehaviour
         Rigidbody.AddRelativeForce(upForce);
         Rigidbody.AddRelativeForce(sideForce);
     }
-
-    public void RunAutopilot(Vector3 flyTarget, out float yaw, out float pitch, out float roll)
-    {
-        // This is my usual trick of converting the fly to position to local space.
-        // You can derive a lot of information from where the target is relative to self.
-        Vector3 localFlyTarget = transform.InverseTransformPoint(flyTarget).normalized * strength;
-        
-
-        float angleOffTarget = Vector3.Angle(transform.forward, flyTarget - transform.position);
-
-        // IMPORTANT!
-        // These inputs are created proportionally. This means it can be prone to
-        // overshooting. Use of a PID controller for each axis is highly recommended.
-
-        // ====================
-        // PITCH AND YAW
-        // ====================
-
-        // Yaw/Pitch into the target so as to put it directly in front of the aircraft.
-        // A target is directly in front the aircraft if the relative X and Y are both
-        // zero. Note this does not handle for the case where the target is directly behind.
-        yaw = Mathf.Clamp(localFlyTarget.x, -1f, 1f);
-        pitch = -Mathf.Clamp(localFlyTarget.y, -1f, 1f);
-
-        // ====================
-        // ROLL
-        // ====================
-
-        // Roll is a little special because there are two different roll commands depending
-        // on the situation. When the target is off axis, then the plane should roll into it.
-        // When the target is directly in front, the plane should fly wings level.
-
-        // An "aggressive roll" is input such that the aircraft rolls into the target so
-        // that pitching up (handled above) will put the nose onto the target. This is
-        // done by rolling such that the X component of the target's position is zeroed.
-        float agressiveRoll = Mathf.Clamp(localFlyTarget.x, -1f, 1f);
-
-        // A "wings level roll" is a roll commands the aircraft to fly wings level.
-        // This can be done by zeroing out the Y component of the aircraft's right.
-        float wingsLevelRoll = transform.right.y;
-
-        // Blend between auto level and banking into the target.
-        float wingsLevelInfluence = Mathf.InverseLerp(0f, aggressiveTurnAngle, angleOffTarget);
-        roll = -Mathf.Lerp(wingsLevelRoll, agressiveRoll, wingsLevelInfluence);
-    }
-
 
 }

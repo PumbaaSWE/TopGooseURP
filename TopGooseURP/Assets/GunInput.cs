@@ -32,19 +32,17 @@ public class GunInput : MonoBehaviour
         }
 
         bombTime += Time.deltaTime;
-        if (Input.GetMouseButton(1) && bombTime>.3f)
+        if (Input.GetMouseButton(1) && bombTime > .2f)
         {
             bombTime = 0;
-            GameObject bomb = Instantiate(bombBrefab, transform.position+Vector3.down, transform.rotation);
+            GameObject bomb = Instantiate(bombBrefab, transform.position, transform.rotation);
 
             float randomNumberX = Random.Range(-spread, spread);
-            float randomNumberY = Random.Range(-spread, spread);
+            //float randomNumberY = Random.Range(-spread, spread);
             float randomNumberZ = Random.Range(-spread, spread);
-            Quaternion rotation = Quaternion.Euler(randomNumberX, randomNumberY, randomNumberZ);
 
 
-            bomb.GetComponent<Rigidbody>().velocity = rb.velocity;
-            bomb.transform.rotation *= rotation;
+            bomb.GetComponent<Rigidbody>().velocity = rb.velocity + new Vector3(randomNumberX, 0, randomNumberZ);
         }
 
 

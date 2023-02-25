@@ -9,9 +9,22 @@ public class Autopilot : MonoBehaviour
     [SerializeField] private Transform aircraft;
 
     [Header("PIDing")]
-    [SerializeField] private PIDController pitchPID;
-    [SerializeField] private PIDController rollPID;
-    [SerializeField] private PIDController yawPID;
+    [SerializeField] private PIDController pitchPID = new() 
+    { 
+        proportionalGain = 5,
+        derivativeGain = -1
+    };
+    [SerializeField] private PIDController yawPID = new()
+    {
+        proportionalGain = 5,
+        derivativeGain = -1
+    };
+    [Tooltip("Only affected by Proportional Gain!")]
+    [SerializeField] private PIDController rollPID = new()
+    {
+        proportionalGain = 5,
+        derivativeGain = 0
+    };
 
     [Header("Autopiloting")]
     [Tooltip("Strength for autopilot flight.")][SerializeField] private float strength = 5f;
@@ -94,5 +107,29 @@ public class Autopilot : MonoBehaviour
 
         roll = rollPID.UpdatePID(0, targetRoll, dt);
         Output = new Vector3(pitch, yaw, targetRoll);
+    }
+
+    public void RunAdvancedAutopilot2(Vector3 flyTarget, float dt, out float pitch, out float yaw, out float roll)
+    {
+        // This is my usual trick of converting the fly to position to local space.
+        // You can derive a lot of information from where the target is relative to self.
+        Vector3 localFlyTarget = aircraft.InverseTransformPoint(flyTarget).normalized;
+        float angleOffTarget = Vector3.Angle(aircraft.forward, flyTarget - aircraft.position);
+
+        yaw = yawPID.UpdatePID(-localFlyTarget.x, 0, dt);
+
+        pitch = pitchPID.UpdatePID(localFlyTarget.y, 0, dt);
+
+        float agressiveRoll = Mathf.Clamp(localFlyTarget.x * rollPID.proportionalGain, -1f, 1f);
+
+        // A "wings level roll" is a roll commands the aircraft to fly wings level.
+        // This can be done by zeroing out the Y component of the aircraft's right.
+        float wingsLevelRoll = aircraft.right.y;
+
+        // Blend between auto level and banking into the target.
+        float wingsLevelInfluence = Mathf.InverseLerp(0f, aggressiveTurnAngle, angleOffTarget);
+        roll = -Mathf.Lerp(wingsLevelRoll, agressiveRoll, wingsLevelInfluence);
+
+        //roll = rollPID.UpdatePID(0, targetRoll, dt);
     }
 }

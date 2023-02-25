@@ -27,7 +27,7 @@ public class Gun : MonoBehaviour
     void Start()
     {
         muzzleFlash = GetComponentInChildren<ParticleSystem>();
-        //fireRate = shotsPerMinute;
+        fireRate = 1 / (shotsPerMinute / 60);
     }
 
     // Update is called once per frame

@@ -1470,6 +1470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   decalProjector: {fileID: 2110934684}
+  dropPoint: {fileID: 0}
   length: 100
   layer:
     serializedVersion: 2
@@ -2028,7 +2029,7 @@ PrefabInstance:
     - target: {fileID: 7008645451246651702, guid: b232d0ccbb7a8f440961121cac5e0458,
         type: 3}
       propertyPath: heatGainPerBullet
-      value: 0.1
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 7008645451265428650, guid: b232d0ccbb7a8f440961121cac5e0458,
         type: 3}
@@ -2048,6 +2049,11 @@ PrefabInstance:
     - target: {fileID: 7008645451265428691, guid: b232d0ccbb7a8f440961121cac5e0458,
         type: 3}
       propertyPath: yawPID.proportionalGain
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7008645451265428691, guid: b232d0ccbb7a8f440961121cac5e0458,
+        type: 3}
+      propertyPath: rollPID.proportionalGain
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7008645451265428691, guid: b232d0ccbb7a8f440961121cac5e0458,
@@ -2089,6 +2095,11 @@ PrefabInstance:
         type: 3}
       propertyPath: heatLossPerSec
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7728262742114584189, guid: b232d0ccbb7a8f440961121cac5e0458,
+        type: 3}
+      propertyPath: heatGainPerBullet
+      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b232d0ccbb7a8f440961121cac5e0458, type: 3}
