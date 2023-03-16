@@ -5,16 +5,20 @@ using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class FlyingAI : MonoBehaviour
+public class FlyingAI : MonoBehaviour, IUtility
 {
     [SerializeField] private Rigidbody targetRigidbody; //to be dynamically allocated
     [SerializeField] private Transform targetTransform; //to be dynamically allocated
     [SerializeField] private GameObject targetGameObject; //Use target interface/sqript instead
     private bool movingTarget = false;
 
+    [SerializeField] float maxInterceptDistance = 5000;
+    [SerializeField] float minInterceptDistance = 50;
+    [SerializeField] float minDistance = 5;
 
     [SerializeField][Range(0.0f, 1.0f)] float ramming = 0;
     [SerializeField][Range(0.0f, 1.0f)] float guns = 0;
+    [SerializeField][Range(0.0f, 45.0f)] float gunsConeToFire = 1.0f;
     [SerializeField][Range(0.9f, 1.0f)] float gunsAlignToFire = .99f;
     [SerializeField][Range(0.0f, 1.0f)] float minHeat = 0.3f;
     [SerializeField][Range(0.0f, 1.0f)] float maxHeat = 0.9f;
@@ -40,12 +44,14 @@ public class FlyingAI : MonoBehaviour
         controller.SetThrottleInput(1.0f);
         SetTarget(targetGameObject);
         gunArray = GetComponentsInChildren<Gun>();
+        gunsAlignToFire = Mathf.Cos(gunsConeToFire * Mathf.Deg2Rad);
+
     }
 
     public void SetTarget(GameObject gameObject)
     {
-         
-        if(gameObject.TryGetComponent(out Rigidbody rigidbody))
+        targetGameObject = gameObject;
+        if (gameObject.TryGetComponent(out Rigidbody rigidbody))
         {
             targetRigidbody = rigidbody;
             movingTarget = true;
@@ -55,15 +61,12 @@ public class FlyingAI : MonoBehaviour
             movingTarget = false;
         }
         targetTransform = gameObject.transform;
-
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        TrackTarget();
-        UpdateAutopilot();
-        UpdateGuns();
+        
     }
 
     private void UpdateGuns()
@@ -92,7 +95,7 @@ public class FlyingAI : MonoBehaviour
     private void UpdateAutopilot()
     {
         autopilot.RunAutopilot(flyTarget, out float pitch, out float yaw, out float roll);
-        Vector3 input = new Vector3(pitch, yaw, roll);
+        Vector3 input = new(pitch, yaw, roll);
         controller.SetControlInput(input);
     }
 
@@ -137,5 +140,20 @@ public class FlyingAI : MonoBehaviour
 
             Gizmos.color = oldColor;
         }
+    }
+
+    public float Evaluate()
+    {
+        if (!targetGameObject) return 0;
+        
+
+        return 1.0f;
+    }
+
+    public void Execute()
+    {
+        TrackTarget();
+        UpdateAutopilot();
+        UpdateGuns();
     }
 }
