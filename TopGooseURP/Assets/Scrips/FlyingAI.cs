@@ -155,10 +155,6 @@ public class FlyingAI : MonoBehaviour, IUtility
         TrackTarget();
         UpdateAutopilot();
         UpdateGuns();
-    }
-
-    public void AddGameObject(GameObject gameObject)
-    {
-        //
+        Debug.Log("Executing FlyingAI");
     }
 }

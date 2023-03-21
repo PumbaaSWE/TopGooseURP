@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Runtime.Serialization;
+using UnityEngine;
 
-internal interface IUtility
+public interface IUtility
 {
-
-    public void AddGameObject(GameObject gameObject);
     public float Evaluate();
     public void Execute();
 }
