@@ -156,4 +156,9 @@ public class FlyingAI : MonoBehaviour, IUtility
         UpdateAutopilot();
         UpdateGuns();
     }
+
+    public void AddGameObject(GameObject gameObject)
+    {
+        //
+    }
 }

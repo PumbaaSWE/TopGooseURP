@@ -4,13 +4,17 @@ using UnityEngine;
 public class AIActor : MonoBehaviour
 {
 
-    private readonly List<IUtility> utilities = new();
+    [SerializeField]private readonly List<IUtility> utilities = new();
     private int previusUtil = 0;
     private int currentUtil = 0;
 
     void Start()
     {
         //auto fill list based on attached components implementing IUtility?
+        for (int i = 0; i < utilities.Count; i++)
+        {
+            utilities[i].AddGameObject(gameObject);
+        }
     }
 
     void FixedUpdate()
