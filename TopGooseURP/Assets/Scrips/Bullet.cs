@@ -76,6 +76,11 @@ public class Bullet : MonoBehaviour
                 HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal, material);
             }
 
+            if(hit.collider.gameObject.TryGetComponent(out Health health))
+            {
+                health.ChangeHealth(-data.damage);
+            }
+
             HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal);
             StartCoroutine(ReturnToPool());
         }

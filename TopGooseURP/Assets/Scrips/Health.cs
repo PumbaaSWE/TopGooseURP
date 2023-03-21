@@ -9,7 +9,7 @@ public class Health : MonoBehaviour
     public delegate void OnChangeHealthEvent(float change);
     OnChangeHealthEvent OnChangeHealth;
 
-    [NonSerialized]
+    //[NonSerialized]
     public float health;
 
     [NonSerialized]
@@ -53,6 +53,11 @@ public class Health : MonoBehaviour
         OnChangeHealth?.Invoke(change);
 
         if (health > startHealth) health = startHealth;
+    }
+
+    private void Awake()
+    {
+        health = startHealth;
     }
 
     // Update is called once per frame
