@@ -10,7 +10,7 @@ public class AvoidGroundUtility : MonoBehaviour, IUtility
 
     public float Evaluate()
     {
-        return 1f;
+        return 0f;
     }
 
     public void Execute()
