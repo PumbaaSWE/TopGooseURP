@@ -7,42 +7,56 @@ using UnityEngine;
 public class AvoidGroundUtility : MonoBehaviour, IUtility
 {
     Rigidbody rb;
-    FlightController fc;
     Autopilot ap;
+    FlightController fc;
 
-    Vector3 futurePos;
+    RaycastHit hit;
+
+    [SerializeField]
+    float sphereRadius = 1;
+    [SerializeField]
+    float maxDistance = 30;
+
+    float currentHitDistance;
+
+    public void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        ap = GetComponent<Autopilot>();
+        fc = GetComponent<FlightController>();
+    }
 
     public float Evaluate()
     {
-        rb = GetComponent<Rigidbody>();
-
-        futurePos = rb.position + rb.velocity;
-
-        float sphereRadius = 4;
-        Debug.DrawLine(futurePos, rb.position, Color.magenta);
-        Debug.DrawLine(futurePos, new Vector3(futurePos.x, futurePos.y + sphereRadius, futurePos.z), Color.white);
-        Debug.DrawLine(futurePos, new Vector3(futurePos.x, futurePos.y - sphereRadius, futurePos.z), Color.white);
-        Debug.DrawLine(futurePos, new Vector3(futurePos.x - sphereRadius, futurePos.y, futurePos.z), Color.white);
-        Debug.DrawLine(futurePos, new Vector3(futurePos.x + sphereRadius, futurePos.y, futurePos.z), Color.white);
-        Debug.DrawLine(futurePos, new Vector3(futurePos.x, futurePos.y, futurePos.z - sphereRadius), Color.white);
-        Debug.DrawLine(futurePos, new Vector3(futurePos.x, futurePos.y, futurePos.z + sphereRadius), Color.white);
-
-        if (Physics.CheckSphere(futurePos, sphereRadius))
+        if (Physics.SphereCast(rb.position, sphereRadius, rb.velocity.normalized, out hit, maxDistance, 3))
+        {
+            currentHitDistance = hit.distance;
             return 2f;
+        }
+        else
+        {
+            currentHitDistance = maxDistance;
+        }
 
         return 0f;
     }
 
     public void Execute()
     {
-        ap = GetComponent<Autopilot>();
-        fc = GetComponent<FlightController>();
+        Vector3 newTarget = rb.position + Vector3.Cross(hit.normal, Vector3.Cross(rb.velocity, hit.normal)) * 2;
 
-        Vector3 newTarget = rb.position + new Vector3(rb.velocity.x, -rb.velocity.y, rb.velocity.z);
         Debug.DrawLine(newTarget, rb.position, Color.green);
-        ap.RunAutopilot(new Vector3(futurePos.x, futurePos.y + 2, futurePos.z), out float pitch, out float yaw, out float roll);
+
+        ap.RunAutopilot(newTarget, out float pitch, out float yaw, out float roll);
         fc.SetControlInput(new Vector3(pitch, yaw, roll));
 
         Debug.Log("Executing AvoidGroundUtil");
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Debug.DrawLine(rb.position, rb.position + rb.velocity.normalized * currentHitDistance, Color.magenta);
+        Gizmos.DrawWireSphere(rb.position + rb.velocity.normalized * currentHitDistance, sphereRadius);
     }
 }
