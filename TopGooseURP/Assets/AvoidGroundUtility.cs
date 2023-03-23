@@ -13,9 +13,11 @@ public class AvoidGroundUtility : MonoBehaviour, IUtility
     RaycastHit hit;
 
     [SerializeField]
-    float sphereRadius = 1;
+    float sphereRadius;
     [SerializeField]
-    float maxDistance = 30;
+    float maxDistance;
+    [SerializeField]
+    LayerMask layerMask;
 
     float currentHitDistance;
 
@@ -28,17 +30,24 @@ public class AvoidGroundUtility : MonoBehaviour, IUtility
 
     public float Evaluate()
     {
-        if (Physics.SphereCast(rb.position, sphereRadius, rb.velocity.normalized, out hit, maxDistance, 3))
+        if (Physics.SphereCast(rb.position, sphereRadius, rb.velocity.normalized, out hit, maxDistance, layerMask))
         {
+            Debug.Log("Spherecast");
             currentHitDistance = hit.distance;
+            return 2f;
+        }
+        else if (Physics.Raycast(rb.position, Vector3.down, out hit, sphereRadius, layerMask))
+        {
+            Debug.Log("Raycast down");
+            currentHitDistance = 0;
+            rb.velocity -= Vector3.down;
             return 2f;
         }
         else
         {
             currentHitDistance = maxDistance;
+            return 0f;
         }
-
-        return 0f;
     }
 
     public void Execute()
