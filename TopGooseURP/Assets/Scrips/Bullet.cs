@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
     {
         this.data = data;
         transform.SetPositionAndRotation(position, rotation);
-        if(data.trailTime > 0)
+        if (data.trailTime > 0)
         {
             trail.enabled = true;
             trail.emitting = true;
@@ -52,7 +52,7 @@ public class Bullet : MonoBehaviour
         if (returned) return;
 
         time -= Time.fixedDeltaTime;
-        if(time <= 0)
+        if (time <= 0)
         {
             StartCoroutine(ReturnToPool());
             return;
@@ -65,20 +65,34 @@ public class Bullet : MonoBehaviour
     private void RayCast()
     {
 
-        if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, velocity.magnitude, layerMask)) {
+        if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, velocity.magnitude, layerMask))
+        {
 
             transform.position = hit.point;
 
             //null pointers? no collider(?) no renderer?
-            if( hit.collider.gameObject.TryGetComponent(out Renderer renderer))
+            if (hit.collider.gameObject.TryGetComponent(out Renderer renderer))
             {
                 Material material = renderer.sharedMaterial;
                 HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal, material);
             }
 
-            if(hit.collider.gameObject.TryGetComponent(out Health health))
+            Health health;
+            if (hit.collider.gameObject.TryGetComponent(out health))
             {
                 health.ChangeHealth(-data.damage);
+            }
+            else
+            {
+                bool foundComponent = false;
+                
+                health = hit.collider.gameObject.GetComponentInParent<Health>();
+                if(health != null) foundComponent = true;
+
+                if (foundComponent)
+                {
+                    health.ChangeHealth(-data.damage);
+                }
             }
 
             HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal);
@@ -95,7 +109,7 @@ public class Bullet : MonoBehaviour
         yield return new WaitForSeconds(data.trailTime); //wait until the trail is done and disapreared...
         bulletPool.Release(this);
         gameObject.SetActive(false);
-        
+
     }
 
     internal void SetPool(ObjectPool<Bullet> bulletPool)
