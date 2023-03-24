@@ -4,13 +4,19 @@ using UnityEngine;
 public class AIActor : MonoBehaviour
 {
 
-    private readonly List<IUtility> utilities = new();
+    public List<IUtility> utilities = new List<IUtility>();
     private int previusUtil = 0;
     private int currentUtil = 0;
 
     void Start()
     {
         //auto fill list based on attached components implementing IUtility?
+        Component[] utilities = GetComponents(typeof(IUtility));
+
+        for (int i = 0; i < utilities.Length; i++)
+        {
+            this.utilities.Add(utilities[i] as IUtility);
+        }
     }
 
     void FixedUpdate()

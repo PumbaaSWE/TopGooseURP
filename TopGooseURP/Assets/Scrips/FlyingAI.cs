@@ -4,25 +4,30 @@ using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Windows.Speech;
 
 public class FlyingAI : MonoBehaviour, IUtility
 {
-    [SerializeField] private Rigidbody targetRigidbody; //to be dynamically allocated
-    [SerializeField] private Transform targetTransform; //to be dynamically allocated
+    private Rigidbody targetRigidbody; //to be dynamically allocated
+    private Transform targetTransform; //to be dynamically allocated
+    [Tooltip("Manually set a target for this AI")]
     [SerializeField] private GameObject targetGameObject; //Use target interface/sqript instead
     private bool movingTarget = false;
 
+    [Tooltip("Will not chase beyond this distance")]
     [SerializeField] float maxInterceptDistance = 5000;
-    [SerializeField] float minInterceptDistance = 50;
-    [SerializeField] float minDistance = 5;
+    [Tooltip("Will fire guns beyond this distance")]
+    [SerializeField] float maxGunRange = 50;
+    [Tooltip("Will try to tay on this distance form target")]
+    [SerializeField] float preferredDistance = 10;
 
     [SerializeField][Range(0.0f, 1.0f)] float ramming = 0;
     [SerializeField][Range(0.0f, 1.0f)] float guns = 0;
     [SerializeField][Range(0.0f, 45.0f)] float gunsConeToFire = 1.0f;
-    [SerializeField][Range(0.9f, 1.0f)] float gunsAlignToFire = .99f;
+    private float gunsAlignToFire;
     [SerializeField][Range(0.0f, 1.0f)] float minHeat = 0.3f;
     [SerializeField][Range(0.0f, 1.0f)] float maxHeat = 0.9f;
-    bool gunsOverheat;
+    private bool gunsOverheat;
 
     private Vector3 ramTarget; // vector to ram target
     private Vector3 gunSolutionTarget; // vector to get guns on target target
@@ -35,6 +40,9 @@ public class FlyingAI : MonoBehaviour, IUtility
     private Gun[] gunArray;
 
     public bool showDebugInfo;
+
+    private Vector3 vecToTarget;
+    private float distToTarget;
 
     void Start()
     {
@@ -73,11 +81,11 @@ public class FlyingAI : MonoBehaviour, IUtility
     {
         if(gunArray == null) return;
         bool fire = false;
+
+        //too far for guns
+        if (distToTarget > maxGunRange) return;
+
         Vector3 fwd = transform.forward;
-
-        //Vector3 distToTarget = (flyTarget - transform.position);
-
-
         Vector3 dirToAim = (flyTarget - transform.position).normalized;
         if (Vector3.Dot(fwd, dirToAim) > gunsAlignToFire && !gunsOverheat)
         {
@@ -106,7 +114,27 @@ public class FlyingAI : MonoBehaviour, IUtility
 
         Vector3 tPos = targetTransform.position;
         Vector3 tVel = movingTarget?targetRigidbody.velocity:Vector3.zero;
-        float pSpeed = selfRigidbody.velocity.magnitude;
+        float pSpeed = controller.LocalVelocity.z;
+
+
+        //similar heading? #Stop the hardcoding!
+        //if(Vector3.Dot( transform.forward, targetTransform.forward) > .8f)
+        //{
+        //    float speedError = tVel.magnitude - pSpeed;
+
+        //    //to match velovity and hold distance to target, can use much refinement to not be so choppy wth the throttle!
+        //    controller.SetThrottleInput(controller.Throttle + speedError + distanceError);
+        //}
+
+        float distanceError = Mathf.Clamp((distToTarget - preferredDistance) / preferredDistance, 0.5f, 1f);
+        controller.SetThrottleInput(distanceError);
+
+        /*
+         * Will blend between three aiming points, 
+         * directly at target("dumb follow"), 
+         * to cause collision(ram),
+         * and to get a gun soulution(aim guns to hit a moving target)
+         */
         flyTarget = tPos;
         if (TargetingMath.ComputeImpact(tPos, tVel, transform.position, pSpeed, out ramTarget, out float tti))
         {
@@ -145,9 +173,12 @@ public class FlyingAI : MonoBehaviour, IUtility
     public float Evaluate()
     {
         if (!targetGameObject) return 0;
-        
 
-        return 1.0f;
+        vecToTarget = targetTransform.position - transform.position;
+        distToTarget = vecToTarget.magnitude;
+
+
+        return 1-((distToTarget+1) / maxInterceptDistance);
     }
 
     public void Execute()
@@ -155,5 +186,6 @@ public class FlyingAI : MonoBehaviour, IUtility
         TrackTarget();
         UpdateAutopilot();
         UpdateGuns();
+        Debug.Log("Executing FlyingAI");
     }
 }
