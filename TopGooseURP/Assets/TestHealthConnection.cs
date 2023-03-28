@@ -11,8 +11,6 @@ public class TestHealthConnection : MonoBehaviour
     bool removeWhenDead;
     Color startColor;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
