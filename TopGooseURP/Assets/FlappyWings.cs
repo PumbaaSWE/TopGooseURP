@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class FlappyWings : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class FlappyWings : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-         if(TryGetComponent<SimpleFlight>(out controller))
+        if(TryGetComponent(out controller))
         {
             //do smth
         }
@@ -30,6 +31,7 @@ public class FlappyWings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(controller.LocalVelocity.z < 0) return;
         angle += flapSpeed * Time.deltaTime;
 
         if (angle > maxFlap / 2) 

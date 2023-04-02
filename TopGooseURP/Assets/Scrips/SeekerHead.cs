@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class SeekerHead : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class SeekerHead : MonoBehaviour
 
     [Header("Locking")]
     [SerializeField] private float minLockTime = .5f; //future use maybe
+    [SerializeField] private bool autoUncage = true; //future use maybe
 
     [Header("Flying")]
     [Tooltip("The autopilot used, I'd like an interface here(?)")]
@@ -40,8 +42,29 @@ public class SeekerHead : MonoBehaviour
     private float cosTrackFov; //cached to compare with dot-products for fast angle check
 
     private Transform lockedTarget;
-    private bool targetLocked;
+    public bool TargetLocked { get; private set; }
     private Vector3 flyTarget;
+
+    public bool Launched { get; private set; } = false;
+
+    public bool uncaged = false;
+
+    //public bool Uncaged
+    //{
+    //    get { return uncaged; }
+    //    set
+    //    {
+    //        if (!Launched) uncaged = value;
+    //    }
+    //}
+
+    public enum SeekerStage { Seeking, Locked, Launched };
+    public SeekerStage Stage { get; private set; } = SeekerStage.Seeking;
+
+    public enum SeekerTone { Active, InView, InViewOffBore, Locked };
+    public SeekerTone Tone { get; private set; } = SeekerTone.Active;
+
+    private Vector3 cageDirection;
 
     private Vector3 seekDirection; 
     private Vector3 prevTargetPosition;
@@ -49,6 +72,20 @@ public class SeekerHead : MonoBehaviour
     private float lockTime;//future use maybe
 
     public bool debugDraw = true;
+
+    public Vector3 SeekerViewPositon
+    {
+        get { return transform.position + seekDirection * range; }
+    }
+
+    public Vector3 TargetPosition
+    {
+        get { 
+            if(TargetLocked)
+                return lockedTarget.position;
+            return SeekerViewPositon;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -63,25 +100,94 @@ public class SeekerHead : MonoBehaviour
         trackRateRadians = trackRate * Mathf.Deg2Rad;
         cosTrackFov = Mathf.Cos(trackFOVRadians);
         //Debug.Log("trackRateRadians " + trackRateRadians + " trackRate " + trackRate);
-        autoPilot.SetThrottleInput(1); //It's a rocket, just full powah
+        //autoPilot.SetThrottleInput(1); //It's a rocket, just full powah
 
         seekDirection = transform.forward;
         flyTarget = transform.position + autoPilot.MaxSpeed * range * seekDirection; // 100 should ideally be the maxSpeed, to never reach it, but that is hidden in autopilot
     }
 
+    public void Spawn()
+    {
+        
+    }
+
+    public void Track(Vector3 direction)
+    {
+        //move seeker head towards
+        cageDirection = direction;
+    }
+
+    public void Uncage(bool uncage)
+    {
+        if (Launched) return;
+        uncaged = uncage;
+    }
+
+    public void Launch(Vector3 inheritVelocity)
+    {
+        if (!TargetLocked) flyTarget = transform.position + autoPilot.MaxSpeed * range * seekDirection;
+        //uncaged = true; //should be done already
+
+        autoPilot.Free(inheritVelocity);
+        autoPilot.SetThrottleInput(1);
+        Launched = true;
+        Destroy(gameObject, 5.0f);
+    }
+
+
+    /*
+     *How it suppose to work:
+     *Missile is attached to Plane
+     *Pilot points in direction to seek in -> Track(cageDirection)
+     *If seeker sees it will make tone
+     *If ungaged seeker head will follow whatever target it sees by it self and ignore pilot view dir (cageDirection)
+     *Launch will happen if uncaged and locked
+     *If lock is lost we go back to caged
+     *
+     *Seek dir
+     *When not fired and caged -> in cageDir (or forward in slave mode) 
+     *When not fired and uncaged and sees target-> at target
+     *When not fired and uncaged and dont sees target-> forward
+     *When fired and dont see target -> forward
+     *When fired and see target -> at target
+     *
+     *When fired -> runAutopilot
+     *
+     *cannot go uncaged to caged after being fired
+     *if fired uncaged it will go uncaged (?)
+     *
+     *How is not fired, uncaged, and not seeing target handeled?
+     */
     // Update is called once per frame
     void FixedUpdate()
     {
-        float dt = Time.fixedDeltaTime;
+        if (lockedTarget == null || !lockedTarget) //it died or was removed for some reason
+        {
+            TargetLocked = false;
+        }
 
+
+        float dt = Time.fixedDeltaTime;
+        //WorkingTracking(dt);
+
+        TrackTarget(dt); //experimental
+        if(Launched) autoPilot.RunAutopilot(flyTarget);
+    }
+
+    private void WorkingTracking(float dt)
+    {
         Vector3 desiredSeekerDir = transform.forward;
-        if (targetLocked)
+        if (TargetLocked)
         {
             desiredSeekerDir = (lockedTarget.position - transform.position);
         }
+        else if (!uncaged)
+        {
+            desiredSeekerDir = cageDirection;
+        }
         seekDirection = Vector3.RotateTowards(seekDirection, desiredSeekerDir, dt * trackRateRadians, 0);
 
-        if (Seek(transform.position, seekDirection, out Transform target))
+        if (Seek(transform.position, seekDirection, out Transform target, out float trackAngle))
         {
             Vector3 targetPosition = target.position;
             Vector3 targetVel = (targetPosition - prevTargetPosition) / dt; //v=ds/dt
@@ -97,7 +203,7 @@ public class SeekerHead : MonoBehaviour
             }
             //update HUD
             //do sounds
-            targetLocked = true;
+            TargetLocked = true;
             lockedTarget = target;
         }
         else
@@ -106,19 +212,9 @@ public class SeekerHead : MonoBehaviour
             //do other sounds
             //if targetLocked then we have lost target -> explode or reset target possible things
 
-            targetLocked = false;
+            TargetLocked = false;
         }
         autoPilot.RunAutopilot(flyTarget); // outside if statement wll make it loop/continue to last seen position
-
-        //bit more advanced and maybe overkull for now
-        //if (targetLocked)
-        //{
-        //    TrackTarget(dt);
-        //}
-        //else
-        //{
-        //    LockOn(dt);
-        //}
     }
 
     /*
@@ -140,62 +236,100 @@ public class SeekerHead : MonoBehaviour
         return a;
     }
 
-    private void TrackTarget(float dt)
+    /*
+     * If is uncaged and has no target -> forward
+     * If has target and is uncaged -> at target
+     * If not uncaged with or without target -> cage direction
+     */
+    private void HandleSeekDirection(float dt)
     {
-        if (lockedTarget == null) //it died or was removed for some reason
+        Vector3 desiredSeekerDir = transform.forward;
+        if (!uncaged)
         {
-            targetLocked = false;
-            return;
+            desiredSeekerDir = cageDirection;
         }
-        Vector3 toTarget = lockedTarget.position - transform.position;
-        float angleToTarget = Vector3.Dot(transform.forward, toTarget.normalized);
-
-        
-        //float angleToTarget = Vector3.Angle(toTarget, transform.forward) * Mathf.Deg2Rad;
-        //check if angle is ok for cone
-        if (angleToTarget < cosSeekerFov)
+        else if (TargetLocked)
         {
-            targetLocked = false;
-            lockTime = 0;
-            //targetLost
-            //autoPilot.SetFlyTarget(bestTarget.position, false);
-            autoPilot.SetControlInput(Vector3.zero);
+            desiredSeekerDir = (lockedTarget.position - transform.position);
+        }
+        seekDirection = Vector3.RotateTowards(seekDirection, desiredSeekerDir, dt * trackRateRadians, 0);
+    }
+    private void HandleUncaged(Transform target, float dt)
+    {
+        Vector3 targetPosition = target.position;
+        Vector3 targetVel = (targetPosition - prevTargetPosition) / dt; //v=ds/dt
+        prevTargetPosition = targetPosition;
+        if (TargetingMath.ComputeImpact(targetPosition, targetVel, transform.position, autoPilot.LocalVelocity.z, out Vector3 impact, out float _))
+        {
+            flyTarget = impact;
         }
         else
         {
-            //autoPilot.SetFlyTarget(bestTarget.position, true);
-            //autoPilot.RunAutopilot(lockedTarget.position);
+            flyTarget = targetPosition;
         }
         
     }
 
-    private void LockOn(float dt)
+
+    private void TrackTarget(float dt)
     {
-        if (Seek(transform.position, transform.forward, out Transform potentialTarget))
+        HandleSeekDirection(dt);
+
+        if (Seek(transform.position, seekDirection, out Transform target, out float trackAngle))
         {
-            if (potentialTarget == lockedTarget)
+            if (TargetLocked)
             {
-                lockTime += dt;
-                if (lockTime >= minLockTime)
-                {
-                    targetLocked = true;
-                }
+                HandleUncaged(target, dt);
             }
             else
             {
-                lockTime = 0;
-                lockedTarget = potentialTarget;
+                LockOn(target, trackAngle, dt);
             }
         }
         else
         {
+            TargetLocked = false;
+            lockedTarget = null;
+            Uncage(false);
+            lockTime = 0;
+        }
 
+    }
+
+    //
+    private void LockOn(Transform potentialTarget, float trackAngle, float dt)
+    {  
+        lockedTarget = potentialTarget;  
+        if(uncaged)
+        {
+            TargetLocked = true;
+            Tone = SeekerTone.Locked;
+            return;
+        }
+        else if (autoUncage)
+        {
+            lockTime += dt;
+            if(lockTime >= minLockTime)
+            {
+                uncaged = true;
+                TargetLocked = true;
+                Tone = SeekerTone.Locked;
+            }
+        }
+        if (trackAngle > Mathf.Cos(27 * Mathf.Deg2Rad))
+        {
+            Tone = SeekerTone.InViewOffBore;
+        }
+        else
+        {
+            Tone = SeekerTone.InView;
         }
     }
 
-    private bool Seek(Vector3 position, Vector3 direction, out Transform target)
+    private bool Seek(Vector3 position, Vector3 direction, out Transform target, out float offBoreAngle)
     {
         target = null;
+        offBoreAngle = 0;
         //as Unity do not multithread MonoBehaviours (I think(!?)) all SeekerHeads can use the same static buffer as it's only used in this method alone
         int hits = Physics.OverlapCapsuleNonAlloc(position + direction * radius, position + direction * length, radius, hitCollidersBuffer, heatLayer);
         if (hits == 0) return false;
@@ -229,8 +363,9 @@ public class SeekerHead : MonoBehaviour
 
             if (value < bestValue)
             {
-                bestValue = angleToTarget;
+                bestValue = value;
                 bestIndex = i;
+                offBoreAngle = trackAngle;
             }
             
         }
@@ -246,7 +381,7 @@ public class SeekerHead : MonoBehaviour
         Vector3 point0 = transform.position + seekDirection * radius;
         Vector3 point1 = transform.position + seekDirection * length;
 
-        if (targetLocked)
+        if (TargetLocked)
         {
             Gizmos.color = Color.red;
         }

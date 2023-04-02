@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "MissileData")]
+[CreateAssetMenu(fileName = "NewMissileData", menuName = "ScriptableObject/MissileData")]
 public class MissileData : ScriptableObject
 {
     [Header("Miscing")]

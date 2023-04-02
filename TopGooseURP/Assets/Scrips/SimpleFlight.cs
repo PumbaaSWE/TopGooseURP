@@ -33,7 +33,7 @@ public class SimpleFlight : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
     }
@@ -47,6 +47,13 @@ public class SimpleFlight : MonoBehaviour
         UpdateSteering(dt);
         UpdateThrottle(dt);
         UpdateThrust();
+    }
+
+    public void Free(Vector3 inheritVelocity)
+    {
+        transform.parent = null;
+        Rigidbody.isKinematic = false;
+        Rigidbody.velocity = inheritVelocity;
     }
 
     //will be clamped 0,1 -> but hopefully can add a set desired speed to simplify
