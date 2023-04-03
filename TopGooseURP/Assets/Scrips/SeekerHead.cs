@@ -47,6 +47,7 @@ public class SeekerHead : MonoBehaviour
 
     public bool Launched { get; private set; } = false;
 
+    public bool active = false;
     public bool uncaged = false;
 
     //public bool Uncaged
@@ -106,9 +107,10 @@ public class SeekerHead : MonoBehaviour
         flyTarget = transform.position + autoPilot.MaxSpeed * range * seekDirection; // 100 should ideally be the maxSpeed, to never reach it, but that is hidden in autopilot
     }
 
-    public void Spawn()
+    public void Activate(bool active)
     {
-        
+        if (Launched) return;
+        this.active = active;
     }
 
     public void Track(Vector3 direction)
@@ -252,8 +254,21 @@ public class SeekerHead : MonoBehaviour
         {
             desiredSeekerDir = (lockedTarget.position - transform.position);
         }
+        //seekDirection = transform.rotation * transform.forward; //this is to keep the angle local to the "missile"
         seekDirection = Vector3.RotateTowards(seekDirection, desiredSeekerDir, dt * trackRateRadians, 0);
+        //LimitVector(ref seekDirection);
     }
+    private void LimitVector(ref Vector3 toLimit)
+    {
+        float angle = Vector3.Dot(toLimit, transform.forward);
+        if (angle < cosTrackFov){
+            Vector3 rotAxis = Vector3.Cross(toLimit, transform.forward);
+            toLimit = Quaternion.AngleAxis(trackFOV, rotAxis) * transform.forward;
+            //toLimit = Vector3.RotateTowards(toLimit, transform.forward, cosTrackFov - angle, 0); //needed an acos to work
+        }
+       // return toLimit;
+    }
+
     private void HandleUncaged(Transform target, float dt)
     {
         Vector3 targetPosition = target.position;

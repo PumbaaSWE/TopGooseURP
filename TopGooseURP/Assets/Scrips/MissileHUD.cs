@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MissileHUD : MonoBehaviour
@@ -11,18 +9,19 @@ public class MissileHUD : MonoBehaviour
 
     [Header("HUD Elements")]
     [SerializeField] private RectTransform seekerView = null;
+    [SerializeField] private RectTransform lockedView = null;
 
     private Camera playerCam = null;
 
     private void Awake()
     {
         if (mouseFlight == null)
-            Debug.LogError(name + ": FlightHUD - Mouse Flight Controller not assigned!");
+            Debug.LogError(name + ": MissileHUD - Mouse Flight Controller not assigned!");
 
         playerCam = mouseFlight.GetComponentInChildren<Camera>();
 
         if (playerCam == null)
-            Debug.LogError(name + ": FlightHUD - No camera found on assigned Mouse Flight Controller!");
+            Debug.LogError(name + ": MissileHUD - No camera found on assigned Mouse Flight Controller!");
     }
 
     private void FixedUpdate()
@@ -35,12 +34,31 @@ public class MissileHUD : MonoBehaviour
 
     private void UpdateGraphics(ManualFlightInput controller)
     {
-        if (seekerView != null)
-        {
-            seekerView.position = playerCam.WorldToScreenPoint(missileLauncher.SeekerViewPositon());
-            seekerView.gameObject.SetActive(seekerView.position.z > 1f);
-        }
 
+        if (!missileLauncher.NoMissile)
+        {
+            SeekerHead seekerHead = missileLauncher.GetSeekerHead();
+            if (seekerHead.TargetLocked)
+            {
+                lockedView.position = playerCam.WorldToScreenPoint(seekerHead.TargetPosition);
+                lockedView.gameObject.SetActive(true);
+            }
+            else
+            {
+                lockedView.gameObject.SetActive(false);
+            }
+            seekerView.position = playerCam.WorldToScreenPoint(seekerHead.SeekerViewPositon);
+
+
+
+        }
+        else
+        {
+            lockedView.gameObject.SetActive(false);
+        }
+        
+        seekerView.gameObject.SetActive(seekerView.position.z > 1f && !missileLauncher.NoMissile);
+        
     }
 
     public void SetReferenceMouseFlight(ManualFlightInput controller)

@@ -16,7 +16,7 @@ public class MissileLauncher : MonoBehaviour
 
 
 
-
+    [SerializeField] private ManualFlightInput flightInput;
 
     [SerializeField] private Transform[] hardPoints;
     private HardPointData[] hardPointData;
@@ -81,19 +81,28 @@ public class MissileLauncher : MonoBehaviour
         float dt = Time.deltaTime;
         HandleHardpoints(dt);
 
-        selectedHardpoint = NextHardpoint();
         if (selectedHardpoint < 0) return;
 
 
-       
 
 
 
+        //Debug.Log("selectedHardpoint = " + selectedHardpoint);
 
         SeekerHead selectedMissile = hardPointData[selectedHardpoint].seekerHead;
-        Debug.Log("Tone = " + selectedMissile.Tone);
-        selectedMissile.Track(transform.forward);
-        selectedMissile.debugDraw = true;
+        //Debug.Log("Tone = " + selectedMissile.Tone);
+
+        if(flightInput != null)
+        {
+            selectedMissile.Track(flightInput.MouseAimPos - transform.position);
+        }
+        else
+        {
+            selectedMissile.Track(transform.forward);
+
+        }
+
+        //selectedMissile.debugDraw = true;
         switch (selectedMissile.Tone)
         {
             case SeekerHead.SeekerTone.Active:
@@ -116,7 +125,8 @@ public class MissileLauncher : MonoBehaviour
         {
             audioSource.Stop();
             hardPointData[selectedHardpoint].Launch(rb.velocity, 5);
-            selectedHardpoint = -1;
+            //Debug.Log("Hardpoint " + selectedHardpoint + " launched, " + hardPointData[selectedHardpoint].IsLoaded);
+            selectedHardpoint = NextHardpoint();
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -128,7 +138,6 @@ public class MissileLauncher : MonoBehaviour
     private int NextHardpoint() {
         for (int i = 0; i < hardPointData.Length; i++)
         {
-
             if (hardPointData[i].IsLoaded) return i;
         }
         return -1;
@@ -145,6 +154,7 @@ public class MissileLauncher : MonoBehaviour
             if (hardPointData[i].respawnTime <= 0)
             {
                 SpawnMissileOnHardPoint(i);
+                if (selectedHardpoint < 0) selectedHardpoint = i;
             }
         }
     }
@@ -161,7 +171,26 @@ public class MissileLauncher : MonoBehaviour
         {
             Debug.LogWarning("MissileLauncher - SpawnMissileOnHardPoint - cannot access the rigidbody component of the missile");
         }
+
+        //if (seekerHead.gameObject.TryGetComponent(out FlappyWings flappyWings))
+        //{
+        //    flappyWings.Flap(false);
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("MissileLauncher - SpawnMissileOnHardPoint - cannot access the rigidbody component of the missile");
+        //}
+
+        //if (seekerHead.gameObject.TryGetComponent(out Trail trail))
+        //{
+        //    trail.Emitting(false);
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("MissileLauncher - SpawnMissileOnHardPoint - cannot access the rigidbody component of the missile");
+        //}
         hardPointData[i].seekerHead = seekerHead;
+        //hardPointData[i].trail = trail;
     }
 
     private void LaunchHardPoint(int i)
@@ -191,8 +220,16 @@ public class MissileLauncher : MonoBehaviour
     internal Vector3 SeekerViewPositon()
     {
         if (selectedHardpoint < 0) return Vector3.zero;// transform.position+transform.forward*500;
-        return hardPointData[selectedHardpoint].seekerHead.SeekerViewPositon;
+        return hardPointData[selectedHardpoint].seekerHead.TargetPosition;
     }
+
+    internal SeekerHead GetSeekerHead()
+    {
+        if (selectedHardpoint < 0) return null;// transform.position+transform.forward*500;
+        return hardPointData[selectedHardpoint].seekerHead;
+    }
+
+    internal bool NoMissile => selectedHardpoint < 0;
 
     private struct HardPointData
     {
@@ -200,6 +237,7 @@ public class MissileLauncher : MonoBehaviour
         public SeekerHead seekerHead;
         public Rigidbody rigidbody;
         public SimpleFlight simpleFlight;
+        internal Trail trail;
 
         public bool IsLoaded => seekerHead != null;
 
@@ -210,6 +248,8 @@ public class MissileLauncher : MonoBehaviour
             seekerHead = null;
             rigidbody = null;
             simpleFlight = null;
+            //trail.Emitting(true);
+            //trail = null;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,8 +17,13 @@ public class FlappyWings : MonoBehaviour
     [SerializeField] private float strengthPitch = 45;
     [SerializeField] private float strengthRoll = 1;
 
-
+    bool flap;
     float angle;
+
+    internal void Flap(bool flap)
+    {
+        this.flap = flap;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +37,7 @@ public class FlappyWings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(controller.LocalVelocity.z < 0) return;
+        if(controller.LocalVelocity.z <= 0) return;
         angle += flapSpeed * Time.deltaTime;
 
         if (angle > maxFlap / 2) 
