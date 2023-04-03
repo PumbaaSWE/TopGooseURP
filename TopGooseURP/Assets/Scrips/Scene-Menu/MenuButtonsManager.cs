@@ -9,8 +9,8 @@ public class MenuButtonsManager : MonoBehaviour
     [SerializeField] private Button exitButton;
 
     [SerializeField] private Button backButton;
-    [SerializeField] private Toggle hotkeysToggle;
-    [SerializeField] private Toggle soundToggle;
+    [SerializeField] private Button hotkeysButton;
+    [SerializeField] private Button soundButton;
 
     [SerializeField] private GameObject MainMenu;
     [SerializeField] private GameObject Settings;
@@ -26,20 +26,22 @@ public class MenuButtonsManager : MonoBehaviour
         settingButton.onClick.AddListener(() =>
         {
             MainMenu.SetActive(false);
-            hotkeysToggle.Select();
+            SoundSettings.SetActive(false);
+            HotkeysSettings.SetActive(true);
             Settings.SetActive(true);
+
         });
         backButton.onClick.AddListener(() =>
         {
             Settings.SetActive(false);
             MainMenu.SetActive(true);            
         });
-        soundToggle.onValueChanged.AddListener(delegate
+        soundButton.onClick.AddListener(() =>
         {
             HotkeysSettings.SetActive(false);
             SoundSettings.SetActive(true);
         });
-        hotkeysToggle.onValueChanged.AddListener(delegate
+        hotkeysButton.onClick.AddListener(() =>
         {
             SoundSettings.SetActive(false);
             HotkeysSettings.SetActive(true);
