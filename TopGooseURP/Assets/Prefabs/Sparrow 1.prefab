@@ -474,8 +474,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3362561909292794727}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 343.9403, y: 28.513426, z: 134.71}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7498585774552333488}
@@ -622,8 +622,8 @@ MonoBehaviour:
   heatLayer:
     serializedVersion: 2
     m_Bits: 128
-  range: 350
-  seekerFOV: 10
+  range: 250
+  seekerFOV: 18.4
   seekerRangeInfluence: 1
   seekerOffBoreInfluence: 0.099
   trackFOV: 85
