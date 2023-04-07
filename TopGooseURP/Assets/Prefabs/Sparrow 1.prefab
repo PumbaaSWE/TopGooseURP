@@ -562,7 +562,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxThrust: 500
-  maxAcceleration: 50
   maxSpeed: 50
   turnSpeed: {x: 180, y: 180, z: 360}
   turnAcceleration: {x: 999, y: 999, z: 999}
@@ -623,18 +622,19 @@ MonoBehaviour:
   heatLayer:
     serializedVersion: 2
     m_Bits: 128
-  range: 250
-  seekerFOV: 9.1
+  range: 350
+  seekerFOV: 10
   seekerRangeInfluence: 1
   seekerOffBoreInfluence: 0.099
-  trackFOV: 100
+  trackFOV: 85
   trackRate: 360
   ProNavN: 3
   minLockTime: 0.5
   autoUncage: 1
   autoPilot: {fileID: 3362561909292794734}
+  active: 0
   uncaged: 0
-  debugDraw: 0
+  drawDebugInfo: 1
 --- !u!114 &3362561909292794735
 MonoBehaviour:
   m_ObjectHideFlags: 0

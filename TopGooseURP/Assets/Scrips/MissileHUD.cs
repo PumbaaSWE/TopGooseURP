@@ -4,7 +4,6 @@ public class MissileHUD : MonoBehaviour
 {
     // Start is called before the first frame update
     [Header("Components")]
-    [SerializeField] private ManualFlightInput mouseFlight = null;
     [SerializeField] private MissileLauncher missileLauncher = null;
 
     [Header("HUD Elements")]
@@ -15,24 +14,35 @@ public class MissileHUD : MonoBehaviour
 
     private void Awake()
     {
-        if (mouseFlight == null)
-            Debug.LogError(name + ": MissileHUD - Mouse Flight Controller not assigned!");
-
-        playerCam = mouseFlight.GetComponentInChildren<Camera>();
+        playerCam = Camera.main;
 
         if (playerCam == null)
-            Debug.LogError(name + ": MissileHUD - No camera found on assigned Mouse Flight Controller!");
+            Debug.LogWarning(name + ": MissileHUD - No camera found on Camera.main!");
+        missileLauncher = GetComponent<MissileLauncher>();
+        if (missileLauncher == null)
+            Debug.LogError(name + ": MissileHUD - No Missile Launcher found!");
+        missileLauncher.OnActivationChange += Enable;
+    }
+
+    private void OnDestroy()
+    {
+        missileLauncher.OnActivationChange -= Enable;
+    }
+
+
+    private void Enable(bool enable)
+    {
+        enabled = enable;
+        lockedView.gameObject.SetActive(false); //aways false so UpdateGraphics() renders the in the correct spot!
+        seekerView.gameObject.SetActive(false);
     }
 
     private void FixedUpdate()
     {
-        if (mouseFlight == null || playerCam == null)
-            return;
-
-        UpdateGraphics(mouseFlight);
+        UpdateGraphics();
     }
 
-    private void UpdateGraphics(ManualFlightInput controller)
+    private void UpdateGraphics()
     {
 
         if (!missileLauncher.NoMissile)
@@ -48,9 +58,6 @@ public class MissileHUD : MonoBehaviour
                 lockedView.gameObject.SetActive(false);
             }
             seekerView.position = playerCam.WorldToScreenPoint(seekerHead.SeekerViewPositon);
-
-
-
         }
         else
         {
@@ -59,10 +66,5 @@ public class MissileHUD : MonoBehaviour
         
         seekerView.gameObject.SetActive(seekerView.position.z > 1f && !missileLauncher.NoMissile);
         
-    }
-
-    public void SetReferenceMouseFlight(ManualFlightInput controller)
-    {
-        mouseFlight = controller;
     }
 }

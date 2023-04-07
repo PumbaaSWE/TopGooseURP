@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class ManualFlightInput : MonoBehaviour
 {
+
+    /**
+     * https://github.com/brihernandez/MouseFlight
+     * This is based on Brian Hernandez MouseFlightController published under MIT Licence, see link
+     */
+
     /*
      * Game objects should be:
      * HUD
@@ -107,6 +113,25 @@ public class ManualFlightInput : MonoBehaviour
             else
             {
                 return transform.forward * aimDistance;
+            }
+        }
+    }
+    /// <summary>
+    /// Get the direction that the mouse is looking relative to the aircraft
+    /// </summary>
+    public Vector3 MouseAimDirection
+    {
+        get
+        {
+            if (mouseAim != null)
+            {
+                return isMouseAimFrozen
+                    ? transform.forward
+                    : mouseAim.forward;
+            }
+            else
+            {
+                return transform.forward;
             }
         }
     }

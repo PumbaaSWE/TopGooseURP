@@ -245,7 +245,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397678386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 480.59998, y: 24.4, z: -36.69998}
+  m_LocalPosition: {x: 480.59998, y: 272.5, z: -36.69998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -265,9 +265,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 1, y: 1, z: 1}
-  range: 50
-  minSpeed: 15
-  maxSpeed: 15
+  range: 500
+  minSpeed: 35
+  maxSpeed: 25
   speed: 0
 --- !u!1 &435946475
 GameObject:
@@ -749,7 +749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 1, y: 0, z: 0}
-  range: 150
+  range: 750
   minSpeed: 15
   maxSpeed: 15
   speed: 0
@@ -863,8 +863,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb52e55e97c52549986fcc5e1ae0f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: {x: 1, y: 1, z: 0}
-  range: 50
+  direction: {x: 1, y: 0.2, z: 0}
+  range: 350
   minSpeed: 15
   maxSpeed: 25
   speed: 0
@@ -959,7 +959,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1233899816}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 480.8, y: 20.2, z: 80.900024}
+  m_LocalPosition: {x: 480.8, y: 20.2, z: -117}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -979,7 +979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 1, y: 0, z: 1}
-  range: 150
+  range: 250
   minSpeed: 15
   maxSpeed: 50
   speed: 0
@@ -1341,7 +1341,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1681021120}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 478.19998, y: 21.2, z: 41.700012}
+  m_LocalPosition: {x: 478.19998, y: 31.72, z: 41.700012}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1361,7 +1361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 1, y: 0, z: 0.1}
-  range: 150
+  range: 250
   minSpeed: 15
   maxSpeed: 34
   speed: 0
@@ -1476,8 +1476,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 1, y: 0, z: 0}
-  range: 150
-  minSpeed: 15
+  range: 550
+  minSpeed: 25
   maxSpeed: 15
   speed: 0
 --- !u!1 &2005337193
@@ -1522,7 +1522,7 @@ GameObject:
   - component: {fileID: 2136749166}
   - component: {fileID: 2136749165}
   - component: {fileID: 2136749164}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2438,22 +2438,6 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
---- !u!114 &2580526428876019451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4795325328840285016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d15b105125032464d9b33c396ca6cef7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  guns: []
-  bombBrefab: {fileID: 4130009385255742871, guid: 71aa9f150ba2e2a44b7bf393c60cd904,
-    type: 3}
-  spread: 0.1
 --- !u!223 &2580526429185223553
 Canvas:
   m_ObjectHideFlags: 0
@@ -23214,12 +23198,13 @@ GameObject:
   - component: {fileID: 4795325328840284966}
   - component: {fileID: 4795325328840284967}
   - component: {fileID: 4795325328840284964}
-  - component: {fileID: 2580526428876019451}
   - component: {fileID: 2580526428876019427}
   - component: {fileID: 2580526428876019426}
   - component: {fileID: 4795325328840285023}
   - component: {fileID: 4795325328840285024}
   - component: {fileID: 4795325328840285025}
+  - component: {fileID: 4795325328840285027}
+  - component: {fileID: 4795325328840285026}
   m_Layer: 0
   m_Name: GooseGunner 1
   m_TagString: Untagged
@@ -23441,18 +23426,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missile: {fileID: 3362561909292794720, guid: 36ec52df279db58469defcbcc3081b42, type: 3}
-  initVel: {x: 0, y: 0, z: 0}
-  maxSpeed: 25
-  showDebugInfo: 0
-  flightInput: {fileID: 463040588856999357}
-  hardPoints:
+  reloadTime: 8
+  hardpoints:
   - {fileID: 154636489}
   - {fileID: 2005337194}
-  tones:
-  - {fileID: 8300000, guid: ccb2370a7ed376b4b91c6e47d6c6ffa3, type: 3}
-  - {fileID: 8300000, guid: d7f8c83781ec9b54abd4adb5aa218942, type: 3}
-  - {fileID: 8300000, guid: d7f8c83781ec9b54abd4adb5aa218942, type: 3}
-  - {fileID: 8300000, guid: 032bd5ef33a0a854db0685e75021bed9, type: 3}
+  showDebugInfo: 0
 --- !u!82 &4795325328840285024
 AudioSource:
   m_ObjectHideFlags: 0
@@ -23565,6 +23543,40 @@ MonoBehaviour:
   missileLauncher: {fileID: 4795325328840285023}
   seekerView: {fileID: 620849853}
   lockedView: {fileID: 1381571381}
+--- !u!114 &4795325328840285026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4795325328840285016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0030378c7a5d384984406cf191ec463, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bombPrefab: {fileID: 4130009385255742871, guid: 71aa9f150ba2e2a44b7bf393c60cd904,
+    type: 3}
+  spread: 0.1
+  magazineSize: 10
+  reloadTime: 5.5
+  dropRate: 0.2
+--- !u!114 &4795325328840285027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4795325328840285016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 316208167be14274db9fc43757ac8951, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flightInput: {fileID: 463040588856999357}
+  guns: []
+  MissileLauncher: {fileID: 4795325328840285023}
+  BombBay: {fileID: 4795325328840285026}
 --- !u!4 &4795325328849324792
 Transform:
   m_ObjectHideFlags: 0

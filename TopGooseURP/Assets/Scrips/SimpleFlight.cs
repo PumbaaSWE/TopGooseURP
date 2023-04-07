@@ -5,7 +5,7 @@ public class SimpleFlight : MonoBehaviour
 
     [Header("Thrusting")]
     [Tooltip("Poweeeeerrr!!!")][SerializeField] private float maxThrust = 50;
-    [Tooltip("(currently unused)m/s^2??")][SerializeField] private float maxAcceleration = 50;
+    //[Tooltip("(currently unused)m/s^2??")][SerializeField] private float maxAcceleration = 50;
     [Tooltip("Speeeeeeeed!!!")][SerializeField] private float maxSpeed = 50; //change to private!!!!
 
     [Header("Steering")]
@@ -47,13 +47,6 @@ public class SimpleFlight : MonoBehaviour
         UpdateSteering(dt);
         UpdateThrottle(dt);
         UpdateThrust();
-    }
-
-    public void Free(Vector3 inheritVelocity)
-    {
-        transform.parent = null;
-        Rigidbody.isKinematic = false;
-        Rigidbody.velocity = inheritVelocity;
     }
 
     //will be clamped 0,1 -> but hopefully can add a set desired speed to simplify
@@ -142,6 +135,7 @@ public class SimpleFlight : MonoBehaviour
         // Blend between auto level and banking into the target.
         float wingsLevelInfluence = Mathf.InverseLerp(0f, aggressiveTurnAngle, angleOffTarget);
         float roll = -Mathf.Lerp(wingsLevelRoll, agressiveRoll, wingsLevelInfluence);
-        controlInput.Set(pitch, yaw, roll);    
+        controlInput.Set(pitch, yaw, roll);
+        //controlInput += Random.insideUnitSphere * .4f; //add some "noise" to the steering...
     }
 }

@@ -1,69 +1,139 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class WeaponSystem : MonoBehaviour
 {
-    [SerializeField] private List<Weapon> weapons;
-    [SerializeField] private Weapon primary;
-    [SerializeField] private int secondarySlots = 2;
-    private int currentWeapon = 0;
+
+    public ManualFlightInput flightInput;
+
+//    public GunInput GunInput;
+    public Gun[] guns;
+    public MissileLauncher MissileLauncher;
+    public BombBay BombBay; // THIS IS DR BOMBAY!!
+
+    //delegate for events to the UI
+    public delegate void BombSelected(bool selected);
+    public BombSelected OnBombSelected;
+
+    private bool bombs; //the switch :P
     
-    // Start is called before the first frame update
     void Start()
     {
-        primary.Activate();
+        guns = GetComponentsInChildren<Gun>();
+        if (guns == null)
+        {
+            Debug.LogWarning("WeaponSystem - Missing Gun script on this game object children!");
+        }
+        if(!TryGetComponent(out MissileLauncher))
+        {
+            Debug.LogWarning("WeaponSystem - Missing MissileLauncher script on this game object!");
+        }
+        if (!TryGetComponent(out BombBay))
+        {
+            Debug.LogWarning("WeaponSystem - Missing BombBay script on this game object!");
+        }
+        OnSecondarySwitch();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //FOR TESTING!!!! *****REMOVE*****
         if (Input.GetKeyDown(KeyCode.F))
         {
-            CycleNext();
+            OnSecondarySwitch();
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            primary.Deploy();
+            OnPrimaryFire();
         }
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButtonUp(0))
         {
-            weapons[currentWeapon].Deploy();
+            OnPrimaryStop();
         }
-    }
 
-    public void AddWeapon(Weapon weapon)
-    {
-        if(weapons.Count < secondarySlots)
+        if (Input.GetMouseButtonDown(1))
         {
-            weapons.Add(weapon);
+            OnSecondaryFire();
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            OnSecondaryStop();
+        }
+        //*****END OF REMOVE******
+
+
+
+
+        if (bombs)
+        {
+            //HandleBombBay();
         }
         else
         {
-            weapons[currentWeapon].Deactivate();
-            weapons[currentWeapon] = weapon;
+            HandleMissileLauncher();
         }
     }
 
-    public void CycleNext()
+    private void HandleMissileLauncher()
     {
-        Cycle(++currentWeapon);
-    }
-    public void CyclePrevius()
-    {
-        Cycle(--currentWeapon);
+        if(MissileLauncher.NoMissile) return;
+        MissileLauncher.SetCageDirection(flightInput.MouseAimDirection);
     }
 
-    public void Cycle(int i)
+    public void OnPrimaryFire()
     {
-        weapons[currentWeapon].Deactivate();
-        currentWeapon = i % weapons.Count;
-        weapons[currentWeapon].Activate();
+        FireAllGuns(true);
+    }
+    public void OnPrimaryStop()
+    {
+        FireAllGuns(false);
+    }
+    public void OnSecondaryFire()
+    {
+        if (bombs)
+        {
+            BombBay.DropBombs(true);
+        }
+        else
+        {
+            MissileLauncher.LaunchMissile();
+        }
+    }
+    public void OnSecondaryStop()
+    {
+        if (bombs)
+        {
+            BombBay.DropBombs(false);
+        }
+    }
+    public void OnSecondarySwitch()
+    {
+        bombs = !bombs;
+        //We dont diable the scrpts/components as we want recharging/reloading to keep going!
+        BombBay.Activate(bombs);
+        MissileLauncher.Activate(!bombs);
+        OnBombSelected?.Invoke(bombs);
     }
 
-    public void Deploy()
+    #region GUNS
+    public void FireAllGuns(bool fire)
     {
-        weapons[currentWeapon].Deploy();
+        for (int i = 0; i < guns.Length; i++)
+        {
+            guns[i].Fire = fire;
+        }
     }
+    public void ZeroGunsAtPoint(Vector3 aimPoint)
+    {
+        for (int i = 0; i < guns.Length; i++)
+        {
+            guns[i].ZeroAt(aimPoint);
+        }
+    }
+    public void ZeroGunsAtRange(float range)
+    {
+        ZeroGunsAtPoint(transform.position + transform.forward * range);
+    }
+    #endregion
 }
