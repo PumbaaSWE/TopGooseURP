@@ -18,8 +18,10 @@ public class BombComputer : MonoBehaviour
     [SerializeField] private float timeStep = .5f;
 
     private Rigidbody rb;
+    private BombBay bombBay;
+    public bool Active { get; private set; }
 
-    void Start()
+    void Awake()
     {
         //decalProjector = GetComponentInChildren<DecalProjector>();
         rb = GetComponent<Rigidbody>();
@@ -27,6 +29,21 @@ public class BombComputer : MonoBehaviour
         {
             dropPoint = transform;
         }
+
+        if (!TryGetComponent(out bombBay))
+        {
+            Debug.LogWarning("WeaponSystem - Missing Bomb Bay script on this game object!");
+        }
+        bombBay.OnActivationChange += Enable;
+    }
+    private void OnDestroy()
+    {
+        bombBay.OnActivationChange -= Enable;
+    }
+    private void Enable(bool enable)
+    {
+        enabled = enable;
+        decalProjector.gameObject.SetActive(enable);
     }
 
     // Update is called once per frame
