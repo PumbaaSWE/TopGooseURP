@@ -15,6 +15,8 @@ public class FlightController : MonoBehaviour
     //[SerializeField] private AnimationCurve dragCurve;
     [Tooltip("x: up/down, y: sideways, z: going forward(/backward)")][SerializeField] private Vector3 dragPower = new(1, 1, 0.5f);
     [Tooltip("x: pitch, y: yaw, z: roll")][SerializeField] private Vector3 angularDrag = new(0.5f, 0.5f, 0.5f);
+    [Tooltip("Final multiplier")][SerializeField] private float dragMul = 1.0f;
+    [Tooltip("Force that makes object rotate in direction of airflow")][SerializeField] private float directionalDragCoeff = 1.0f;
 
     [Header("Thrusting")]
     [Tooltip("poweeeeeeerrrr!!!")][SerializeField] private float maxThrust = 50;
@@ -68,16 +70,17 @@ public class FlightController : MonoBehaviour
     void FixedUpdate()
     {
         float dt = Time.fixedDeltaTime;
+        UpdateState(dt);
         if (!DisableInput)
         {
             UpdateSteering(dt);
             UpdateThrottle(dt);
         }
         UpdateThrust();
-        UpdateState(dt);
         UpdateLift();
         UpdateDrag();
         UpdateAngularDrag();
+        UpdateState(dt);
 
     }
 
@@ -137,6 +140,8 @@ public class FlightController : MonoBehaviour
         AngleOfAttackYaw = Mathf.Atan2(LocalVelocity.x, LocalVelocity.z); //rotation around y-axis
     }
 
+
+    //the drag gets strange if power values are below 1
     private void UpdateDrag()
     {
         Vector3 lvn = LocalVelocity.normalized;
@@ -146,7 +151,13 @@ public class FlightController : MonoBehaviour
 
         Vector3 drag = coefficient.magnitude * lv2 * -lvn;
 
+<<<<<<< Updated upstream:TopGooseURP/Assets/Scrips/FlightController.cs
         Rigidbody.AddRelativeForce(drag);
+=======
+        Debug.Log(drag + "<-drag");
+
+        Rigidbody.AddRelativeForce(drag * dragMul);
+>>>>>>> Stashed changes:TopGooseURP/Assets/Scrips/FlyingPhysics/FlightController.cs
     }
 
     //to not rotate out of control...
@@ -155,6 +166,11 @@ public class FlightController : MonoBehaviour
         Vector3 av = LocalAngularVelocity;
         Vector3 drag = av.sqrMagnitude * -av.normalized;    //squared, opposite direction of angular velocity
         Rigidbody.AddRelativeTorque(Vector3.Scale(drag, angularDrag), ForceMode.Acceleration);  //ignore rigidbody mass
+
+
+        //this adds torque so the object want rotate in the direction of travel i.e. pointing in velocity direction, (think dart)
+        //rotation in x is pitch and velocity in y is falling/climbing. in y is yaw and x in velocity is strafing, z is roll and we don't need that
+        Rigidbody.AddRelativeTorque(new Vector3(-directionalDragCoeff * LocalVelocity.y, LocalVelocity.x * directionalDragCoeff, 0));
     }
 
     private Vector3 CalculateLift(float angleOfAttack, Vector3 rightAxis, float liftPower, float inducedDragPower, AnimationCurve aoaCurve)
