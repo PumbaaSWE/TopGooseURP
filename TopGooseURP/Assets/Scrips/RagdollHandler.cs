@@ -15,6 +15,7 @@ public class RagdollHandler : MonoBehaviour
     [SerializeField] private float drag = 1;
     [SerializeField] private CollisionDetectionMode collisionDetectionMode = CollisionDetectionMode.Continuous;
     [SerializeField] private float speedMul = .5f;
+    [SerializeField] private float triggerForce = 5;
     //[SerializeField] private float gravityMod = 1;
     [Space]
     [Header("Joints")]
@@ -69,10 +70,10 @@ public class RagdollHandler : MonoBehaviour
         CharacterJoint[] joints = GetComponentsInChildren<CharacterJoint>(true);
         for (int i = 0; i < joints.Length && changeJoints; i++)
         {
-            joints[i].enableProjection = true;
+            joints[i].enableProjection = enableProjection;
             joints[i].projectionDistance = projectionDistance;
             joints[i].projectionAngle = projectionAngle;
-            joints[i].enablePreprocessing = false;
+            joints[i].enablePreprocessing = enablePreprocessing;
             //set more initial values
         }
 
@@ -121,7 +122,14 @@ public class RagdollHandler : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("RagdollHandler - OnCollisionEnter - Enabling Ragdoll");
-        EnableRagdoll();
+        float impulse = collision.impulse.magnitude;
+        if(impulse >= triggerForce * Time.fixedDeltaTime)
+        {
+            Debug.Log("RagdollHandler - Enabling Ragdoll, Impulse magnitude: " + impulse + " computed impact force(I think): " + impulse / Time.fixedDeltaTime);
+            EnableRagdoll();
+        }
+        
+        
+        
     }
 }

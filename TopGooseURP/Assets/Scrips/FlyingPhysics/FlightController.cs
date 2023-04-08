@@ -140,13 +140,16 @@ public class FlightController : MonoBehaviour
     private void UpdateDrag()
     {
         Vector3 lvn = LocalVelocity.normalized;
+        Debug.Log(LocalVelocity + "<-LocalVelocity");
         float lv2 = LocalVelocity.sqrMagnitude;
 
         Vector3 coefficient = Vector3.Scale(lvn, dragPower);
 
         Vector3 drag = coefficient.magnitude * lv2 * -lvn;
 
-        Rigidbody.AddRelativeForce(drag);
+        Debug.Log(drag + "<-drag");
+
+        Rigidbody.AddRelativeForce(drag*0.01f);
     }
 
     //to not rotate out of control...
