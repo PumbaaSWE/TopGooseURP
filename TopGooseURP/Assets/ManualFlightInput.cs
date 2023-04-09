@@ -2,6 +2,37 @@ using UnityEngine;
 
 public class ManualFlightInput : MonoBehaviour
 {
+
+    /**
+     * https://github.com/brihernandez/MouseFlight
+     * This is based on Brian Hernandez MouseFlightController published under MIT Licence, see link
+     */
+
+    /*
+     * Game objects should be:
+     * HUD
+     * Rig:
+     * Rig>CameraRig:
+     * Rig>CameraRig>Camera
+     * Rig>MouseAim
+     * Aircraft
+     * 
+     * Rig, CameraRig, and MouseAim should have zeroed transforms!
+     * Camera should be positionen as you want it (ex. above and behind) in relation to the Aircraft
+     * when it also is located at origin and forward is forward.
+     * 
+     * Aircraft can later be positioned anywhere in the scene as the Rig will follow with this script
+     * 
+     *** The game objects may have additional children, not required for basic function
+     * 
+     * Scripts:
+     * Rig should have this script!
+     * Aircraft should have FlightController and Autopilot scripts (as it is now when they control thing they attach to)
+     * 
+     *** Note, Rig will unparent itself to not accidentally inherit some transform, don't panic!
+     */
+
+
     [Header("Components")]
     [Tooltip("Transform of the aircraft the rig follows and references")]
     [SerializeField] private Transform aircraft;
@@ -36,9 +67,9 @@ public class ManualFlightInput : MonoBehaviour
     [SerializeField][Range(0, 1)] private float camAlignThreshold = .9f;
 
     [Space]
-    [Tooltip("How far the boresight and mouse flight are from the aircraft")]
+    [Tooltip("Draw Debug info in Scene view")]
     [SerializeField] private bool showDebugInfo = false;
-    [Tooltip("How far the boresight and mouse flight are from the aircraft")]
+    [Tooltip("Use the advanced auto pilot in autopilot")]
     [SerializeField] private bool useAdvancedAutopilot = false;
 
     //[SerializeField] private float mouseXsens = 100.0f;
@@ -82,6 +113,25 @@ public class ManualFlightInput : MonoBehaviour
             else
             {
                 return transform.forward * aimDistance;
+            }
+        }
+    }
+    /// <summary>
+    /// Get the direction that the mouse is looking relative to the aircraft
+    /// </summary>
+    public Vector3 MouseAimDirection
+    {
+        get
+        {
+            if (mouseAim != null)
+            {
+                return isMouseAimFrozen
+                    ? transform.forward
+                    : mouseAim.forward;
+            }
+            else
+            {
+                return transform.forward;
             }
         }
     }
@@ -253,7 +303,7 @@ public class ManualFlightInput : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (showDebugInfo == true)
+        if (showDebugInfo)
         {
             Color oldColor = Gizmos.color;
 
