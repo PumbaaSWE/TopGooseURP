@@ -27,6 +27,9 @@ public class RagdollHandler : MonoBehaviour
 
     private bool active; //Make property
 
+    public delegate void OnRagdollEnable ();
+    public OnRagdollEnable onRagdollEnable;
+
     Vector3 storedVelocity;
     Vector3 storedAngularVelocity;
 
@@ -82,6 +85,7 @@ public class RagdollHandler : MonoBehaviour
 
     public void EnableRagdoll()
     {
+        onRagdollEnable?.Invoke();
         //disable this objects
         for (int i = 0; i < hitBox.Length; i++)
         {
@@ -125,6 +129,7 @@ public class RagdollHandler : MonoBehaviour
         float impulse = collision.impulse.magnitude;
         if(impulse >= triggerForce * Time.fixedDeltaTime)
         {
+            
             Debug.Log("RagdollHandler - Enabling Ragdoll, Impulse magnitude: " + impulse + " computed impact force(I think): " + impulse / Time.fixedDeltaTime);
             EnableRagdoll();
         }

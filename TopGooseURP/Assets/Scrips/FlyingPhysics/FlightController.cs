@@ -140,14 +140,14 @@ public class FlightController : MonoBehaviour
     private void UpdateDrag()
     {
         Vector3 lvn = LocalVelocity.normalized;
-        Debug.Log(LocalVelocity + "<-LocalVelocity");
+        //Debug.Log(LocalVelocity + "<-LocalVelocity");
         float lv2 = LocalVelocity.sqrMagnitude;
 
         Vector3 coefficient = Vector3.Scale(lvn, dragPower);
 
         Vector3 drag = coefficient.magnitude * lv2 * -lvn;
 
-        Debug.Log(drag + "<-drag");
+        //Debug.Log(drag + "<-drag");
 
         Rigidbody.AddRelativeForce(drag*0.01f);
     }

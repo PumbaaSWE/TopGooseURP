@@ -244,6 +244,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 370352637}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &191903197 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9133678924975232435, guid: d94c9a56aa88b594fb34416ab31b476b,
+    type: 3}
+  m_PrefabInstance: {fileID: 370352637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &247765488 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 436927388201076036, guid: e3cb7c44a33592e4a8a3249ee670e141,
@@ -391,9 +397,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1142582457, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: yawPID.derivativeGain
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582457, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: pitchPID.derivativeGain
+      value: -2
+      objectReference: {fileID: 0}
     - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: maxThrust
-      value: 50
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: dragPower.x
@@ -409,23 +423,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: turnSpeed.x
-      value: 50
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: turnSpeed.y
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: turnSpeed.z
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: angularDrag.x
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: angularDrag.y
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: angularDrag.z
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: inducedDragPower
-      value: 0.1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: turnAcceleration.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: turnAcceleration.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: turnAcceleration.z
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: steeringCurve.m_Curve.Array.data[0].value
@@ -557,6 +591,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: goose4
       objectReference: {fileID: 0}
+    - target: {fileID: 5467248999632014645, guid: d94c9a56aa88b594fb34416ab31b476b,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2a8dcae004afd0f41abe5ef2aea285e4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
 --- !u!1 &370352638 stripped
@@ -718,6 +757,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 329190444}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1118825811 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1518003958349295517, guid: d94c9a56aa88b594fb34416ab31b476b,
+    type: 3}
+  m_PrefabInstance: {fileID: 370352637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1142582455 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3244427602905914484, guid: d94c9a56aa88b594fb34416ab31b476b,
@@ -754,7 +799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e056a0cb11d3f48489ddfac207867fbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1142582463
+--- !u!114 &1142582468
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -763,13 +808,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1142582455}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 489de40a9dbf88c4e9c98d73a13d1348, type: 3}
+  m_Script: {fileID: 11500000, guid: ba1d06cef5353ea47986f2a270b0cf1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1142582458}
-  tail: {fileID: 165135972}
-  strengthPitch: -45
-  strengthRoll: 20
+  leftWing: {fileID: 1118825811}
+  rightWing: {fileID: 191903197}
+  strengthRollWing: 10
+  tailWing: {fileID: 165135972}
+  maxPitch: 45
+  speedPitch: 0
+  accelerationPitch: 200
+  strengthYaw: 0
+  strengthRoll: 40
+  useFixed: 1
 --- !u!1 &1149576102
 GameObject:
   m_ObjectHideFlags: 0
@@ -963,6 +1014,11 @@ PrefabInstance:
         type: 3}
       propertyPath: inputThreshold
       value: 0.031
+      objectReference: {fileID: 0}
+    - target: {fileID: 1356679447559414870, guid: e96f89a5a2ca054438bdb080de1aab2d,
+        type: 3}
+      propertyPath: camAlignThreshold
+      value: 0.934
       objectReference: {fileID: 0}
     - target: {fileID: 1356679447559414870, guid: e96f89a5a2ca054438bdb080de1aab2d,
         type: 3}
