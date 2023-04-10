@@ -63,4 +63,9 @@ public class Gun : MonoBehaviour
         //bullet.transform.Rotate(randomNumberX, randomNumberY, randomNumberZ);
         //bullet.Init(bulletData, bulletSpawn.position, bulletSpawn.rotation * rotation);
     }
+
+    public void ZeroAt(Vector3 aimPoint)
+    {
+        bulletSpawn.LookAt(aimPoint); //this was easy...
+    }
 }

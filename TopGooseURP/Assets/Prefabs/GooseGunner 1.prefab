@@ -254,8 +254,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  strength: 5
-  aggressiveTurnAngle: 10
 --- !u!54 &6211170638167638333
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -328,10 +326,10 @@ MonoBehaviour:
     valueLast: 0
     integrationStored: 0
     derivativeInitialized: 0
-  rollPID:
-    proportionalGain: 0
+  yawPID:
+    proportionalGain: 2.2
     integralGain: 0
-    derivativeGain: 0
+    derivativeGain: 1
     outputMin: -1
     outputMax: 1
     integralSaturation: 1
@@ -339,10 +337,10 @@ MonoBehaviour:
     valueLast: 0
     integrationStored: 0
     derivativeInitialized: 0
-  yawPID:
-    proportionalGain: 2.2
+  rollPID:
+    proportionalGain: 0
     integralGain: 0
-    derivativeGain: 1
+    derivativeGain: 0
     outputMin: -1
     outputMax: 1
     integralSaturation: 1
@@ -916,9 +914,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6211170639667492750}
   - component: {fileID: 6211170639667492748}
-  - component: {fileID: 6211170639667492749}
+  - component: {fileID: 8915487608650406350}
   m_Layer: 0
-  m_Name: GnomePicker
+  m_Name: PickerUpper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -952,7 +950,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.63
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6211170639667492749
+--- !u!114 &8915487608650406350
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -961,11 +959,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6211170639667492751}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81a3a7acfdfc3de4684f0d1e395f7e56, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c5766b56b6192541b40b0589172a8dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gnomePrefab: {fileID: 6206321060149187648, guid: f0572073ae13ea54da0507fcea3235fe,
-    type: 3}
 --- !u!1 &6211170639748937822
 GameObject:
   m_ObjectHideFlags: 0

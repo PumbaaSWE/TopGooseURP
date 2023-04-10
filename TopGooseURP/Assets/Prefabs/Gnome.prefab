@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 6206321060149187649}
   - component: {fileID: 6206321060149187645}
   - component: {fileID: 6206321060149187646}
+  - component: {fileID: 7911791267410907131}
   m_Layer: 0
   m_Name: Gnome
   m_TagString: Untagged
@@ -217,7 +218,7 @@ MonoBehaviour:
   offset: 0.3
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
   explosionPrefab: {fileID: 7782371525680418044, guid: a882c6eae545ac847a0922854d3ade8e,
     type: 3}
 --- !u!54 &6206321060149187646
@@ -236,6 +237,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7911791267410907131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6206321060149187648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adc47af9017bff84eb70889d3ac3e973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6206321060852380232
 GameObject:
   m_ObjectHideFlags: 0

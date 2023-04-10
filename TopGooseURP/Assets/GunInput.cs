@@ -28,7 +28,6 @@ public class GunInput : MonoBehaviour
         for (int i = 0; i < guns.Length; i++)
         {
             guns[i].Fire = Input.GetMouseButton(0);
-            
         }
 
         bombTime += Time.deltaTime;
@@ -47,4 +46,5 @@ public class GunInput : MonoBehaviour
 
 
     }
+
 }
