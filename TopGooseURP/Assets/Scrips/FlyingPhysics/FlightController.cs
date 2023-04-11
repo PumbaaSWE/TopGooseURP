@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -15,6 +14,9 @@ public class FlightController : MonoBehaviour
     //[SerializeField] private AnimationCurve dragCurve;
     [Tooltip("x: up/down, y: sideways, z: going forward(/backward)")][SerializeField] private Vector3 dragPower = new(1, 1, 0.5f);
     [Tooltip("x: pitch, y: yaw, z: roll")][SerializeField] private Vector3 angularDrag = new(0.5f, 0.5f, 0.5f);
+    [Tooltip("How much do the airframe want to turn into the airflow")][SerializeField] private float directionalDragCoeff = 1;
+    [Tooltip("Soft speed limit (m/s), drag increases alot arount this speed")][SerializeField] private float speedDragLimit = 17;
+    //[Tooltip("How much should gravity affect the soft speed limit?")][SerializeField] private float angleDragFactor = 5;
 
     [Header("Thrusting")]
     [Tooltip("poweeeeeeerrrr!!!")][SerializeField] private float maxThrust = 50;
@@ -68,16 +70,17 @@ public class FlightController : MonoBehaviour
     void FixedUpdate()
     {
         float dt = Time.fixedDeltaTime;
+        UpdateState(dt);
         if (!DisableInput)
         {
             UpdateSteering(dt);
             UpdateThrottle(dt);
         }
         UpdateThrust();
-        UpdateState(dt);
         UpdateLift();
         UpdateDrag();
         UpdateAngularDrag();
+        UpdateState(dt);
 
     }
 
@@ -137,19 +140,29 @@ public class FlightController : MonoBehaviour
         AngleOfAttackYaw = Mathf.Atan2(LocalVelocity.x, LocalVelocity.z); //rotation around y-axis
     }
 
+    //Drag = coeff * density * velocity^2/2 * reference area. coeff and ref area is baked into dragPower,
+    //so z is drag in forward direction, x is going belly/back first and y is going sideways.
     private void UpdateDrag()
     {
-        Vector3 lvn = LocalVelocity.normalized;
-        //Debug.Log(LocalVelocity + "<-LocalVelocity");
+        Vector3 lvn = LocalVelocity.normalized; // directon to apply the drag in
         float lv2 = LocalVelocity.sqrMagnitude;
 
         Vector3 coefficient = Vector3.Scale(lvn, dragPower);
 
         Vector3 drag = coefficient.magnitude * lv2 * -lvn;
 
-        //Debug.Log(drag + "<-drag");
+        Rigidbody.AddRelativeForce(drag);
 
-        Rigidbody.AddRelativeForce(drag*0.01f);
+
+        
+        //if we pass speedDragLimit the drag should increase by alot
+        if(1.0f < LocalVelocity.z / speedDragLimit) // this will be over one when speed is over speedDragLimit
+        {
+            float dirFactor = 1 + Vector3.Dot(Rigidbody.velocity.normalized, Vector3.up); // are we going downwards, i.e. gravity helps? then less drag, add 1 to make it >=0 [0-2]
+            //we are over the desired speed so we remove the delta multiplied with a factor related to direction so diving is less affected. (and going up is more)
+            Rigidbody.AddRelativeForce(dirFactor * dirFactor * -(LocalVelocity - lvn * speedDragLimit), ForceMode.VelocityChange);
+        }
+
     }
 
     //to not rotate out of control...
@@ -158,6 +171,10 @@ public class FlightController : MonoBehaviour
         Vector3 av = LocalAngularVelocity;
         Vector3 drag = av.sqrMagnitude * -av.normalized;    //squared, opposite direction of angular velocity
         Rigidbody.AddRelativeTorque(Vector3.Scale(drag, angularDrag), ForceMode.Acceleration);  //ignore rigidbody mass
+
+        //this adds torque so the object want rotate in the direction of travel i.e. pointing in velocity direction, (think dart)
+        //rotation in x is pitch and velocity in y is falling/climbing. in y is yaw and x in velocity is strafing, z is roll and we don't need that
+        Rigidbody.AddRelativeTorque(new Vector3(-directionalDragCoeff * LocalVelocity.y, LocalVelocity.x * directionalDragCoeff, 0));
     }
 
     private Vector3 CalculateLift(float angleOfAttack, Vector3 rightAxis, float liftPower, float inducedDragPower, AnimationCurve aoaCurve)
