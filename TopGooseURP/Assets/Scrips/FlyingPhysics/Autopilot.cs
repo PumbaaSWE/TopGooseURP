@@ -118,9 +118,10 @@ public class Autopilot : MonoBehaviour
 
         yaw = yawPID.UpdatePID(-localFlyTarget.x, 0, dt);
 
-        pitch = pitchPID.UpdatePID(localFlyTarget.y, 0, dt);
+        pitch = pitchPID.UpdatePID(localFlyTarget.y, 0, dt); //target is zero, when we fly straight at the target x and y is 0 (then z is distance to target kinda for free... just fun side note :P)
 
-        float agressiveRoll = Mathf.Clamp(localFlyTarget.x * rollPID.proportionalGain, -1f, 1f);
+        //float agressiveRoll = Mathf.Clamp(localFlyTarget.x * rollPID.proportionalGain, -1f, 1f);
+        float agressiveRoll = localFlyTarget.x; // Mathf.Clamp(localFlyTarget.x * strength, -1f, 1f); <- we are normalized here!
 
         // A "wings level roll" is a roll commands the aircraft to fly wings level.
         // This can be done by zeroing out the Y component of the aircraft's right.
@@ -131,5 +132,6 @@ public class Autopilot : MonoBehaviour
         roll = -Mathf.Lerp(wingsLevelRoll, agressiveRoll, wingsLevelInfluence);
 
         //roll = rollPID.UpdatePID(0, targetRoll, dt);
+        roll = rollPID.UpdatePID(wingsLevelRoll, -agressiveRoll, dt); //roll is the acctual angle we want?
     }
 }

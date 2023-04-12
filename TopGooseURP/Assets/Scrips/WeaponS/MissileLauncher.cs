@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MissileLauncher : MonoBehaviour
@@ -34,6 +35,10 @@ public class MissileLauncher : MonoBehaviour
         TryGetComponent(out rb);
         hardpointData = new HardpointData[hardpoints.Length];
         //seekerHeads = new SeekerHead[hardPoints.Length];
+        //for (int i = 0; i < hardpoints.Length; i++)
+        //{
+        //    hardpoints[i].AddComponent<FixedJoint>();
+        //}
     }
 
     // Update is called once per frame
@@ -41,6 +46,17 @@ public class MissileLauncher : MonoBehaviour
     {
         float dt = Time.deltaTime;
         HandleHardpoints(dt);
+    }
+
+    void LateUpdate()
+    {
+        for (int i = 0; i < hardpointData.Length; i++)
+        {
+            if (hardpointData[i].IsLoaded)
+            {
+                hardpointData[i].seekerHead.transform.SetPositionAndRotation(hardpoints[i].position, hardpoints[i].rotation);
+            }
+        }
     }
 
     /// <summary>
@@ -169,11 +185,17 @@ public class MissileLauncher : MonoBehaviour
     {
 
         SeekerHead seekerHead = Instantiate(missile, hardpoints[i].position, hardpoints[i].rotation);
-        seekerHead.transform.parent = hardpoints[i]; //do it after to no fukk up scaling
+        //seekerHead.transform.parent = hardpoints[i]; //do it after to no fukk up scaling
+
+        
+
+
         if (seekerHead.TryGetComponent(out Rigidbody rigidbody))
         {
             rigidbody.isKinematic = true;
             hardpointData[i].rigidbody = rigidbody;
+            //hardpoints[i].GetComponent<FixedJoint>().connectedBody = rigidbody;
+            //hardpoints[i].GetComponent<FixedJoint>().
         }
         else
         {
@@ -194,12 +216,13 @@ public class MissileLauncher : MonoBehaviour
     //finally Select Next Hardpoint as current becomes unavalible
     private void LaunchHardpoint(int i, Vector3 initialVelocity)
     {
-        hardpointData[i].seekerHead.transform.parent = null;
+        //hardpointData[i].seekerHead.transform.parent = null;
         //hardPointData[i].seekerHead.Launch(rb.velocity);
         if (hardpointData[i].seekerHead.TryGetComponent(out Rigidbody rigidbody))
         {
             rigidbody.isKinematic = false;
             rigidbody.velocity = initialVelocity;
+            //hardpoints[i].GetComponent<FixedJoint>().connectedBody = null;
         }
         hardpointData[i].Launch(initialVelocity, ReloadTime);
         //spawnQueue.Enqueue((i, Time.time));

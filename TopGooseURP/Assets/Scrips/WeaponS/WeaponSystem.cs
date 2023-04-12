@@ -33,6 +33,7 @@ public class WeaponSystem : MonoBehaviour
             Debug.LogWarning("WeaponSystem - Missing BombBay script on this game object!");
         }
         OnSecondarySwitch();
+        
     }
 
     void Update()
