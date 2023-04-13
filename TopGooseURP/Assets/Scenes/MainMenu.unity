@@ -3174,7 +3174,7 @@ GameObject:
   - component: {fileID: 588489928}
   - component: {fileID: 588489927}
   m_Layer: 5
-  m_Name: Story
+  m_Name: Story WIP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3197,7 +3197,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00001049, y: -23.56549}
+  m_AnchoredPosition: {x: -0.000015258789, y: -23.56549}
   m_SizeDelta: {x: 691.0872, y: 586.558}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &588489927
@@ -3220,14 +3220,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-    eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-    in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit
-    amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-    et dolore magna aliqua
+  m_text: "In a world where animals have advanced technology, rogue squirrels and
+    crows form an alliance, threatening peaceful existence. The geese, known for
+    bravery and strategic skills, form their own army, with access to advanced weaponry,
+    to stop the squirrel-crow alliance and restore peace. A full-blown war ensues,
+    with the geese fighting for survival and the squirrel-crow alliance determined
+    to dominate. Who will emerge victorious? \n\nThat's up to you and your gaming
+    skills to decide."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4126,7 +4125,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -8212,7 +8211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1475772524
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11374,7 +11373,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
