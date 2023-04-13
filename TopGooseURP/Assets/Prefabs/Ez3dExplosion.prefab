@@ -9761,6 +9761,7 @@ GameObject:
   - component: {fileID: 7782371525680418047}
   - component: {fileID: 7782371525680418046}
   - component: {fileID: 7782371525680418045}
+  - component: {fileID: 177935313006631716}
   m_Layer: 0
   m_Name: Ez3dExplosion
   m_TagString: Untagged
@@ -14622,3 +14623,24 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &177935313006631716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7782371525680418044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e88351d0764b3449b7d8f3b9ef3972d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  systems: []
+  damage: 60
+  maxRange: 5
+  minRange: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  force: 100
+  explodeOnStart: 1

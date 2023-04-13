@@ -23,11 +23,16 @@ public class Gun : MonoBehaviour
 
     public float FireRate { get { return fireRate; } }
 
+    public AudioClip[] pews;
+    public AudioSource source;
+
+
     // Start is called before the first frame update
     void Start()
     {
         muzzleFlash = GetComponentInChildren<ParticleSystem>();
         fireRate = 1 / (shotsPerMinute / 60);
+        source = GetComponent<AudioSource>();   
     }
 
     // Update is called once per frame
@@ -39,6 +44,7 @@ public class Gun : MonoBehaviour
         {
             fireTime = 0;
             FireBullet();
+            source.PlayOneShot(pews[Random.Range(0, pews.Length)]);
             muzzleFlash.Emit(1);
             heat += heatGainPerBullet;
             if (heat > 1) heat = 2; //if shooting until full overheat -> punish

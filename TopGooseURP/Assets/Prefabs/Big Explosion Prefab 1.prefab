@@ -5031,6 +5031,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   systems: []
+  damage: 60
+  maxRange: 8
+  minRange: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 2147483647
+  force: 100
+  explodeOnStart: 1
 --- !u!1 &1189621324720392
 GameObject:
   m_ObjectHideFlags: 0
