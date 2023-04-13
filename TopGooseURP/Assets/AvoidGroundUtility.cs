@@ -32,13 +32,13 @@ public class AvoidGroundUtility : MonoBehaviour, IUtility
     {
         if (Physics.SphereCast(rb.position, sphereRadius, rb.velocity.normalized, out hit, maxDistance, layerMask))
         {
-            Debug.Log("Spherecast");
+            //Debug.Log("Spherecast");
             currentHitDistance = hit.distance;
             return 2f;
         }
         else if (Physics.Raycast(rb.position, Vector3.down, out hit, sphereRadius, layerMask))
         {
-            Debug.Log("Raycast down");
+            //Debug.Log("Raycast down");
             currentHitDistance = 0;
             rb.velocity -= Vector3.down;
             return 2f;
@@ -59,7 +59,7 @@ public class AvoidGroundUtility : MonoBehaviour, IUtility
         ap.RunAutopilot(newTarget, out float pitch, out float yaw, out float roll);
         fc.SetControlInput(new Vector3(pitch, yaw, roll));
 
-        Debug.Log("Executing AvoidGroundUtil");
+        //Debug.Log("Executing AvoidGroundUtil");
     }
 
     private void OnDrawGizmos()

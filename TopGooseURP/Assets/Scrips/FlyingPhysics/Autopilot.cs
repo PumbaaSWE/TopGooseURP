@@ -39,6 +39,7 @@ public class Autopilot : MonoBehaviour
     public float Roll => roll;
 
     public Vector3 Output { get; private set; }
+    public float AggresiveTurnAngle { get { return aggressiveTurnAngle; } set { aggressiveTurnAngle = value; } }
 
     public void RunAutopilot(Vector3 flyTarget, out float pitch, out float yaw, out float roll)
     {

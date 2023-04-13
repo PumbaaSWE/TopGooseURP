@@ -44,7 +44,7 @@ public class Gun : MonoBehaviour
         {
             fireTime = 0;
             FireBullet();
-            source.PlayOneShot(pews[Random.Range(0, pews.Length)]);
+            if(pews.Length > 0)source.PlayOneShot(pews[Random.Range(0, pews.Length)]);
             muzzleFlash.Emit(1);
             heat += heatGainPerBullet;
             if (heat > 1) heat = 2; //if shooting until full overheat -> punish
