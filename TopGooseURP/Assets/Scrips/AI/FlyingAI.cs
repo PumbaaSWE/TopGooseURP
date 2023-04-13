@@ -21,6 +21,14 @@ public class FlyingAI : MonoBehaviour, IUtility
     [Tooltip("Will try to tay on this distance form target")]
     [SerializeField] float preferredDistance = 10;
 
+    //Boom and Zoom tactics
+    [SerializeField]private float zoomAltitude = 10;
+    [SerializeField]private float zoomAltitudeSafe = 3; //try stay X m above alt. to not loose it in turns
+    [SerializeField]private float zoomBoxExtents = 3; //how close we are when staring to boom
+    [SerializeField]private float climbRate = .5f; //half height per distance
+    [SerializeField] private float maxCrank = 15; //max turning befor aborting
+    bool zoomin = false; // if we aint zoomin' we boomin'
+
     [SerializeField][Range(0.0f, 1.0f)] float ramming = 0;
     [SerializeField][Range(0.0f, 1.0f)] float guns = 0;
     [SerializeField][Range(0.0f, 45.0f)] float gunsConeToFire = 1.0f;
@@ -146,6 +154,33 @@ public class FlyingAI : MonoBehaviour, IUtility
             flyTarget = Vector3.Lerp(flyTarget, gunSolutionTarget, guns);
         }
 
+    }
+
+    private void DoZoom(float dt)
+    {
+        //flyTarget
+        //Compute where we want to go
+        Vector3 desiredFlyTarget = targetTransform.position + Vector3.up * (zoomAltitude + zoomAltitudeSafe);
+        flyTarget = desiredFlyTarget;
+
+        //clamp climbrate
+        if ((flyTarget.y - transform.position.y) > Mathf.Sin(climbRate))
+        {
+            flyTarget.Set(flyTarget.x, transform.position.y + Mathf.Sin(climbRate), flyTarget.z);
+        }
+
+        //find direction without rurning too hard
+        flyTarget = Vector3.RotateTowards(transform.forward, flyTarget, maxCrank * Mathf.Deg2Rad, 0);
+
+        if(transform.position.y > targetTransform.position.z + zoomAltitude)
+        {
+            //we are at the desired altitude
+            //see if we are close enough "latitude"-wise... is that the right word?
+            float x = transform.position.y;
+            float y = transform.position.y;
+            float z = transform.position.y;
+            //if ()
+        }
     }
 
     private void OnDrawGizmos()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,5 +48,10 @@ public class AIActor : MonoBehaviour
             //possible cleanup/startup calls?
             previusUtil = currentUtil;
         }
+    }
+
+    public bool OfferRole(CombatCoordinator.Role role)
+    {
+        throw new NotImplementedException();
     }
 }
