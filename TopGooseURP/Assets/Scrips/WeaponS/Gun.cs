@@ -21,6 +21,8 @@ public class Gun : MonoBehaviour
 
     public bool Fire { get; set; }
 
+    public float BulletSpeed => bulletData.speed;
+
     public float FireRate { get { return fireRate; } }
 
     public AudioClip[] pews;
