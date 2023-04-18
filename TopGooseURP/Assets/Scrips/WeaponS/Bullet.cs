@@ -80,7 +80,7 @@ public class Bullet : MonoBehaviour
             Health health;
             if (hit.collider.gameObject.TryGetComponent(out health))
             {
-                health.ChangeHealth(-data.damage);
+                health.ChangeHealth(-data.damage, ChangeHealthType.impact);
             }
             else
             {
@@ -91,7 +91,7 @@ public class Bullet : MonoBehaviour
 
                 if (foundComponent)
                 {
-                    health.ChangeHealth(-data.damage);
+                    health.ChangeHealth(-data.damage, ChangeHealthType.impact);
                 }
             }
 

@@ -6,7 +6,7 @@ public class Health : MonoBehaviour
     public delegate void OnDeadEvent();
     OnDeadEvent OnDead;
 
-    public delegate void OnChangeHealthEvent(float change);
+    public delegate void OnChangeHealthEvent(float change, ChangeHealthType damageType);
     OnChangeHealthEvent OnChangeHealth;
 
     //[NonSerialized]
@@ -47,10 +47,10 @@ public class Health : MonoBehaviour
         dead = false;
     }
 
-    public void ChangeHealth(float change)
+    public void ChangeHealth(float change, ChangeHealthType damageType)
     {
         health += change;
-        OnChangeHealth?.Invoke(change);
+        OnChangeHealth?.Invoke(change, damageType);
 
         if (health > startHealth) health = startHealth;
     }
@@ -63,10 +63,19 @@ public class Health : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(health <= 0 && !dead)
+        if (health <= 0 && !dead)
         {
             OnDead?.Invoke();
             dead = true;
         }
     }
+}
+
+public enum ChangeHealthType
+{
+    bullet,
+    fire,
+    explosion,
+    impact,
+    regeneration
 }

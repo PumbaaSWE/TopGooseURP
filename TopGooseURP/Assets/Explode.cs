@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 public class Explode : MonoBehaviour
 {
@@ -52,7 +51,7 @@ public class Explode : MonoBehaviour
                 float dist = Vector3.Distance(closestPoint, exposionCenter); //maybe ray cast to see if nothing is between first?
                 float damage = (1 - dist / maxRange) * this.damage;
 
-                health.ChangeHealth(-damage);
+                health.ChangeHealth(-damage, ChangeHealthType.explosion);
                 if (health.dead && rb != null)
                 {
                     rb.AddExplosionForce(force, exposionCenter, maxRange);
