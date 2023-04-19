@@ -303,6 +303,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderer: {fileID: 604487254}
   ragdollHandler: {fileID: 59483380}
+  flightController: {fileID: 59483369}
+  manualFlightInput: {fileID: 6816109213647509649}
   dissolveSpeed: 0.2
   startDissolvingAfter: 5
 --- !u!1 &224810340
@@ -7753,7 +7755,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
