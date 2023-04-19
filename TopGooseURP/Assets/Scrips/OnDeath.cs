@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,6 +11,7 @@ public class OnDeath : MonoBehaviour
     RagdollHandler ragdollHandler;
     FlightController flightController;
     Health health;
+    Rigidbody rigidBody;
 
     Renderer renderer;
 
@@ -17,6 +19,7 @@ public class OnDeath : MonoBehaviour
 
     [SerializeField] float dissolveSpeed;
     [SerializeField] float startDissolvingAfter;
+    [SerializeField] float spin;
 
     float t;
     bool dissolve, ragdoll, dead;
@@ -26,6 +29,7 @@ public class OnDeath : MonoBehaviour
         ragdollHandler = GetComponent<RagdollHandler>();
         flightController = GetComponent<FlightController>();
         health = GetComponent<Health>();
+        rigidBody = GetComponent<Rigidbody>();
 
         renderer = GetComponentInChildren<Renderer>();
 
@@ -40,9 +44,17 @@ public class OnDeath : MonoBehaviour
         {
             health.ChangeHealth(-99999);
         }
+        //If you haven't died yet, you shall not pass!
+        if (!dead) return;
 
-        //If you haven't ragdolled yet you shall not pass!
-        if (!ragdoll) return;
+        //If you haven't ragdolled yet, roll! (Jack might dislike this because physics are handled outside of fixedUpdate)
+        if (!ragdoll)
+        {
+            spin += Time.deltaTime * 180;
+            transform.forward = rigidBody.velocity;
+            transform.Rotate(Vector3.forward * spin, Space.Self);
+        }
+
         //If not dissolving yet, count down time until dissolve
         else if (!dissolve)
         {
@@ -51,12 +63,14 @@ public class OnDeath : MonoBehaviour
             if (startDissolvingAfter < 0)
                 dissolve = true;
         }
+
         //If dissolving and not dissolved yet, add to "t"-value
         else if (t < 1)
         {
             t += dissolveSpeed * Time.deltaTime;
             renderer.material.SetFloat("_T", t);
         }
+
         //When fully dissolved, remove gameObject from the scene
         else
         {
@@ -66,16 +80,17 @@ public class OnDeath : MonoBehaviour
 
     private void OnRagdoll()
     {
+        dead = true;
         ragdoll = true;
     }
 
     private void OnDeathDo()
     {
-        flightController.ResetInput();
-        flightController.DisableInput = true;
+        rigidBody.AddRelativeTorque(new Vector3(0, 0, 0.2f), ForceMode.Impulse);
+        dead = true;
+        flightController.enabled = false;
 
         var feathersInstance = Instantiate(feathers, gameObject.transform.position, Quaternion.identity);
         feathersInstance.transform.parent = gameObject.transform;
     }
-        
 }
