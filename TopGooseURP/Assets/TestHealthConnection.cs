@@ -17,8 +17,8 @@ public class TestHealthConnection : MonoBehaviour
         health = GetComponent<Health>();
 
         if(removeWhenDead)
-        health.AddDeathEvent(RemoveOnDead);
-        health.AddChangeHealthEvent(OnChangeHealth);
+        health.OnDead += RemoveOnDead;
+        health.OnChangeHealth += OnChangeHealth;
 
         startColor = GetComponent<Renderer>().material.color;
     }

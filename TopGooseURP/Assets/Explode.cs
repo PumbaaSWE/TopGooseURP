@@ -52,7 +52,7 @@ public class Explode : MonoBehaviour
                 float damage = (1 - dist / maxRange) * this.damage;
 
                 health.ChangeHealth(-damage, ChangeHealthType.explosion);
-                if (health.dead && rb != null)
+                if (health.Dead && rb != null)
                 {
                     rb.AddExplosionForce(force, exposionCenter, maxRange);
                 }

@@ -4,70 +4,41 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public delegate void OnDeadEvent();
-    OnDeadEvent OnDead;
+    public OnDeadEvent OnDead;
 
     public delegate void OnChangeHealthEvent(float change, ChangeHealthType damageType);
-    OnChangeHealthEvent OnChangeHealth;
+    public OnChangeHealthEvent OnChangeHealth;
 
-    //[NonSerialized]
-    public float health;
+    public float Amount { get; private set; }
+    public bool Dead { get; private set; }
 
-    [NonSerialized]
-    public bool dead;
-
-    public float startHealth;
+    [SerializeField]
+    private float startHealth;
 
 
-
-    public void AddDeathEvent(OnDeadEvent deadEvent)
+    public void ChangeHealth(float change, ChangeHealthType damageType/*, add some identifier that can tell who is changing the health*/)
     {
-        OnDead += deadEvent;
-    }
-    public void RemoveDeathEvent(OnDeadEvent deadEvent)
-    {
-        OnDead -= deadEvent;
-    }
-    public void AddChangeHealthEvent(OnChangeHealthEvent changeHealthEvent)
-    {
-        OnChangeHealth += changeHealthEvent;
-    }
-    public void RemoveChangeHealthEvent(OnChangeHealthEvent changeHealthEvent)
-    {
-        OnChangeHealth -= changeHealthEvent;
-    }
-
-    public void ClearDeathEvents()
-    {
-        OnDead = null;
-    }
-
-    public void Refresh()
-    {
-        health = startHealth;
-        dead = false;
-    }
-
-    public void ChangeHealth(float change, ChangeHealthType damageType)
-    {
-        health += change;
+        Amount += change;
         OnChangeHealth?.Invoke(change, damageType);
 
-        if (health > startHealth) health = startHealth;
+        if (Amount > startHealth) Amount = startHealth;
+
+        if (Amount <= 0 && !Dead)
+        {
+            OnDead?.Invoke();
+            Dead = true;
+        }
+    }
+
+    public void Reset()
+    {
+        Amount = startHealth;
+        Dead = false;
     }
 
     private void Awake()
     {
-        health = startHealth;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (health <= 0 && !dead)
-        {
-            OnDead?.Invoke();
-            dead = true;
-        }
+        Amount = startHealth;
     }
 }
 
