@@ -10,6 +10,7 @@ public class OnDeath : MonoBehaviour
     [SerializeField] RagdollHandler ragdollHandler;
     [SerializeField] FlightController flightController;
     [SerializeField] ManualFlightInput manualFlightInput;
+    [SerializeField] Health health;
     [SerializeField] float dissolveSpeed;
     [SerializeField] float startDissolvingAfter;
 
@@ -19,12 +20,17 @@ public class OnDeath : MonoBehaviour
     float t;
     bool dissolve, ragdoll, dead;
 
+    private void Start()
+    {
+        health.AddDeathEvent(OnDeathDo);
+    }
+
     void Update()
     {
         //For now, die when pressing space
         if (Input.GetKeyDown(KeyCode.Space) && dead == false)
         {
-            OnDeathDo();
+            health.ChangeHealth(-99999);
         }
 
         //If you haven't ragdolled yet you shall not pass!
