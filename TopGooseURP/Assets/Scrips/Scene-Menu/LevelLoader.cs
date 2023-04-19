@@ -35,10 +35,17 @@ public class LevelLoader : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     operation.allowSceneActivation = true;
+                    LockMouse();
                 }
             }
 
             yield return null;
         }
+    }
+
+    private void LockMouse()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = false;
     }
 }
