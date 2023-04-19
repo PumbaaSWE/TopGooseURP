@@ -65,6 +65,7 @@ public class FlightController : MonoBehaviour
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
+        Rigidbody.velocity = transform.forward * speedDragLimit;
     }
 
     void FixedUpdate()

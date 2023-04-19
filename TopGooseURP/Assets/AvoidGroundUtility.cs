@@ -1,28 +1,35 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using Random = System.Random;
 
 public class AvoidGroundUtility : MonoBehaviour, IUtility
 {
-    Rigidbody rb;
-    Autopilot ap;
-    FlightController fc;
+    private Rigidbody rb;
+    private Autopilot ap;
+    private FlightController fc;
 
-    RaycastHit hit;
+    private RaycastHit hit;
 
     [SerializeField]
-    float sphereRadius;
+    float sphereRadius = 2;
     [SerializeField]
-    float searchDistance;
+    float searchDistance = 2;
     [SerializeField]
-    float distanceFromGround;
+    float distanceFromGround = 2.5f;
+    [SerializeField]
+    float upFromGround = 1.0f;
     [SerializeField]
     LayerMask layerMask;
+    [SerializeField]
+    private bool useAdvancedAutopilot;
 
-    float currentHitDistance, maxHitDistance;
+    private float currentHitDistance, maxHitDistance;
+
+    private float speed;
+    private Vector3 direction;
+
+    private Vector3 target, tangent; //class scoped here because debug thingy
+    private bool groundStrike; // debug stuff
+
 
     public void Start()
     {
@@ -33,26 +40,34 @@ public class AvoidGroundUtility : MonoBehaviour, IUtility
 
     public float Evaluate()
     {
-        maxHitDistance = searchDistance * rb.velocity.magnitude / 17 /* Get speed drag limit from fc instead of 17? */;
+        speed = rb.velocity.magnitude;
+        direction = rb.velocity.normalized;
+        maxHitDistance = searchDistance * speed;
+        
+        if(Physics.SphereCast(rb.position, sphereRadius, direction, out hit, maxHitDistance, layerMask))
+        {
+            //Debug.Log("Spherecast");
+            //currentHitDistance = hit.distance;
+            maxHitDistance = distanceFromGround;
+            currentHitDistance = 0;// hit.distance - distanceFromGround;
+            groundStrike = true;
+            return 2f;
+        }
+        if (Physics.Raycast(rb.position, Vector3.down, out hit, distanceFromGround, layerMask))
+        {
+            //Debug.Log("Secondary Spherecast");
+            maxHitDistance = distanceFromGround;
+            currentHitDistance = 0;// hit.distance - distanceFromGround;
+            //rb.velocity += Vector3.up;
+            //rb.AddForce(Vector3.up, ForceMode.VelocityChange);
+            groundStrike = true;
+            return 2f;
+        }
 
-        if (Physics.SphereCast(rb.position, sphereRadius, rb.velocity.normalized, out hit, maxHitDistance, layerMask))
-        {
-            Debug.Log("Spherecast");
-            currentHitDistance = hit.distance;
-            return 2f;
-        }
-        else if (Physics.SphereCast(rb.position - rb.velocity.normalized * sphereRadius * 2, sphereRadius, rb.velocity.normalized, out hit, maxHitDistance, layerMask))
-        {
-            Debug.Log("Secondary Spherecast");
-            currentHitDistance = hit.distance - sphereRadius;
-            rb.velocity -= Vector3.down;
-            return 2f;
-        }
-        else
-        {
-            currentHitDistance = maxHitDistance;
-            return 0f;
-        }
+        currentHitDistance = maxHitDistance;
+        groundStrike = false;
+        return 0f;
+        
     }
 
     public void Execute()
@@ -61,36 +76,45 @@ public class AvoidGroundUtility : MonoBehaviour, IUtility
         ////Closer to the ground -> Lower throttle
         //fc.SetThrottleInput(Math.Clamp(currentHitDistance * 2 / maxDistance, 0.25f, 1));
 
-        Debug.Log(Vector3.Dot(rb.velocity, hit.normal));
-        if (Vector3.Dot(rb.velocity, hit.normal) < -0.75f)
-        {
-            //Debug.Log($"hit: {currentHitDistance}");
-            //Debug.Log($"throttle: {fc.Throttle}");
+        //Debug.Log(Vector3.Dot(rb.velocity, hit.normal));
+        //if (Vector3.Dot(rb.velocity, hit.normal) < -0.75f)
+        //{
+        //    //Debug.Log($"hit: {currentHitDistance}");
+        //    //Debug.Log($"throttle: {fc.Throttle}");
 
-            fc.SetThrottleInput(Math.Clamp(currentHitDistance / maxHitDistance, 0.5f, 1));
-            Debug.Log($"--------------------------------------NEW THROTTLE: {fc.Throttle}");
-            //Debug.Log(Vector3.Dot(rb.velocity, hit.normal));
-        }
+        //    fc.SetThrottleInput(Math.Clamp(currentHitDistance / maxHitDistance, 0.5f, 1));
+        //    //Debug.Log($"--------------------------------------NEW THROTTLE: {fc.Throttle}");
+        //    //Debug.Log(Vector3.Dot(rb.velocity, hit.normal));
+        //}
 
-        Vector3 oldTarget = rb.position + rb.velocity.normalized * currentHitDistance;
+        //Vector3 oldTarget = rb.position + rb.velocity.normalized * currentHitDistance;
+        /*Vector3*/ tangent = Vector3.Cross(hit.normal, Vector3.Cross(direction, hit.normal));
 
-        Vector3 newTarget = oldTarget + Vector3.Cross(hit.normal, Vector3.Cross(rb.velocity, hit.normal)).normalized * (maxHitDistance - currentHitDistance) + hit.normal * distanceFromGround;
+        /*Vector3*/ target = hit.point + Vector3.up * upFromGround + hit.normal * sphereRadius + tangent * (maxHitDistance - currentHitDistance);
+        // Vector3.S
+        //Debug.DrawLine(newTarget, transform.position, Color.green);
 
-        Debug.DrawLine(newTarget, oldTarget, Color.green);
-
-        ap.RunAutopilot(newTarget, out float pitch, out float yaw, out float roll);
+        ap.RunAutopilot2(target, out float pitch, out float yaw, out float roll);
         fc.SetControlInput(new Vector3(pitch, yaw, roll));
 
-        Debug.Log("Executing AvoidGroundUtil");
+        //Debug.Log("Executing AvoidGroundUtil " + new Vector3(pitch, yaw, roll));
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.white;
+        Gizmos.color = Color.yellow;
         try
         {
-            Debug.DrawLine(rb.position, rb.position + rb.velocity.normalized * currentHitDistance, Color.magenta);
-            Gizmos.DrawWireSphere(rb.position + rb.velocity.normalized * currentHitDistance, sphereRadius);
+            if (groundStrike)
+            {
+                Gizmos.DrawLine(transform.position, hit.point + hit.normal * distanceFromGround);
+                Gizmos.DrawLine(hit.point + hit.normal * distanceFromGround, target);
+                Gizmos.DrawWireSphere(target, sphereRadius);
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(hit.point, hit.point + hit.normal);
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(hit.point, hit.point + tangent);
+            }
         }
         catch (NullReferenceException)
         {

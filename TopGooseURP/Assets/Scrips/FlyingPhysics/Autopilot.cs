@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Autopilot : MonoBehaviour
@@ -19,7 +20,7 @@ public class Autopilot : MonoBehaviour
         proportionalGain = 5,
         derivativeGain = -1
     };
-    [Tooltip("Only affected by Proportional Gain!")]
+    [Tooltip("Affected by strength as well!")]
     [SerializeField] private PIDController rollPID = new()
     {
         proportionalGain = 5,
@@ -36,6 +37,7 @@ public class Autopilot : MonoBehaviour
     [Header("Autopiloting")]
     [Tooltip("Strength for autopilot flight.")][SerializeField] private float strength = 5f;
     [Tooltip("Angle at which airplane banks fully into target.")][SerializeField] private float aggressiveTurnAngle = 10f;
+    [Tooltip("AI only, limit pitch down manuevers.")][SerializeField] private float pitchUpThreshold = 15f;
 
     private float yaw;
     private float pitch;
@@ -46,7 +48,7 @@ public class Autopilot : MonoBehaviour
     public float Roll => roll;
 
     public Vector3 Output { get; private set; }
-    public Vector3 output { get; private set; }
+    //public Vector3 output { get; private set; }
 
     public void RunAutopilot(Vector3 flyTarget, out float pitch, out float yaw, out float roll)
     {
@@ -92,29 +94,32 @@ public class Autopilot : MonoBehaviour
         roll = -Mathf.Lerp(wingsLevelRoll, agressiveRoll, wingsLevelInfluence);
     }
 
-    public void RunAdvancedAutopilot(Vector3 flyTarget, float dt)
+    public void RunAutopilot2(Vector3 flyTarget, out float pitch, out float yaw, out float roll)
     {
-        // This is my usual trick of converting the fly to position to local space.
-        // You can derive a lot of information from where the target is relative to self.
-        Vector3 localFlyTarget = aircraft.InverseTransformPoint(flyTarget).normalized;
+        Vector3 localFlyTarget = aircraft.InverseTransformPoint(flyTarget).normalized * strength;
+
+
+
         float angleOffTarget = Vector3.Angle(aircraft.forward, flyTarget - aircraft.position);
 
-        yaw = yawPID.UpdatePID(-localFlyTarget.x, 0 , dt);
 
-        pitch = pitchPID.UpdatePID(localFlyTarget.y, 0, dt);
+        yaw = Mathf.Clamp(localFlyTarget.x, -1f, 1f);
+
+
+
+        Vector3 pitchError = new Vector3(0, localFlyTarget.y, localFlyTarget.z).normalized;
+         pitch = Vector3.SignedAngle(Vector3.forward, pitchError, Vector3.right);
+        if (-pitch < pitchUpThreshold) pitch += 360f;
+
+        pitch = -Mathf.Clamp(pitch, -1f, 1f);
+
 
         float agressiveRoll = Mathf.Clamp(localFlyTarget.x, -1f, 1f);
 
-        // A "wings level roll" is a roll commands the aircraft to fly wings level.
-        // This can be done by zeroing out the Y component of the aircraft's right.
         float wingsLevelRoll = aircraft.right.y;
 
-        // Blend between auto level and banking into the target.
         float wingsLevelInfluence = Mathf.InverseLerp(0f, aggressiveTurnAngle, angleOffTarget);
-        float targetRoll = -Mathf.Lerp(wingsLevelRoll, agressiveRoll, wingsLevelInfluence);
-
-        roll = rollPID.UpdatePID(0, targetRoll, dt);
-        Output = new Vector3(pitch, yaw, targetRoll);
+        roll = -Mathf.Lerp(wingsLevelRoll, agressiveRoll, wingsLevelInfluence);
     }
 
     public void RunAdvancedAutopilot2(Vector3 flyTarget, float dt, out float pitch, out float yaw, out float roll)
@@ -129,7 +134,7 @@ public class Autopilot : MonoBehaviour
         pitch = pitchPID.UpdatePID(localFlyTarget.y, 0, dt); //target is zero, when we fly straight at the target x and y is 0 (then z is distance to target kinda for free... just fun side note :P)
 
         //float agressiveRoll = Mathf.Clamp(localFlyTarget.x * rollPID.proportionalGain, -1f, 1f);
-        float agressiveRoll = localFlyTarget.x; // Mathf.Clamp(localFlyTarget.x * strength, -1f, 1f); <- we are normalized here!
+        float agressiveRoll =  Mathf.Clamp(localFlyTarget.x * strength, -1f, 1f);
 
         // A "wings level roll" is a roll commands the aircraft to fly wings level.
         // This can be done by zeroing out the Y component of the aircraft's right.
