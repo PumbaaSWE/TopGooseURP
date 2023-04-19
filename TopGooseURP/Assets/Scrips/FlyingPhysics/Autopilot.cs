@@ -26,6 +26,13 @@ public class Autopilot : MonoBehaviour
         derivativeGain = 0
     };
 
+    [SerializeField]
+    private PIDController speedPID = new()
+    {
+        proportionalGain = 1,
+        derivativeGain = 1
+    };
+
     [Header("Autopiloting")]
     [Tooltip("Strength for autopilot flight.")][SerializeField] private float strength = 5f;
     [Tooltip("Angle at which airplane banks fully into target.")][SerializeField] private float aggressiveTurnAngle = 10f;
@@ -39,6 +46,7 @@ public class Autopilot : MonoBehaviour
     public float Roll => roll;
 
     public Vector3 Output { get; private set; }
+    public Vector3 output { get; private set; }
 
     public void RunAutopilot(Vector3 flyTarget, out float pitch, out float yaw, out float roll)
     {
@@ -133,5 +141,25 @@ public class Autopilot : MonoBehaviour
 
         //roll = rollPID.UpdatePID(0, targetRoll, dt);
         roll = rollPID.UpdatePID(wingsLevelRoll, -agressiveRoll, dt); //roll is the acctual angle we want?
+    }
+
+    public void FlyTo(Vector3 flyTarget, bool useAdvanced = false)
+    {
+        float pitch, yaw, roll; 
+        if (useAdvanced)
+        {
+            RunAdvancedAutopilot2(flyTarget, Time.fixedDeltaTime, out pitch, out yaw, out roll);
+        }
+        else
+        {
+            RunAutopilot(flyTarget, out pitch, out yaw, out roll);
+        }
+        controller.SetControlInput(new Vector3(pitch, yaw, roll));
+    }
+
+    public void MatchSpeed(float speed, float dt)
+    {
+        float throttle = speedPID.UpdatePID(controller.LocalVelocity.z, speed, dt);
+        controller.SetThrottleInput(throttle);
     }
 }

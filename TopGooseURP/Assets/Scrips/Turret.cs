@@ -19,8 +19,11 @@ public class Turret : MonoBehaviour
 
     Gun gun;
 
+    Rigidbody targetRb;
+
     private void Start()
     {
+        targetRb = target.GetComponent<Rigidbody>();
         gun = GetComponentInChildren<Gun>();
         gun.Fire = true;
     }
@@ -30,7 +33,9 @@ public class Turret : MonoBehaviour
     {
         if (Vector3.Distance(target.position, transform.position) < range)
         {
-            Vector3 direction = target.position - barrel.position;
+            TargetingMath.ComputeImpact(target.position, targetRb.velocity, transform.position, gun.BulletSpeed, out Vector3 location, out float _);
+
+            Vector3 direction = location - barrel.position;
             Quaternion rotation = Quaternion.LookRotation(direction.normalized);
 
             barrel.localEulerAngles = new Vector3(rotation.eulerAngles.x, 0, 0);
