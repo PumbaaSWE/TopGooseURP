@@ -6,36 +6,43 @@ using UnityEngine;
 
 public class OnDeath : MonoBehaviour
 {
-    [SerializeField] Renderer renderer;
-    [SerializeField] RagdollHandler ragdollHandler;
-    [SerializeField] FlightController flightController;
-    [SerializeField] ManualFlightInput manualFlightInput;
-    [SerializeField] Health health;
+    
+    RagdollHandler ragdollHandler;
+    FlightController flightController;
+    Health health;
+
+    Renderer renderer;
+
+    [SerializeField] GameObject feathers;
+
     [SerializeField] float dissolveSpeed;
     [SerializeField] float startDissolvingAfter;
-
-    private void OnEnable() => ragdollHandler.onRagdollEnable += OnRagdoll;
-    private void OnDisable() => ragdollHandler.onRagdollEnable -= OnRagdoll;
 
     float t;
     bool dissolve, ragdoll, dead;
 
     private void Start()
     {
+        ragdollHandler = GetComponent<RagdollHandler>();
+        flightController = GetComponent<FlightController>();
+        health = GetComponent<Health>();
+
+        renderer = GetComponentInChildren<Renderer>();
+
+        ragdollHandler.onRagdollEnable += OnRagdoll;
         health.AddDeathEvent(OnDeathDo);
     }
 
     void Update()
     {
         //For now, die when pressing space
-        if (Input.GetKeyDown(KeyCode.Space) && dead == false)
+        if (Input.GetKeyDown(KeyCode.Space) && health.health > 0)
         {
             health.ChangeHealth(-99999);
         }
 
         //If you haven't ragdolled yet you shall not pass!
-        if (!ragdoll)
-            return;
+        if (!ragdoll) return;
         //If not dissolving yet, count down time until dissolve
         else if (!dissolve)
         {
@@ -52,7 +59,9 @@ public class OnDeath : MonoBehaviour
         }
         //When fully dissolved, remove gameObject from the scene
         else
+        {
             Destroy(gameObject);
+        }
     }
 
     private void OnRagdoll()
@@ -64,6 +73,9 @@ public class OnDeath : MonoBehaviour
     {
         flightController.ResetInput();
         flightController.DisableInput = true;
-        dead = true;
+
+        var feathersInstance = Instantiate(feathers, gameObject.transform.position, Quaternion.identity);
+        feathersInstance.transform.parent = gameObject.transform;
     }
+        
 }
