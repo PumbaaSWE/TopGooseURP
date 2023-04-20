@@ -8,25 +8,37 @@ public class FlyingAI : MonoBehaviour, IUtility
     [Tooltip("Manually set a target for this AI")]
     [SerializeField] private GameObject targetGameObject; //Use target interface/sqript instead
     private bool movingTarget = false;
-
+    [Space]
     [Tooltip("Will not chase beyond this distance")]
     [SerializeField] float maxInterceptDistance = 1000;
     [Tooltip("Will fire guns beyond this distance")]
     [SerializeField] float maxGunRange = 50;
     [Tooltip("Will try to tay on this distance form target")]
     [SerializeField] float preferredDistance = 10;
-
+    [Space]
+    [Header("Booming and Zooming")]
     //Boom and Zoom tactics
     [SerializeField]private float zoomAltitude = 25;
     [SerializeField]private float zoomAltitudeSafe = 3; //try stay X m above alt. to not loose it in turns
     [SerializeField]private float zoomBoxExtents = 3; //how close we are when staring to boom
     [SerializeField] private float zoomDirection = 45; //how close we are when staring to boom
     [SerializeField]private float climbRate = .5f; //half height per distance
-    [SerializeField] private float maxCrank = 15; //max turning befor aborting
+    //[SerializeField] private float maxCrank = 15; //max turning befor aborting
     [SerializeField] private float boomFireDist = 5; //when to start fireing
-    [SerializeField] private float boomCrank = 25; //when to start fireing
-    bool zoomin = false; // if we aint zoomin' we boomin'
+    //[SerializeField] private float boomCrank = 25; //when to start fireing
+    private bool zoomin = false; // if we aint zoomin' we boomin'
 
+
+    
+    [Space]
+    [Header("Ground Avoiding")]
+    [SerializeField] private float radius = 3;
+    [SerializeField] private float bumbModifier = 2;
+    [SerializeField] private float rangeModifier = 2;
+    [SerializeField] private LayerMask groundLayer;
+
+    [Space]
+    [Header("Shooting")]
     [SerializeField][Range(0.0f, 1.0f)] float ramming = 0;
     [SerializeField][Range(0.0f, 1.0f)] float guns = 0;
     [SerializeField][Range(0.0f, 45.0f)] float gunsConeToFire = 1.0f;
@@ -34,14 +46,12 @@ public class FlyingAI : MonoBehaviour, IUtility
     [SerializeField][Range(0.0f, 1.0f)] float minHeat = 0.3f;
     [SerializeField][Range(0.0f, 1.0f)] float maxHeat = 0.9f;
     private bool gunsOverheat;
-
+    [SerializeField] private LayerMask targetLayer;
     private Vector3 ramTarget; // vector to ram target
     private Vector3 gunSolutionTarget; // vector to get guns on target target
     private Vector3 flyTarget = Vector3.zero; // actual fly towards target
     [SerializeField] private float bulletSpeed = 800; //to be allocated from Guns attached later
 
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask targetLayer;
 
     private Rigidbody selfRigidbody;
     private Autopilot autopilot;
@@ -60,15 +70,19 @@ public class FlyingAI : MonoBehaviour, IUtility
         autopilot = GetComponent<Autopilot>();
         controller = GetComponent<FlightController>();
         controller.SetThrottleInput(1.0f);
-        //SetTarget(targetGameObject);
+        if(targetGameObject != null)
+            SetTarget(targetGameObject);
         gunArray = GetComponentsInChildren<Gun>();
         gunsAlignToFire = Mathf.Cos(gunsConeToFire * Mathf.Deg2Rad);
         actor = GetComponent<AIActor>();
+        if(gunArray != null && gunArray.Length > 0)
+            bulletSpeed = gunArray[0].BulletSpeed;
 
     }
     private void OnValidate()
     {
         gunsAlignToFire = Mathf.Cos(gunsConeToFire * Mathf.Deg2Rad);
+        //bulletSpeed = gunArray[0].BulletSpeed;
     }
 
     public void SetTarget(GameObject gameObject)
@@ -134,18 +148,18 @@ public class FlyingAI : MonoBehaviour, IUtility
 
     private void UpdateAutopilot()
     {
-        if (Physics.SphereCast(transform.position, 3, transform.forward, out RaycastHit hit, controller.LocalVelocity.z * 2, groundLayer))
+        if (Physics.SphereCast(transform.position, radius, transform.forward, out RaycastHit hit, controller.LocalVelocity.z * rangeModifier, groundLayer))
         {
-            flyTarget = transform.position + transform.forward + (hit.normal+Vector3.up)*2;
+            flyTarget = transform.position + transform.forward + (hit.normal+Vector3.up) * bumbModifier;
         }
-        else if (Physics.SphereCast(transform.position, 3, flyTarget - transform.position, out hit, controller.LocalVelocity.z * 2, groundLayer))
+        else if (Physics.SphereCast(transform.position, radius, flyTarget - transform.position, out hit, controller.LocalVelocity.z * rangeModifier, groundLayer))
         //else if (Physics.Linecast(transform.position, flyTarget, out hit, groundLayer))
         {
-            flyTarget = hit.point + (hit.normal + Vector3.up) * 2;
+            flyTarget = hit.point + (hit.normal + Vector3.up) * bumbModifier;
         }
-        if (Physics.CheckSphere(transform.position+transform.forward+Vector3.down, 3, groundLayer))
+        if (Physics.CheckSphere(transform.position+transform.forward+Vector3.down, radius, groundLayer))
         {
-            flyTarget = transform.position + transform.forward + Vector3.up * 3;
+            flyTarget = transform.position + transform.forward + Vector3.up * radius;
         }
 
 
@@ -153,7 +167,7 @@ public class FlyingAI : MonoBehaviour, IUtility
         {
             if(hit.point.y > flyTarget.y)
             {
-                flyTarget.y = hit.point.y+3;
+                flyTarget.y = hit.point.y + radius;
             }
         }
         
@@ -165,7 +179,7 @@ public class FlyingAI : MonoBehaviour, IUtility
 
     private void DoChase(float dt)
     {
-        Debug.Log("DoChase");
+        //Debug.Log("DoChase");
         //return if no target
         if (targetGameObject == null || !targetGameObject.activeSelf) return;
 
@@ -213,7 +227,7 @@ public class FlyingAI : MonoBehaviour, IUtility
         Vector3 desiredFlyTarget = targetTransform.position + Vector3.up * (zoomAltitude + zoomAltitudeSafe);
         flyTarget = desiredFlyTarget;
 
-        Debug.Log("DoZoom - desiredFlyTarget " + desiredFlyTarget + " targetTransform.pos" + targetTransform.position);
+        //Debug.Log("DoZoom - desiredFlyTarget " + desiredFlyTarget + " targetTransform.pos" + targetTransform.position);
 
         //clamp climbrate
 
@@ -224,7 +238,7 @@ public class FlyingAI : MonoBehaviour, IUtility
         {
             flyTarget = new(flyTarget.x, transform.position.y + climbRate * dist, flyTarget.z);
         }
-        Debug.Log("DoZoom - transform.position "+ transform.position + "flyTarget.y " + flyTarget + " altitude " + altitude + " dist "+ dist);
+        //Debug.Log("DoZoom - transform.position "+ transform.position + "flyTarget.y " + flyTarget + " altitude " + altitude + " dist "+ dist);
         //find direction without rurning too hard
         //flyTarget = Vector3.RotateTowards(transform.forward, flyTarget, maxCrank * Mathf.Deg2Rad, 0);
 
@@ -253,7 +267,7 @@ public class FlyingAI : MonoBehaviour, IUtility
 
     private void DoBoom(float dt)
     {
-        Debug.Log("DoBoom");
+       // Debug.Log("DoBoom");
         //flyTarget
         //Compute where we want to go -> basically attack target
         Vector3 tPos = targetTransform.position;
@@ -333,12 +347,17 @@ public class FlyingAI : MonoBehaviour, IUtility
 
     public float Evaluate()
     {
-        if (!targetGameObject) return 0;
+        if (targetGameObject == null)
+        {
+            SearchTarget();
+            return 0;
+        }
+        //if (targetTransform == null) return 0;
 
         vecToTarget = targetTransform.position - transform.position;
         distToTarget = vecToTarget.magnitude;
 
-
+        //Debug.Log("Evaluate Guns: " + (1 - ((distToTarget + 1) / maxInterceptDistance)));
         return 1-((distToTarget+1) / maxInterceptDistance);
     }
 

@@ -29,8 +29,8 @@ public class PathUtility : MonoBehaviour, IUtility
 
         float ratio = distFromWaypoint / maxDistance; // to be used to compute final utility score, i.e. the further away from waypoint the highter utility
         //maybe better from closest waypoint and or the center i.e. currentPath.pos
-
-        return 1.0f;
+        //Debug.Log("Evaluate Path: " + ratio);
+        return ratio;
     }
 
     public void Execute()

@@ -10,7 +10,7 @@ public class Explode : MonoBehaviour
 
     [SerializeField] float damage = 60;
     [SerializeField] float maxRange = 5;
-    [SerializeField] float minRange = 1;
+    //[SerializeField] float minRange = 1;
     [SerializeField] LayerMask layerMask;
 
     [SerializeField] float force = 1000;

@@ -33,6 +33,7 @@ public class Gun : MonoBehaviour
     void Start()
     {
         muzzleFlash = GetComponentInChildren<ParticleSystem>();
+        muzzleFlash.Stop();
         fireRate = 1 / (shotsPerMinute / 60);
         source = GetComponent<AudioSource>();   
     }

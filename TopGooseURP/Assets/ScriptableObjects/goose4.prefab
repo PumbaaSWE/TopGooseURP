@@ -1039,6 +1039,7 @@ MonoBehaviour:
   strength: 5
   aggressiveTurnAngle: 10
   pitchUpThreshold: 15
+  showDebugInfo: 0
 --- !u!114 &1142582458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1318,9 +1319,7 @@ MonoBehaviour:
   strengthRollWing: 20
   tailWing: {fileID: 5887763506440541268}
   maxPitch: 45
-  speedPitch: 45
   accelerationPitch: 45
-  strengthYaw: 0
   strengthRoll: 20
   useFixed: 0
 --- !u!1 &3739327751847070683
