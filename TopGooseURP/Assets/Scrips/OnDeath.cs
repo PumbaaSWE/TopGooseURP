@@ -12,20 +12,18 @@ public class OnDeath : MonoBehaviour
     FlightController flightController;
     Health health;
     Rigidbody rigidBody;
-
     Renderer renderer;
 
-    [SerializeField] GameObject feathers;
+    [SerializeField]
+    GameObject feathers;
 
-    [SerializeField] float dissolveSpeed;
-    [SerializeField] float startDissolvingAfter;
-    [SerializeField] float spin;
-    [SerializeField] float spinPreviousUpdate;
-    [SerializeField] float spinPreviousPreviousUpdate;
+    [SerializeField]
+    float dissolveSpeed;
 
-    [SerializeField] Vector3 angularVelocity;
+    [SerializeField]
+    float startDissolvingAfter;
 
-    float t;
+    float t, spin, spinPreviousUpdate, spinPreviousPreviousUpdate;
     bool dissolve, ragdoll, dead, counterClockWise;
 
     private void Start()
