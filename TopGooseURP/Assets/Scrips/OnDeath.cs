@@ -44,6 +44,7 @@ public class OnDeath : MonoBehaviour
         {
             health.ChangeHealth(-99999);
         }
+
         //If you haven't died yet, you shall not pass!
         if (!dead) return;
 
@@ -89,6 +90,8 @@ public class OnDeath : MonoBehaviour
         rigidBody.AddRelativeTorque(new Vector3(0, 0, 0.2f), ForceMode.Impulse);
         dead = true;
         flightController.enabled = false;
+
+        spin = transform.rotation.eulerAngles.z;
 
         var feathersInstance = Instantiate(feathers, gameObject.transform.position, Quaternion.identity);
         feathersInstance.transform.parent = gameObject.transform;
