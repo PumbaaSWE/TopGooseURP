@@ -23,7 +23,7 @@ public class OnDeath : MonoBehaviour
     [SerializeField]
     float startDissolvingAfter;
 
-    float t, spin, spinPreviousUpdate, spinPreviousPreviousUpdate;
+    float t, spin, spinPreviousUpdate;
     bool dissolve, ragdoll, dead, counterClockWise;
 
     private void Start()
@@ -39,12 +39,11 @@ public class OnDeath : MonoBehaviour
         health.AddDeathEvent(OnDeathDo);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         //When not dead, keep track of the previous - and, well - previous previous spin in order to determine which direction to roll on death
         if(health.health > 0)
         {
-            spinPreviousPreviousUpdate = spinPreviousUpdate;
             spinPreviousUpdate = spin;
             spin = transform.rotation.eulerAngles.z;
 
@@ -54,12 +53,11 @@ public class OnDeath : MonoBehaviour
                 health.ChangeHealth(-99999);
             }
         }
-        
 
         //If you haven't died yet, you shall not pass!
         if (!dead) return;
 
-        //If you haven't ragdolled yet, roll! (Jack might dislike this because physics are handled outside of fixedUpdate)
+        //If you haven't ragdolled yet, roll!
         if (!ragdoll)
         {
             spin += (counterClockWise) ? Time.deltaTime * 180 : Time.deltaTime * -180;
@@ -102,7 +100,7 @@ public class OnDeath : MonoBehaviour
         dead = true;
         flightController.enabled = false;
 
-        if (spin > spinPreviousPreviousUpdate)
+        if (spin > spinPreviousUpdate)
             counterClockWise = true;
 
         var feathersInstance = Instantiate(feathers, gameObject.transform.position, Quaternion.identity);
