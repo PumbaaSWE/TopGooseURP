@@ -43,15 +43,14 @@ public class OnDeath : MonoBehaviour
 
     void Update()
     {
-
-        //For now, die when pressing space
-
+        //When not dead, keep track of the previous - and, well - previous previous spin in order to determine which direction to roll on death
         if(health.health > 0)
         {
             spinPreviousPreviousUpdate = spinPreviousUpdate;
             spinPreviousUpdate = spin;
             spin = transform.rotation.eulerAngles.z;
 
+            //For now, die when pressing space
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 health.ChangeHealth(-99999);
