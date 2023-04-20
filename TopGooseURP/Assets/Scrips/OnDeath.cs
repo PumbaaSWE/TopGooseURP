@@ -20,9 +20,13 @@ public class OnDeath : MonoBehaviour
     [SerializeField] float dissolveSpeed;
     [SerializeField] float startDissolvingAfter;
     [SerializeField] float spin;
+    [SerializeField] float spinPreviousUpdate;
+    [SerializeField] float spinPreviousPreviousUpdate;
+
+    [SerializeField] Vector3 angularVelocity;
 
     float t;
-    bool dissolve, ragdoll, dead;
+    bool dissolve, ragdoll, dead, counterClockWise;
 
     private void Start()
     {
@@ -39,11 +43,21 @@ public class OnDeath : MonoBehaviour
 
     void Update()
     {
+
         //For now, die when pressing space
-        if (Input.GetKeyDown(KeyCode.Space) && health.health > 0)
+
+        if(health.health > 0)
         {
-            health.ChangeHealth(-99999);
+            spinPreviousPreviousUpdate = spinPreviousUpdate;
+            spinPreviousUpdate = spin;
+            spin = transform.rotation.eulerAngles.z;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                health.ChangeHealth(-99999);
+            }
         }
+        
 
         //If you haven't died yet, you shall not pass!
         if (!dead) return;
@@ -51,7 +65,7 @@ public class OnDeath : MonoBehaviour
         //If you haven't ragdolled yet, roll! (Jack might dislike this because physics are handled outside of fixedUpdate)
         if (!ragdoll)
         {
-            spin += Time.deltaTime * 180;
+            spin += (counterClockWise) ? Time.deltaTime * 180 : Time.deltaTime * -180;
             transform.forward = rigidBody.velocity;
             transform.Rotate(Vector3.forward * spin, Space.Self);
         }
@@ -91,7 +105,8 @@ public class OnDeath : MonoBehaviour
         dead = true;
         flightController.enabled = false;
 
-        spin = transform.rotation.eulerAngles.z;
+        if (spin > spinPreviousPreviousUpdate)
+            counterClockWise = true;
 
         var feathersInstance = Instantiate(feathers, gameObject.transform.position, Quaternion.identity);
         feathersInstance.transform.parent = gameObject.transform;
