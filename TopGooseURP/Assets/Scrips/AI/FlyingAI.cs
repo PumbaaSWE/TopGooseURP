@@ -40,6 +40,9 @@ public class FlyingAI : MonoBehaviour, IUtility
     private Vector3 flyTarget = Vector3.zero; // actual fly towards target
     [SerializeField] private float bulletSpeed = 800; //to be allocated from Guns attached later
 
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask targetLayer;
+
     private Rigidbody selfRigidbody;
     private Autopilot autopilot;
     private FlightController controller;
@@ -57,7 +60,7 @@ public class FlyingAI : MonoBehaviour, IUtility
         autopilot = GetComponent<Autopilot>();
         controller = GetComponent<FlightController>();
         controller.SetThrottleInput(1.0f);
-        SetTarget(targetGameObject);
+        //SetTarget(targetGameObject);
         gunArray = GetComponentsInChildren<Gun>();
         gunsAlignToFire = Mathf.Cos(gunsConeToFire * Mathf.Deg2Rad);
         actor = GetComponent<AIActor>();
@@ -65,7 +68,7 @@ public class FlyingAI : MonoBehaviour, IUtility
     }
     private void OnValidate()
     {
-        
+        gunsAlignToFire = Mathf.Cos(gunsConeToFire * Mathf.Deg2Rad);
     }
 
     public void SetTarget(GameObject gameObject)
@@ -131,12 +134,36 @@ public class FlyingAI : MonoBehaviour, IUtility
 
     private void UpdateAutopilot()
     {
+        if (Physics.SphereCast(transform.position, 3, transform.forward, out RaycastHit hit, controller.LocalVelocity.z * 2, groundLayer))
+        {
+            flyTarget = transform.position + transform.forward + (hit.normal+Vector3.up)*2;
+        }
+        else if (Physics.SphereCast(transform.position, 3, flyTarget - transform.position, out hit, controller.LocalVelocity.z * 2, groundLayer))
+        //else if (Physics.Linecast(transform.position, flyTarget, out hit, groundLayer))
+        {
+            flyTarget = hit.point + (hit.normal + Vector3.up) * 2;
+        }
+        if (Physics.CheckSphere(transform.position+transform.forward+Vector3.down, 3, groundLayer))
+        {
+            flyTarget = transform.position + transform.forward + Vector3.up * 3;
+        }
+
+
+        if (Physics.Raycast(flyTarget+Vector3.up*100, Vector3.down, out hit, 200, groundLayer))
+        {
+            if(hit.point.y > flyTarget.y)
+            {
+                flyTarget.y = hit.point.y+3;
+            }
+        }
+        
+        
         autopilot.RunAutopilot(flyTarget, out float pitch, out float yaw, out float roll);
         Vector3 input = new(pitch, yaw, roll);
         controller.SetControlInput(input);
     }
 
-    private void DoChase()
+    private void DoChase(float dt)
     {
         Debug.Log("DoChase");
         //return if no target
@@ -148,16 +175,17 @@ public class FlyingAI : MonoBehaviour, IUtility
 
 
         //similar heading? #Stop the hardcoding!
-        //if(Vector3.Dot( transform.forward, targetTransform.forward) > .8f)
-        //{
-        //    float speedError = tVel.magnitude - pSpeed;
+        if (Vector3.Dot(transform.forward, targetTransform.forward) > .8f)
+        {
+            autopilot.MatchSpeed(targetRigidbody.velocity.magnitude, dt);
+        }
+        else
+        {
+            controller.SetThrottleInput(1.0f);
+        }
 
-        //    //to match velovity and hold distance to target, can use much refinement to not be so choppy wth the throttle!
-        //    controller.SetThrottleInput(controller.Throttle + speedError + distanceError);
-        //}
-
-        float distanceError = Mathf.Clamp((distToTarget - preferredDistance) / preferredDistance, 0.5f, 1f);
-        controller.SetThrottleInput(distanceError);
+        //float distanceError = Mathf.Clamp((distToTarget - preferredDistance) / preferredDistance, 0.5f, 1f);
+        //controller.SetThrottleInput(distanceError);
 
         /*
          * Will blend between three aiming points, 
@@ -207,7 +235,7 @@ public class FlyingAI : MonoBehaviour, IUtility
             if (dist < zoomBoxExtents)
             {
                 zoomin = false;
-                autopilot.AggresiveTurnAngle = 0.0f;
+                //autopilot.AggresiveTurnAngle = 0.0f;
             }
             
             //we are at the desired altitude
@@ -254,7 +282,29 @@ public class FlyingAI : MonoBehaviour, IUtility
         if (transform.position.y < targetTransform.position.y)
         {
             zoomin = true; // we are below target, rezoom the zoomin
-            autopilot.AggresiveTurnAngle = 10.0f;
+            //autopilot.AggresiveTurnAngle = 10.0f;
+        }
+    }
+
+    private static readonly Collider[] colliders = new Collider[20];
+    public void SearchTarget()
+    {
+        int hits = Physics.OverlapCapsuleNonAlloc(transform.position, transform.position + transform.forward * 100, 100, colliders, targetLayer);
+        if(hits > 0)
+        {
+            float bestDist = float.MaxValue;
+            int bestIndex = 0;
+            for (int i = 0; i < hits; i++)
+            {
+
+                float dist = (transform.position - colliders[i].transform.position).sqrMagnitude;
+                if(dist < bestDist)
+                {
+                    bestIndex = i;
+                    bestDist = dist;
+                }
+            }
+            SetTarget(colliders[bestIndex].gameObject);
         }
     }
 
@@ -267,13 +317,14 @@ public class FlyingAI : MonoBehaviour, IUtility
            
             Gizmos.color = Color.white;
             Gizmos.DrawWireSphere(flyTarget, 4f);
+            Gizmos.DrawLine(transform.position, flyTarget);
             
 
             Gizmos.color = Color.red;
             //Gizmos.DrawWireSphere(gunSolutionTarget, 10f);
 
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(ramTarget, 3f);
+            //Gizmos.DrawWireSphere(ramTarget, 3f);
 
 
             Gizmos.color = oldColor;
@@ -293,23 +344,21 @@ public class FlyingAI : MonoBehaviour, IUtility
 
     public void Execute()
     {
-        switch(actor.Role)
+        if (targetGameObject != null)
         {
-            case CombatCoordinator.Role.Chaser:
-                DoChase();
-                break;
-            case CombatCoordinator.Role.Zoomer:
-                if (zoomin) DoZoom(0);
-                else DoBoom(0);
-                break;
-            default:
-                Debug.Log("default");
-                break;
+           
+            DoChase(Time.fixedDeltaTime);
+
+
+
+            //TrackTarget();
+            UpdateGuns();
+        }
+        else
+        {
+            SearchTarget();
         }
 
-
-        //TrackTarget();
         UpdateAutopilot();
-        UpdateGuns();
     }
 }

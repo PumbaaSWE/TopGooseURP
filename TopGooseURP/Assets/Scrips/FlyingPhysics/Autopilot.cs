@@ -38,6 +38,8 @@ public class Autopilot : MonoBehaviour
     [Tooltip("Strength for autopilot flight.")][SerializeField] private float strength = 5f;
     [Tooltip("Angle at which airplane banks fully into target.")][SerializeField] private float aggressiveTurnAngle = 10f;
     [Tooltip("AI only, limit pitch down manuevers.")][SerializeField] private float pitchUpThreshold = 15f;
+    [Space]
+    [Tooltip("DEBUG")][SerializeField] private bool showDebugInfo;
 
     private float yaw;
     private float pitch;
@@ -93,7 +95,7 @@ public class Autopilot : MonoBehaviour
         float wingsLevelInfluence = Mathf.InverseLerp(0f, aggressiveTurnAngle, angleOffTarget);
         roll = -Mathf.Lerp(wingsLevelRoll, agressiveRoll, wingsLevelInfluence);
     }
-
+    Vector3 pitchError;
     public void RunAutopilot2(Vector3 flyTarget, out float pitch, out float yaw, out float roll)
     {
         Vector3 localFlyTarget = aircraft.InverseTransformPoint(flyTarget).normalized * strength;
@@ -105,21 +107,25 @@ public class Autopilot : MonoBehaviour
 
         yaw = Mathf.Clamp(localFlyTarget.x, -1f, 1f);
 
-
-
-        Vector3 pitchError = new Vector3(0, localFlyTarget.y, localFlyTarget.z).normalized;
-         pitch = Vector3.SignedAngle(Vector3.forward, pitchError, Vector3.right);
-        if (-pitch < pitchUpThreshold) pitch += 360f;
-
-        pitch = -Mathf.Clamp(pitch, -1f, 1f);
-
-
+        float wingsLevelRoll = aircraft.right.y;
         float agressiveRoll = Mathf.Clamp(localFlyTarget.x, -1f, 1f);
 
-        float wingsLevelRoll = aircraft.right.y;
+        //Vector3
+        pitchError = new Vector3(0, localFlyTarget.y, localFlyTarget.z).normalized;
+
+        float pitchAngle = Vector3.SignedAngle(transform.forward, pitchError, transform.right);
+        if (pitchAngle > pitchUpThreshold)
+        {
+            //agressiveRoll = Mathf.Ceil(agressiveRoll);
+        }
+        pitch = -Mathf.Clamp(localFlyTarget.y, -1f, 1f);
+
+
 
         float wingsLevelInfluence = Mathf.InverseLerp(0f, aggressiveTurnAngle, angleOffTarget);
         roll = -Mathf.Lerp(wingsLevelRoll, agressiveRoll, wingsLevelInfluence);
+        Output = new Vector3(pitch, yaw, roll);
+        //Debug.Log("Output: " +Output);
     }
 
     public void RunAdvancedAutopilot2(Vector3 flyTarget, float dt, out float pitch, out float yaw, out float roll)
@@ -166,5 +172,16 @@ public class Autopilot : MonoBehaviour
     {
         float throttle = speedPID.UpdatePID(controller.LocalVelocity.z, speed, dt);
         controller.SetThrottleInput(throttle);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (showDebugInfo)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(transform.position, transform.position + transform.rotation * pitchError * 2);
+            Gizmos.color = Color.red;
+            //Gizmos.DrawLine(transform.position, transform.position + Output * 2);
+        }
     }
 }
