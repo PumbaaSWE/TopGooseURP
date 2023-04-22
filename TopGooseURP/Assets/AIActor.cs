@@ -23,7 +23,7 @@ public class AIActor : MonoBehaviour
 
         if(TryGetComponent(out Health health))
         {
-            health.AddDeathEvent(OnDeathCallback);
+            health.OnDead += OnDeathCallback;
         }
         Role = role;
     }

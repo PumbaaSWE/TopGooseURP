@@ -51,8 +51,8 @@ public class Explode : MonoBehaviour
                 float dist = Vector3.Distance(closestPoint, exposionCenter); //maybe ray cast to see if nothing is between first?
                 float damage = (1 - dist / maxRange) * this.damage;
                 Debug.Log("sfghsfghjsdfghjtsfgjsdfghjdghjdghjkdghjkdghkjdghkdghk : " + _colliders[i].gameObject.name);
-                health.ChangeHealth(-damage);
-                if (health.dead && rb != null)
+                health.ChangeHealth(-damage, ChangeHealthType.explosion);
+                if (health.Dead && rb != null)
                 {
                     rb.AddExplosionForce(force, exposionCenter, maxRange);
                 }

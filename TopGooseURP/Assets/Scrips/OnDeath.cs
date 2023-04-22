@@ -40,13 +40,13 @@ public class OnDeath : MonoBehaviour
         }
 
         ragdollHandler.onRagdollEnable += OnRagdoll;
-        health.AddDeathEvent(OnDeathDo);
+        health.OnDead += OnDeathDo;
     }
 
     void FixedUpdate()
     {
         //When not dead, keep track of the previous spin in order to determine which direction to roll on death
-        if(health.health > 0)
+        if(health.Amount > 0)
         {
             spinPreviousUpdate = spin;
             spin = transform.rotation.eulerAngles.z;
@@ -54,7 +54,7 @@ public class OnDeath : MonoBehaviour
             //For now, die when pressing space
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                health.ChangeHealth(-99999);
+                health.ChangeHealth(-99999, ChangeHealthType.bullet);
             }
         }
 
