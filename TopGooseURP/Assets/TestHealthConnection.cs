@@ -28,7 +28,7 @@ public class TestHealthConnection : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void OnChangeHealth(float change, ChangeHealthType changeHealthType)
+    public void OnChangeHealth(float change, ChangeHealthType changeHealthType, TeamMember _)
     {
         if(change < 0)
         {

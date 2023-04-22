@@ -21,6 +21,7 @@ public class Missile : MonoBehaviour
     //private Transform hardpoint;
     //private float lifeTime;
 
+    private TeamMember teamMember;
 
     void Awake()
     {
@@ -36,9 +37,10 @@ public class Missile : MonoBehaviour
         //Initialize(missileData);
     }
 
-    public void Initialize(MissileData missileData, bool enabledCollider = false)
+    public void Initialize(MissileData missileData, TeamMember owner, bool enabledCollider = false)
     {
         this.missileData = missileData;
+        teamMember = owner;
         proxyRange.radius = missileData.proxyFuseRange;
         proxyRange.enabled = false;
         Rigidbody.isKinematic = true;
@@ -54,9 +56,9 @@ public class Missile : MonoBehaviour
         }  
     }
 
-    public void Initialize()
+    public void Initialize(TeamMember owner)
     {
-        Initialize(missileData);
+        Initialize(missileData, owner);
     }
 
     //public void SetHardpoint(Transform hardpoint)

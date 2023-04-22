@@ -19,15 +19,18 @@ public class Bullet : MonoBehaviour
     private ObjectPool<Bullet> bulletPool;
     private bool returned;
 
+    private TeamMember owner;
+
     void Awake()
     {
         trail = GetComponent<TrailRenderer>();
         //hitEffectManager = Instantiate(hitEffectManager);
     }
 
-    public void Init(BulletData data, Vector3 position, Quaternion rotation)
+    public void Init(BulletData data, TeamMember owner, Vector3 position, Quaternion rotation)
     {
         this.data = data;
+        this.owner = owner;
         transform.SetPositionAndRotation(position, rotation);
         if (data.trailTime > 0)
         {
@@ -80,7 +83,7 @@ public class Bullet : MonoBehaviour
             Health health;
             if (hit.collider.gameObject.TryGetComponent(out health))
             {
-                health.ChangeHealth(-data.damage, ChangeHealthType.impact);
+                health.ChangeHealth(-data.damage, ChangeHealthType.impact, owner);
             }
             else
             {
@@ -91,7 +94,7 @@ public class Bullet : MonoBehaviour
 
                 if (foundComponent)
                 {
-                    health.ChangeHealth(-data.damage, ChangeHealthType.impact);
+                    health.ChangeHealth(-data.damage, ChangeHealthType.impact, owner);
                 }
             }
 

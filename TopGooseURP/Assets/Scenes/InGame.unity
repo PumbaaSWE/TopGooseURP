@@ -6780,6 +6780,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3995035016038114544}
     m_Modifications:
+    - target: {fileID: 59483375, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: bombPrefab
+      value: 
+      objectReference: {fileID: 4130009385255742869, guid: 71aa9f150ba2e2a44b7bf393c60cd904,
+        type: 3}
     - target: {fileID: 59483376, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: flightInput
       value: 

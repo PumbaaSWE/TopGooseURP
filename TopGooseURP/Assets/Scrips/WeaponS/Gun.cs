@@ -28,14 +28,15 @@ public class Gun : MonoBehaviour
     public AudioClip[] pews;
     public AudioSource source;
 
-
+    private TeamMember owner;
     // Start is called before the first frame update
     void Start()
     {
         muzzleFlash = GetComponentInChildren<ParticleSystem>();
         muzzleFlash.Stop();
         fireRate = 1 / (shotsPerMinute / 60);
-        source = GetComponent<AudioSource>();   
+        source = GetComponent<AudioSource>();
+        owner = GetComponentInParent<TeamMember>();
     }
 
     // Update is called once per frame
@@ -67,7 +68,7 @@ public class Gun : MonoBehaviour
         float randomNumberZ = Random.Range(-spread, spread);
         Quaternion rotation = Quaternion.Euler(randomNumberX, randomNumberY, randomNumberZ);
 
-        BulletManager.Instance.SpawnBullet(bulletData, bulletSpawn.position, bulletSpawn.rotation * rotation);
+        BulletManager.Instance.SpawnBullet(bulletData, owner, bulletSpawn.position, bulletSpawn.rotation * rotation);
         //Bullet bullet = BulletManager.Instance.SpawnBullet();
         //bullet.transform.Rotate(randomNumberX, randomNumberY, randomNumberZ);
         //bullet.Init(bulletData, bulletSpawn.position, bulletSpawn.rotation * rotation);

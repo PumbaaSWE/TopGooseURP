@@ -6,7 +6,7 @@ public class Health : MonoBehaviour
     public delegate void OnDeadEvent();
     public OnDeadEvent OnDead;
 
-    public delegate void OnChangeHealthEvent(float change, ChangeHealthType damageType);
+    public delegate void OnChangeHealthEvent(float change, ChangeHealthType damageType, TeamMember damager);
     public OnChangeHealthEvent OnChangeHealth;
 
     public float Amount { get; private set; }
@@ -16,10 +16,10 @@ public class Health : MonoBehaviour
     private float startHealth;
 
 
-    public void ChangeHealth(float change, ChangeHealthType damageType/*, add some identifier that can tell who is changing the health*/)
+    public void ChangeHealth(float change, ChangeHealthType damageType , TeamMember damager)
     {
         Amount += change;
-        OnChangeHealth?.Invoke(change, damageType);
+        OnChangeHealth?.Invoke(change, damageType, damager);
 
         if (Amount > startHealth) Amount = startHealth;
 

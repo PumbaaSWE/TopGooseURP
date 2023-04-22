@@ -54,7 +54,7 @@ public class OnDeath : MonoBehaviour
             //For now, die when pressing space
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                health.ChangeHealth(-99999, ChangeHealthType.bullet);
+                health.ChangeHealth(-99999, ChangeHealthType.bullet, null);
             }
         }
 

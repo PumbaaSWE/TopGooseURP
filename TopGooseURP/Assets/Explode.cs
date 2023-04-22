@@ -4,7 +4,7 @@ using UnityEngine;
 public class Explode : MonoBehaviour
 {
 
-    private static Collider[] _colliders = new Collider[20];
+    private static readonly Collider[] _colliders = new Collider[20];
 
     public ParticleSystem[] systems;
 
@@ -31,7 +31,7 @@ public class Explode : MonoBehaviour
         //if(explodeOnStart) ExplodeNow();    
     }
 
-    public void ExplodeNow()
+    public void ExplodeNow( TeamMember owner = null )
     {
         for (int i = 0; i < systems.Length; i++)
         {
@@ -50,8 +50,8 @@ public class Explode : MonoBehaviour
                 Vector3 closestPoint = _colliders[i].ClosestPoint(exposionCenter); // if we do distance to collider transform.pos we might not "hit" if collider is big, still touching part of it
                 float dist = Vector3.Distance(closestPoint, exposionCenter); //maybe ray cast to see if nothing is between first?
                 float damage = (1 - dist / maxRange) * this.damage;
-                Debug.Log("sfghsfghjsdfghjtsfgjsdfghjdghjdghjkdghjkdghkjdghkdghk : " + _colliders[i].gameObject.name);
-                health.ChangeHealth(-damage, ChangeHealthType.explosion);
+                //Debug.Log("sfghsfghjsdfghjtsfgjsdfghjdghjdghjkdghjkdghkjdghkdghk : " + _colliders[i].gameObject.name);
+                health.ChangeHealth(-damage, ChangeHealthType.explosion, owner);
                 if (health.Dead && rb != null)
                 {
                     rb.AddExplosionForce(force, exposionCenter, maxRange);

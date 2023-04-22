@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class MissileLauncher : MonoBehaviour
 {
@@ -30,10 +31,13 @@ public class MissileLauncher : MonoBehaviour
     private Rigidbody rb;
     private SeekerHead selectedMissile;
 
+    private TeamMember owner;
+
     void Start()
     {
         TryGetComponent(out rb);
         hardpointData = new HardpointData[hardpoints.Length];
+        owner = GetComponentInParent<TeamMember>();
         //seekerHeads = new SeekerHead[hardPoints.Length];
         //for (int i = 0; i < hardpoints.Length; i++)
         //{
@@ -185,7 +189,7 @@ public class MissileLauncher : MonoBehaviour
     {
 
         Missile missile = Instantiate(this.missile, hardpoints[i].position, hardpoints[i].rotation);
-        missile.Initialize();
+        missile.Initialize(owner);
         hardpointData[i].missile = missile;
 
         //missile.Initialize();
