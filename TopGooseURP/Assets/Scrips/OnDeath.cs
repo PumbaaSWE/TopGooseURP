@@ -12,7 +12,7 @@ public class OnDeath : MonoBehaviour
     FlightController flightController;
     Health health;
     Rigidbody rigidBody;
-    Renderer renderer;
+    List<Renderer> dissolveThese = new List<Renderer>();
 
     [SerializeField]
     GameObject feathers;
@@ -33,7 +33,11 @@ public class OnDeath : MonoBehaviour
         health = GetComponent<Health>();
         rigidBody = GetComponent<Rigidbody>();
 
-        renderer = GetComponentInChildren<Renderer>();
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i].material.shader.name.Contains("Dissolve")) dissolveThese.Add(renderers[i]);
+        }
 
         ragdollHandler.onRagdollEnable += OnRagdoll;
         health.AddDeathEvent(OnDeathDo);
@@ -41,7 +45,7 @@ public class OnDeath : MonoBehaviour
 
     void FixedUpdate()
     {
-        //When not dead, keep track of the previous - and, well - previous previous spin in order to determine which direction to roll on death
+        //When not dead, keep track of the previous spin in order to determine which direction to roll on death
         if(health.health > 0)
         {
             spinPreviousUpdate = spin;
@@ -78,7 +82,10 @@ public class OnDeath : MonoBehaviour
         else if (t < 1)
         {
             t += dissolveSpeed * Time.deltaTime;
-            renderer.material.SetFloat("_T", t);
+            for (int i = 0; i < dissolveThese.Count; i++)
+            {
+                dissolveThese[i].material.SetFloat("_T", t);
+            }
         }
 
         //When fully dissolved, remove gameObject from the scene
