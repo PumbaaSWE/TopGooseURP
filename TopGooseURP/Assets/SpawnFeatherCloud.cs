@@ -11,7 +11,7 @@ public class SpawnFeatherCloud : MonoBehaviour
     void Start()
     {
         Health health = GetComponent<Health>();
-        health.AddDeathEvent(SpawnParticleCloud);
+        health.OnDead += SpawnParticleCloud;
     }
 
     public void SpawnParticleCloud()
