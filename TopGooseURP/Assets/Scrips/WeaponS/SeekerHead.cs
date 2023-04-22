@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+﻿using UnityEngine;
 
 public class SeekerHead : MonoBehaviour
 {
@@ -14,8 +12,8 @@ public class SeekerHead : MonoBehaviour
     [SerializeField][Range(1,89)] private float seekerFOV = 12;
 
 
-    [Range(0, 1)] public float seekerRangeInfluence = 1;//future use maybe when my math is better...
-    [Range(0, 1)] public float seekerOffBoreInfluence = 0.1f;//future use maybe
+    [SerializeField] private float seekerRangeConeIgnore = 2;//future use maybe when my math is better...
+    //[Range(0, 1)] public float seekerOffBoreInfluence = 0.1f;//future use maybe
 
     [Header("Tracking")]
     [Tooltip("Tracking angle in degrees for off-boresight capability")] //rename? It's fov/2 really... maxOffBoreAngle?
@@ -378,7 +376,7 @@ public class SeekerHead : MonoBehaviour
             float angleToTarget = Vector3.Dot(direction, toTarget/dist);
             float trackAngle = Vector3.Dot(transform.forward, toTarget / dist);
             //check if angle is inside the cone if not 
-            if (angleToTarget < cosSeekerFov) continue; //cone seeker sees
+            if (dist > seekerRangeConeIgnore && angleToTarget < cosSeekerFov) continue; //cone seeker sees
             //if (trackAngle < cosTrackFov) continue; // cone missile can track
             //ideally the best would be range+change in angle, but that requre history of all targets...
 

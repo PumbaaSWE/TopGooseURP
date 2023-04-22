@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 2688600573231241991}
   - component: {fileID: 1277721142054067070}
   - component: {fileID: 484880891}
+  - component: {fileID: -4125577975658615223}
   m_Layer: 0
   m_Name: sparrow3
   m_TagString: Untagged
@@ -201,8 +202,7 @@ MonoBehaviour:
     m_Bits: 128
   range: 250
   seekerFOV: 18.4
-  seekerRangeInfluence: 1
-  seekerOffBoreInfluence: 0.099
+  seekerRangeConeIgnore: 2
   trackFOV: 85
   trackRate: 360
   ProNavN: 3
@@ -242,12 +242,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   left: {fileID: 7123023408761892181}
   right: {fileID: 3823147439073283319}
-  flapSpeed: 2000
+  flapSpeed: 3000
   maxFlap: 90
   controller: {fileID: 7703223742535470275}
   tail: {fileID: 1333577087577764414}
   strengthPitch: 45
   strengthRoll: 40
+--- !u!114 &-4125577975658615223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419328782544669488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7275457fe1f78c04b8dea51a115b5539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missileData: {fileID: 11400000, guid: 6e6ff75ffd0549844b27b66b2e184ac0, type: 2}
+  explosion: {fileID: 177935313006631716, guid: a882c6eae545ac847a0922854d3ade8e,
+    type: 3}
+  flappyWings: {fileID: 0}
+  trail: {fileID: 0}
 --- !u!1 &631991010384585353
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ using UnityEngine;
 public class MissileLauncher : MonoBehaviour
 {
 
-    [SerializeField] private SeekerHead missile;
+    [SerializeField] private Missile missile;
     [SerializeField] private float reloadTime = 8;
     [SerializeField] private Transform[] hardpoints;
 
@@ -54,7 +54,7 @@ public class MissileLauncher : MonoBehaviour
         {
             if (hardpointData[i].IsLoaded)
             {
-                hardpointData[i].seekerHead.transform.SetPositionAndRotation(hardpoints[i].position, hardpoints[i].rotation);
+                hardpointData[i].missile.transform.SetPositionAndRotation(hardpoints[i].position, hardpoints[i].rotation);
             }
         }
     }
@@ -94,9 +94,9 @@ public class MissileLauncher : MonoBehaviour
     /// To change what missile prefab to spawn at reload
     /// </summary>
     /// <param name="seekerHead">The missile to use</param>
-    public void SetSeekerHeadToUse(SeekerHead seekerHead)
+    public void SetSeekerHeadToUse(Missile missile)
     {
-        missile = seekerHead;
+        this.missile = missile;
     }
     /// <summary>
     /// (UNTESTED!!!) To change hardpoints in code, to ease the use of ScriptableObjects, will destroy all current missiles
@@ -108,7 +108,7 @@ public class MissileLauncher : MonoBehaviour
         for (int i = 0; i < hardpointData.Length; i++)
         {
             if (hardpointData[i].IsLoaded)
-                Destroy(hardpointData[i].seekerHead);
+                Destroy(hardpointData[i].missile);
         }
         hardpointData = new HardpointData[hardPoints.Length];
         selectedHardpoint = -1;
@@ -132,7 +132,7 @@ public class MissileLauncher : MonoBehaviour
 
             if (hardpointData[index].IsLoaded)
             {
-                selectedMissile = hardpointData[index].seekerHead;
+                selectedMissile = hardpointData[index].missile.SeekerHead;
                 if(Active) selectedMissile.enabled = true;
                 selectedHardpoint = index;
                 return index;
@@ -184,26 +184,12 @@ public class MissileLauncher : MonoBehaviour
     private void SpawnMissileOnHardpoint(int i)
     {
 
-        SeekerHead seekerHead = Instantiate(missile, hardpoints[i].position, hardpoints[i].rotation);
-        //seekerHead.transform.parent = hardpoints[i]; //do it after to no fukk up scaling
+        Missile missile = Instantiate(this.missile, hardpoints[i].position, hardpoints[i].rotation);
+        missile.Initialize();
+        hardpointData[i].missile = missile;
 
-        
+        //missile.Initialize();
 
-
-        if (seekerHead.TryGetComponent(out Rigidbody rigidbody))
-        {
-            rigidbody.isKinematic = true;
-            hardpointData[i].rigidbody = rigidbody;
-            //hardpoints[i].GetComponent<FixedJoint>().connectedBody = rigidbody;
-            //hardpoints[i].GetComponent<FixedJoint>().
-        }
-        else
-        {
-            Debug.LogWarning("MissileLauncher - SpawnMissileOnHardPoint - cannot access the rigidbody component of the missile");
-        }
-
-        hardpointData[i].seekerHead = seekerHead;
-        seekerHead.enabled = false;
         if (selectedHardpoint < 0)
         {
             SelectNextHardpoint();
@@ -216,14 +202,6 @@ public class MissileLauncher : MonoBehaviour
     //finally Select Next Hardpoint as current becomes unavalible
     private void LaunchHardpoint(int i, Vector3 initialVelocity)
     {
-        //hardpointData[i].seekerHead.transform.parent = null;
-        //hardPointData[i].seekerHead.Launch(rb.velocity);
-        if (hardpointData[i].seekerHead.TryGetComponent(out Rigidbody rigidbody))
-        {
-            rigidbody.isKinematic = false;
-            rigidbody.velocity = initialVelocity;
-            //hardpoints[i].GetComponent<FixedJoint>().connectedBody = null;
-        }
         hardpointData[i].Launch(initialVelocity, ReloadTime);
         //spawnQueue.Enqueue((i, Time.time));
 
@@ -243,13 +221,13 @@ public class MissileLauncher : MonoBehaviour
     public Vector3 SeekerViewPositon()
     {
         if (selectedHardpoint < 0) return Vector3.zero;// transform.position+transform.forward*500;
-        return hardpointData[selectedHardpoint].seekerHead.TargetPosition;
+        return hardpointData[selectedHardpoint].missile.SeekerHead.TargetPosition;
     }
 
     public SeekerHead GetSeekerHead()
     {
         if (selectedHardpoint < 0) return null;// transform.position+transform.forward*500;
-        return hardpointData[selectedHardpoint].seekerHead;
+        return hardpointData[selectedHardpoint].missile.SeekerHead;
     }
 
     public void Activate(bool active)
@@ -270,27 +248,15 @@ public class MissileLauncher : MonoBehaviour
     private struct HardpointData
     {
         internal float respawnTime;
-        internal SeekerHead seekerHead;
-        internal Rigidbody rigidbody;
-        internal SimpleFlight simpleFlight;
-        internal Trail trail;
+        internal Missile missile;
 
-        public bool IsLoaded => seekerHead != null;
+        public bool IsLoaded => missile != null;
 
         public void Launch( Vector3 velocity, float t)
         {
             respawnTime = t;
-            seekerHead.Launch();
-            if(rigidbody != null)
-            {
-                rigidbody.isKinematic = false;
-                rigidbody.velocity = velocity;
-            }
-            seekerHead = null;
-            rigidbody = null;
-            simpleFlight = null;
-            //trail.Emitting(true);
-            //trail = null;
+            missile.Launch(velocity);
+            missile = null;
         }
     }
 }

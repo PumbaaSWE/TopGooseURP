@@ -71,6 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5079017365158011266}
+  - component: {fileID: 1268023280}
   m_Layer: 0
   m_Name: RightWing_end
   m_TagString: Untagged
@@ -93,6 +94,19 @@ Transform:
   m_Father: {fileID: 2581802088095353043}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1268023280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156623161843635023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d52e2bdcaa424e340b764c2912177f8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 15fc3668c3c80c04080a80aa75e330c6, type: 2}
 --- !u!1 &364535096074470745
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,6 +780,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 52566358329961389}
+  - component: {fileID: 967136160}
   m_Layer: 0
   m_Name: LeftWing_end
   m_TagString: Untagged
@@ -788,6 +803,19 @@ Transform:
   m_Father: {fileID: 7143499905678766233}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &967136160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3006193040193426166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d52e2bdcaa424e340b764c2912177f8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 15fc3668c3c80c04080a80aa75e330c6, type: 2}
 --- !u!1 &3239574577008422207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,7 +1258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f3156d0f069e4459bbf2589599c67c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missile: {fileID: 2688600573231241991, guid: a0d36dc60967b5942a257e46a63926bd, type: 3}
+  missile: {fileID: -4125577975658615223, guid: a0d36dc60967b5942a257e46a63926bd,
+    type: 3}
   reloadTime: 8
   hardpoints:
   - {fileID: 248967949}
