@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BasicHeatSeeker
   m_EditorClassIdentifier: 
   timeToLive: 5
-  damage: 40
+  damage: 40000
   proxyFuseRange: 1
   proxyFuseArmTime: 0.5
   targetLayer:

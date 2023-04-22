@@ -50,7 +50,7 @@ public class Explode : MonoBehaviour
                 Vector3 closestPoint = _colliders[i].ClosestPoint(exposionCenter); // if we do distance to collider transform.pos we might not "hit" if collider is big, still touching part of it
                 float dist = Vector3.Distance(closestPoint, exposionCenter); //maybe ray cast to see if nothing is between first?
                 float damage = (1 - dist / maxRange) * this.damage;
-
+                Debug.Log("sfghsfghjsdfghjtsfgjsdfghjdghjdghjkdghjkdghkjdghkdghk : " + _colliders[i].gameObject.name);
                 health.ChangeHealth(-damage);
                 if (health.dead && rb != null)
                 {
@@ -69,11 +69,12 @@ public class Explode : MonoBehaviour
 
     private IEnumerator ReturnToPool()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
         for (int i = 0; i < systems.Length; i++)
         {
             systems[i].Stop();
             systems[i].Clear();
         }
+        Destroy(gameObject);
     }
 }

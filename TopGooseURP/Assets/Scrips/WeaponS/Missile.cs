@@ -113,7 +113,7 @@ public class Missile : MonoBehaviour
         //spawn explosion?
         //return to a pool?
         if(explosion != null)
-            Instantiate(explosion, transform.position, transform.rotation);
+            Instantiate(explosion, transform.position, transform.rotation).ExplodeNow();
 
         Destroy(gameObject);
     }

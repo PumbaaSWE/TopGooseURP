@@ -163,18 +163,18 @@ public class ManualFlightInput : MonoBehaviour
     private void Update()
     {
         //this should not be here
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    Cursor.lockState = CursorLockMode.Locked;
-        //    Cursor.visible = !Cursor.visible;
-        //    if (Cursor.visible)
-        //    {
-        //        Cursor.lockState = CursorLockMode.None;
-        //    }
-        //}
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = !Cursor.visible;
+            if (Cursor.visible)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
 
-       
-        
+
+
     }
     private void LateUpdate()
     {
