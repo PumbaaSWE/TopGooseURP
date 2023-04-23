@@ -12,14 +12,16 @@ public class FlightController : MonoBehaviour
 
     [Header("Dragging")]
     //[SerializeField] private AnimationCurve dragCurve;
-    [Tooltip("x: up/down, y: sideways, z: going forward(/backward)")][SerializeField] private Vector3 dragPower = new(1, 1, 0.5f);
+    [Tooltip("Drag multiplier x: up/down, y: sideways, z: going forward(/backward)")][SerializeField] private Vector3 dragPower = new(3, 3, 1);
     [Tooltip("x: pitch, y: yaw, z: roll")][SerializeField] private Vector3 angularDrag = new(0.5f, 0.5f, 0.5f);
     [Tooltip("How much do the airframe want to turn into the airflow")][SerializeField] private float directionalDragCoeff = 1;
-    [Tooltip("Soft speed limit (m/s), drag increases alot arount this speed")][SerializeField] private float speedDragLimit = 17;
+    //[Tooltip("Soft speed limit (m/s), drag increases alot arount this speed")][SerializeField] private float speedDragLimit = 17;
     //[Tooltip("How much should gravity affect the soft speed limit?")][SerializeField] private float angleDragFactor = 5;
+    [Tooltip("DONT CHANGE! Computed drag Coeff")][SerializeField] private float dragCoeff = 0;
 
     [Header("Thrusting")]
     [Tooltip("poweeeeeeerrrr!!!")][SerializeField] private float maxThrust = 50;
+    [Tooltip("Soft speed limit (m/s), compote drag coeaf based on thism maxThrust and mass.")][SerializeField] private float softSpeedLimit = 17;
 
     [Header("Steering")]
     [Tooltip("x: pitch, y: yaw, z: roll")][SerializeField] private Vector3 turnSpeed = new(50, 50, 99);
@@ -65,7 +67,18 @@ public class FlightController : MonoBehaviour
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
-        Rigidbody.velocity = transform.forward * speedDragLimit;
+        Rigidbody.velocity = transform.forward * softSpeedLimit;
+
+        //terminal velocity v = sqrt(2ma/pAC)
+        //pAC is simplified to a single number in this simulation. ie, air dencity and cross area are ignored and bundled into drag coeff
+        //a is derived from F=ma -> a = F/m
+        //so 2ma -> 2F because m cancels out
+        //we want to know C so rearanging gives : C = 2F/v^2
+        //but when computing drag that formula contains 1/2 so I'll ignore the *2 now and the *.5 later... a pro-gamer move
+
+        float v2 = softSpeedLimit * softSpeedLimit;
+        dragCoeff = maxThrust / v2;
+
     }
 
     void FixedUpdate()
@@ -148,21 +161,21 @@ public class FlightController : MonoBehaviour
         Vector3 lvn = LocalVelocity.normalized; // directon to apply the drag in
         float lv2 = LocalVelocity.sqrMagnitude;
 
-        Vector3 coefficient = Vector3.Scale(lvn, dragPower);
+        Vector3 coefficient = Vector3.Scale(lvn, dragPower)*dragCoeff;
 
         Vector3 drag = coefficient.magnitude * lv2 * -lvn;
 
         Rigidbody.AddRelativeForce(drag);
 
 
-        
+
         //if we pass speedDragLimit the drag should increase by alot
-        if(1.0f < LocalVelocity.z / speedDragLimit) // this will be over one when speed is over speedDragLimit
-        {
-            float dirFactor = 1 + Vector3.Dot(Rigidbody.velocity.normalized, Vector3.up); // are we going downwards, i.e. gravity helps? then less drag, add 1 to make it >=0 [0-2]
-            //we are over the desired speed so we remove the delta multiplied with a factor related to direction so diving is less affected. (and going up is more)
-            Rigidbody.AddRelativeForce(dirFactor * dirFactor * -(LocalVelocity - lvn * speedDragLimit), ForceMode.VelocityChange);
-        }
+        //if (1.0f < LocalVelocity.z / speedDragLimit) // this will be over one when speed is over speedDragLimit
+        //{
+        //    float dirFactor = 1 + Vector3.Dot(Rigidbody.velocity.normalized, Vector3.up); // are we going downwards, i.e. gravity helps? then less drag, add 1 to make it >=0 [0-2]
+        //    we are over the desired speed so we remove the delta multiplied with a factor related to direction so diving is less affected. (and going up is more)
+        //    Rigidbody.AddRelativeForce(dirFactor * dirFactor * -(LocalVelocity - lvn * speedDragLimit), ForceMode.VelocityChange);
+        //}
 
     }
 

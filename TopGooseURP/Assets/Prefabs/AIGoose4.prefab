@@ -898,12 +898,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  inducedDragPower: 0.5
-  dragPower: {x: 0.1, y: 0.1, z: 0.01}
+  inducedDragPower: 0
+  dragPower: {x: 10, y: 10, z: 1}
   angularDrag: {x: 0.2, y: 0.2, z: 0.2}
   directionalDragCoeff: 1
-  speedDragLimit: 16
-  maxThrust: 40
+  dragCoeff: 0
+  maxThrust: 25
+  softSpeedLimit: 17
   turnSpeed: {x: 20, y: 20, z: 50}
   turnAcceleration: {x: 20, y: 20, z: 135}
   steeringCurve:
@@ -1075,7 +1076,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7923e5bf4c99eb540a4a5d0bfbd7fafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
   startHealth: 100
 --- !u!1 &3586902453248271984
 GameObject:
