@@ -7003,6 +7003,30 @@ PrefabInstance:
       propertyPath: seekerView
       value: 
       objectReference: {fileID: 4404426363021242202}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: maxThrust
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: dragPower.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: dragPower.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: dragPower.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: softSpeedLimit
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: inducedDragPower
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2759955723384096462, guid: d94c9a56aa88b594fb34416ab31b476b,
         type: 3}
       propertyPath: m_RootOrder
