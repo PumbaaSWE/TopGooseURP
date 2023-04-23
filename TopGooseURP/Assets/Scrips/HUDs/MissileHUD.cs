@@ -45,7 +45,7 @@ public class MissileHUD : MonoBehaviour
     private void UpdateGraphics()
     {
 
-        if (!missileLauncher.NoMissile)
+        if (missileLauncher.HasMissile)
         {
             SeekerHead seekerHead = missileLauncher.GetSeekerHead();
             if (seekerHead.TargetLocked)
@@ -64,7 +64,7 @@ public class MissileHUD : MonoBehaviour
             lockedView.gameObject.SetActive(false);
         }
         
-        seekerView.gameObject.SetActive(seekerView.position.z > 1f && !missileLauncher.NoMissile);
+        seekerView.gameObject.SetActive(seekerView.position.z > 1f && missileLauncher.HasMissile);
         
     }
 }

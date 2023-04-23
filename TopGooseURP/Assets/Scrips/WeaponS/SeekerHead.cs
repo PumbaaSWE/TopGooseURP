@@ -12,7 +12,7 @@ public class SeekerHead : MonoBehaviour
     [SerializeField][Range(1,89)] private float seekerFOV = 12;
 
 
-    [SerializeField] private float seekerRangeConeIgnore = 2;//future use maybe when my math is better...
+    [SerializeField] private float seekerRangeConeIgnore = 2;
     //[Range(0, 1)] public float seekerOffBoreInfluence = 0.1f;//future use maybe
 
     [Header("Tracking")]

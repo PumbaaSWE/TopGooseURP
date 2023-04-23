@@ -78,7 +78,7 @@ public class WeaponSystem : MonoBehaviour
 
     private void HandleMissileLauncher()
     {
-        if(MissileLauncher.NoMissile) return;
+        if(!MissileLauncher.HasMissile) return;
         MissileLauncher.SetCageDirection(flightInput.MouseAimDirection);
     }
 

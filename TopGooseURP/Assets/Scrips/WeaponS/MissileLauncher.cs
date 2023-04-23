@@ -11,7 +11,16 @@ public class MissileLauncher : MonoBehaviour
     [Tooltip("Draw Debug info in Scene view")]
     [SerializeField] private bool showDebugInfo = false;
     public float ReloadTime { get { return reloadTime; } set { reloadTime = value; } }
-    public bool NoMissile => selectedHardpoint < 0;
+    public bool HasMissile => selectedHardpoint >= 0;
+    public bool ReadyToLaunch 
+    {
+        get {
+            if (HasMissile) {
+                return selectedMissile.TargetLocked;
+            }
+            return false;
+        }
+    }
 
     public bool Active { get; private set; }
 
