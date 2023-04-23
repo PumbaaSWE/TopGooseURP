@@ -163,7 +163,7 @@ public class ManualFlightInput : MonoBehaviour
     private void Update()
     {
         //this should not be here
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.F1) || Input.GetKeyDown(KeyCode.P))
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = !Cursor.visible;

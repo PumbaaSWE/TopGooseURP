@@ -23,6 +23,7 @@ public class InGameMenu : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1f;
         mainmenuButton.onClick.AddListener(() =>
         {
             ChangeScene(sceneNum);
