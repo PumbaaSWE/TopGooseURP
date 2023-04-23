@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AIActor : MonoBehaviour
 {
-
+    public CombatCoordinator.Role Role { get; private set; }
+    public CombatCoordinator.Role role = CombatCoordinator.Role.Chaser;
+    public CombatCoordinator CombatCoordinator;
     public List<IUtility> utilities = new List<IUtility>();
     private int previusUtil = 0;
     private int currentUtil = 0;
@@ -17,6 +20,12 @@ public class AIActor : MonoBehaviour
         {
             this.utilities.Add(utilities[i] as IUtility);
         }
+
+        if(TryGetComponent(out Health health))
+        {
+            health.OnDead += OnDeathCallback;
+        }
+        Role = role;
     }
 
     void FixedUpdate()
@@ -47,5 +56,36 @@ public class AIActor : MonoBehaviour
             //possible cleanup/startup calls?
             previusUtil = currentUtil;
         }
+    }
+
+    private void OnDeathCallback() {
+        enabled = false;
+    }
+
+    public bool OfferRole(CombatCoordinator.Role role)
+    {
+        if(role < Role)
+        {
+            Role = role;
+            return true;
+        }
+        return false;
+    }
+
+    public void ReturnRole()
+    {
+        if(CombatCoordinator != null)
+            CombatCoordinator.ReturnRole(Role);
+        Role = CombatCoordinator.Role.Idler;
+    }
+
+    private void OnDisable()
+    {
+        ReturnRole();
+    }
+
+    private void OnDestroy()
+    {
+        ReturnRole();
     }
 }

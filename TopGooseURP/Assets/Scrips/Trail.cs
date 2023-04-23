@@ -11,7 +11,7 @@ public class Trail : MonoBehaviour
 
     private TrailRenderer trailRenderer;
 
-    void Start()
+    void Awake()
     {
         trailPool = TrailPoolManager.Instance;
         if(trailPool == null)
@@ -26,8 +26,8 @@ public class Trail : MonoBehaviour
             trailRenderer = trailPool.GetTrail(config, transform);
             //enabled = true;
         }
-           
-        
+
+        //Emitting(false);
     }
 
     public void Emitting(bool emitting)
