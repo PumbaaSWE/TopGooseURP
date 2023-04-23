@@ -20,9 +20,10 @@ public class InGameMenu : MonoBehaviour
     [Header("Scene Number")]
     [Tooltip("The scene index for Main Menu. Look in the build settings if you dont know it. Defautlt should be 0")]
     [SerializeField] int sceneNum = 0;
-
+    bool endScreenShown = false;
     private void Awake()
     {
+        endScreenShown = false;
         Time.timeScale = 1f;
         mainmenuButton.onClick.AddListener(() =>
         {
@@ -50,7 +51,7 @@ public class InGameMenu : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !endScreenShown)
         {
             PauseGame();
         }
@@ -58,9 +59,9 @@ public class InGameMenu : MonoBehaviour
 
     private void PauseGame()
     {
+        Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = !Cursor.visible;
-        Time.timeScale = 0f;
         HudUICanvas.gameObject.SetActive(false);
         pauseScreenPanel.gameObject.SetActive(true);
     }
@@ -73,5 +74,13 @@ public class InGameMenu : MonoBehaviour
         HudUICanvas.gameObject.SetActive(true);
         Time.timeScale = 1f;
 
+    }
+
+    public void EndScreen()
+    {
+        endScreenShown = true;
+        HudUICanvas.gameObject.SetActive(false);
+        pauseScreenPanel.gameObject.SetActive(false);
+        endScreenPanel.gameObject.SetActive(true);
     }
 }
