@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public abstract class Objective : MonoBehaviour
+public class Objective : MonoBehaviour
 {
 
     [SerializeField] private ObjectiveEventManager manager;
@@ -12,6 +12,7 @@ public abstract class Objective : MonoBehaviour
     [SerializeField] protected Texture2D icon;
     [SerializeField] private bool isPrimary;
     [SerializeField] protected bool shownOnMap;
+    [SerializeField] protected int count = 1;
     public bool IsComplete { get; private set; }
 
 
@@ -28,6 +29,7 @@ public abstract class Objective : MonoBehaviour
     protected virtual void Awake()
     {
         Register();
+        gameObject.name = Title;
     }
 
     protected void Register()
@@ -41,5 +43,20 @@ public abstract class Objective : MonoBehaviour
         manager.Completed(this);
         IsComplete = true;
         enabled = false;
+    }
+
+    public void CountOne()
+    {
+        Count(1);
+    }
+
+    public void Count(int value)
+    {
+        count -= value;
+        if (count <= 0)
+        {
+            Completed();
+            count = 0;
+        }
     }
 }

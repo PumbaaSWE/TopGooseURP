@@ -1513,6 +1513,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 261
       objectReference: {fileID: 0}
+    - target: {fileID: 7142741441288370770, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7142741441469225405, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1882,6 +1887,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   isPrimary: 1
   shownOnMap: 1
+  count: 1
 --- !u!1001 &1073153191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7706,6 +7712,10 @@ PrefabInstance:
       propertyPath: seekerView
       value: 
       objectReference: {fileID: 4404426363021242202}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: directionalDragCoeff
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: steeringCurve.m_Curve.Array.size
       value: 3

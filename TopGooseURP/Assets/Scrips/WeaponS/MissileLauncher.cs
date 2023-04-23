@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class MissileLauncher : MonoBehaviour
 {
@@ -98,7 +93,7 @@ public class MissileLauncher : MonoBehaviour
     /// To change what missile prefab to spawn at reload
     /// </summary>
     /// <param name="seekerHead">The missile to use</param>
-    public void SetSeekerHeadToUse(Missile missile)
+    public void SetMissileToUse(Missile missile)
     {
         this.missile = missile;
     }

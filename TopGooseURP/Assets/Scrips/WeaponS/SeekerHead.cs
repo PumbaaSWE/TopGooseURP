@@ -335,6 +335,7 @@ public class SeekerHead : MonoBehaviour
                 uncaged = true;
                 TargetLocked = true;
                 Tone = SeekerTone.Locked;
+                return;
             }
         }
         if (trackAngle > Mathf.Cos(27 * Mathf.Deg2Rad))
