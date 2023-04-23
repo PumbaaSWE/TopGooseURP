@@ -5,7 +5,7 @@ public class TeamMember : MonoBehaviour
 
     [SerializeField] private TeamData team;
 
-    public int Team => team.Team;
+    public TeamData Team => team;
 
     private TeamMember currAttacker;
     private float currValue;
@@ -19,13 +19,15 @@ public class TeamMember : MonoBehaviour
 
     private Health health;
 
+    public string info;
+
     // Start is called before the first frame update
     void Start()
     {
         health = GetComponent<Health>();
         health.OnChangeHealth += OnChangeHealth;
         health.OnDead += OnDeath;
-        team.TeamsManager.AddToTeam(this);
+        //team.TeamsManager.AddToTeam(this);
     }
 
     private void OnChangeHealth(float change, ChangeHealthType damageType, TeamMember attacker)
@@ -37,18 +39,20 @@ public class TeamMember : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        info = $"Score: {Score} Kills: {Kills} Assists: {Assists} Deaths: {Deaths}";
     }
 
     public void OnDeath()
     {
         if (currAttacker != null)
         {
+            //Debug.Log(gameObject.name + " RewardKill: " + currAttacker.gameObject.name);
             currAttacker.RewardKill(currValue);
             currAttacker = null;
         }
         if (prevAttacker != null)
         {
+            //Debug.Log(gameObject.name + " RewardAssist: " + prevAttacker.gameObject.name);
             prevAttacker.RewardAssist(prevValue);
             prevAttacker = null;
         }
@@ -57,6 +61,8 @@ public class TeamMember : MonoBehaviour
 
     private void RewardKill(float value)
     {
+        //Debug.Assert(team != null, "team == null");
+        //Debug.Assert(team.TeamsManager != null, "team.TeamsManager == null");
         Score += team.TeamsManager.KillScore;
         Kills++;
     }
@@ -64,7 +70,7 @@ public class TeamMember : MonoBehaviour
     private void RewardAssist(float value)
     {
         Assists++;
-        if(team.TeamsManager.DamageBasedAssistScore)
+        if (team.TeamsManager.DamageBasedAssistScore)
             Score += Mathf.RoundToInt(value); //ciel?
         else
             Score += team.TeamsManager.AssistScore;
@@ -92,6 +98,11 @@ public class TeamMember : MonoBehaviour
         {
             currValue += value;
         }
+    }
+
+    public void RewardScore(int value)
+    {
+        Score += value;
     }
 
     public bool SameTeam(TeamMember teamMember)

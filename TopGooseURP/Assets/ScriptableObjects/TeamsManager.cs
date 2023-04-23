@@ -5,7 +5,7 @@ public class TeamsManager : ScriptableObject
 {
 
     private List<TeamMember>[] members = new List<TeamMember>[3];
-    private readonly Dictionary<int, List<TeamMember>> teams = new();
+    private readonly Dictionary<TeamData, List<TeamMember>> teams = new();
 
     public int KillScore = 100;
     public bool DamageBasedAssistScore = true;

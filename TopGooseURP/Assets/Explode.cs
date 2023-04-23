@@ -14,6 +14,7 @@ public class Explode : MonoBehaviour
     [SerializeField] LayerMask layerMask;
 
     [SerializeField] float force = 1000;
+    [SerializeField] DamageType type;
     //[SerializeField] bool explodeOnStart = true;
 
     void Awake()
@@ -51,7 +52,12 @@ public class Explode : MonoBehaviour
                 float dist = Vector3.Distance(closestPoint, exposionCenter); //maybe ray cast to see if nothing is between first?
                 float damage = (1 - dist / maxRange) * this.damage;
                 //Debug.Log("sfghsfghjsdfghjtsfgjsdfghjdghjdghjkdghjkdghkjdghkdghk : " + _colliders[i].gameObject.name);
-                health.ChangeHealth(-damage, ChangeHealthType.explosion, owner);
+                //health.ChangeHealth(-damage, ChangeHealthType.explosion, owner);
+
+
+
+                health.DealDamage(new DamageInfo(owner, damage, type, exposionCenter, force, maxRange));
+
                 if (health.Dead && rb != null)
                 {
                     rb.AddExplosionForce(force, exposionCenter, maxRange);

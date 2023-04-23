@@ -21,7 +21,7 @@ public class Missile : MonoBehaviour
     //private Transform hardpoint;
     //private float lifeTime;
 
-    private TeamMember teamMember;
+    private TeamMember owner;
 
     void Awake()
     {
@@ -37,10 +37,10 @@ public class Missile : MonoBehaviour
         //Initialize(missileData);
     }
 
-    public void Initialize(MissileData missileData, TeamMember owner, bool enabledCollider = false)
+    public void Initialize(MissileData missileData, TeamMember owner, bool enabledCollider = true)
     {
         this.missileData = missileData;
-        teamMember = owner;
+        this.owner = owner;
         proxyRange.radius = missileData.proxyFuseRange;
         proxyRange.enabled = false;
         Rigidbody.isKinematic = true;
@@ -53,7 +53,7 @@ public class Missile : MonoBehaviour
         {
             trail.Emitting(false);
             //trail.
-        }  
+        }
     }
 
     public void Initialize(TeamMember owner)
@@ -85,6 +85,7 @@ public class Missile : MonoBehaviour
         if (missileData.proxyFuseArmTime > 0) StartCoroutine(ArmProxyFuse(missileData.proxyFuseArmTime));
         enabled = false; // remove if this prevents OnTriggerEnter from being called!
         //lifeTime = 0;
+        Destroy(gameObject, missileData.timeToLive);
     }
 
     void Update()
@@ -106,6 +107,7 @@ public class Missile : MonoBehaviour
         yield return new WaitForSeconds(t);
         //Debug.LogWarning("ProxyFuse Enabled");
         proxyRange.enabled = true;
+        Collider.enabled = true;
     }
 
 
@@ -115,7 +117,7 @@ public class Missile : MonoBehaviour
         //spawn explosion?
         //return to a pool?
         if(explosion != null)
-            Instantiate(explosion, transform.position, transform.rotation).ExplodeNow();
+            Instantiate(explosion, transform.position, transform.rotation).ExplodeNow(owner);
 
         Destroy(gameObject);
     }
@@ -138,12 +140,11 @@ public class Missile : MonoBehaviour
         //if(!SeekerHead.Launched) return;
         if ((missileData.targetLayer.value & (1 << other.transform.gameObject.layer)) > 0)
         {
-            Debug.Log("OnTriggerExit - Hit with Layermask");
             Explode();
         }
         else
         {
-            Debug.Log("OnTriggerExit - Hit something, but not in Layermask");
+            
         }
     }
 }

@@ -149,7 +149,6 @@ public class SeekerHead : MonoBehaviour
 
         autoPilot.SetThrottleInput(1);
         Launched = true;
-        Destroy(gameObject, 5.0f); //Please fix the hard coding here!
     }
 
 

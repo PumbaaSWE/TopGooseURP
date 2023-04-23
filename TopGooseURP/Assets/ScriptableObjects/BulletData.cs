@@ -1,7 +1,6 @@
 using UnityEngine;
 
-
-[CreateAssetMenu(menuName = "BulletData")]
+[CreateAssetMenu(fileName = "NewBulletData", menuName = "ScriptableObject/BulletData")]
 public class BulletData : ScriptableObject
 {
     
@@ -10,6 +9,10 @@ public class BulletData : ScriptableObject
     public float speed; //m/s
 
     public float damage;
+
+    public DamageType damageType;
+    public LayerMask hitLayer;
+    public float gravity = 10;
     //public float size?;
     //public float mass; // assumed 1 (one) always...
 

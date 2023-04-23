@@ -129,9 +129,10 @@ public class RagdollHandler : MonoBehaviour
         float impulse = collision.impulse.magnitude;
         if(impulse >= triggerForce * Time.fixedDeltaTime)
         {
-            
-            Debug.Log("RagdollHandler - Enabling Ragdoll, Impulse magnitude: " + impulse + " computed impact force(I think): " + impulse / Time.fixedDeltaTime);
+            //collision.re
+            //Debug.Log("RagdollHandler - Enabling Ragdoll, Impulse magnitude: " + impulse + " computed impact force(I think): " + impulse / Time.fixedDeltaTime);
             EnableRagdoll();
+            
         }
         
         

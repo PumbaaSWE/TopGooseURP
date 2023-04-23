@@ -5033,12 +5033,11 @@ MonoBehaviour:
   systems: []
   damage: 60
   maxRange: 8
-  minRange: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 2147483647
   force: 100
-  explodeOnStart: 1
+  type: {fileID: 11400000, guid: 3fd5300f509de7a409099148f1fa8375, type: 2}
 --- !u!1 &1189621324720392
 GameObject:
   m_ObjectHideFlags: 0

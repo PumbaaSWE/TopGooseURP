@@ -651,6 +651,7 @@ GameObject:
   - component: {fileID: 6605812319767363188}
   - component: {fileID: 7869128439128220966}
   - component: {fileID: 7327930071706230394}
+  - component: {fileID: 4779735588342292964}
   m_Layer: 7
   m_Name: AIGoose4
   m_TagString: Untagged
@@ -905,8 +906,8 @@ MonoBehaviour:
   dragCoeff: 0
   maxThrust: 25
   softSpeedLimit: 17
-  turnSpeed: {x: 20, y: 20, z: 50}
-  turnAcceleration: {x: 20, y: 20, z: 135}
+  turnSpeed: {x: 15, y: 15, z: 40}
+  turnAcceleration: {x: 20, y: 20, z: 75}
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -1076,7 +1077,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7923e5bf4c99eb540a4a5d0bfbd7fafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageModsArray: []
   startHealth: 100
+--- !u!114 &4779735588342292964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3473681141775718203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa93e19b8bd9a064993707e90c797c73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: {fileID: 11400000, guid: ffe3c74785ccd5949903eedc0b11ec9d, type: 2}
+  info: 
 --- !u!1 &3586902453248271984
 GameObject:
   m_ObjectHideFlags: 0
