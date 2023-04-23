@@ -1237,6 +1237,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7142741441212491134, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 261
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741441469225405, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.7999878
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741441469225405, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -202.20001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741441513484928, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741441513484928, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741441513484928, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741441513484929, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.7999878
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741441513484929, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -202.20001
+      objectReference: {fileID: 0}
     - target: {fileID: 7142741441984068073, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
       propertyPath: HudUICanvas
@@ -1347,10 +1387,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7142741441984068075, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 7142741441984068078, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
       propertyPath: m_Name
       value: UI for Pause and EndScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741442048634065, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741442167524760, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.7999878
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741442167524760, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -297.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741442421197329, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.7999878
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142741442421197329, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -107.92301
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 035374256d543e64e96471dfbac1c51b, type: 3}
