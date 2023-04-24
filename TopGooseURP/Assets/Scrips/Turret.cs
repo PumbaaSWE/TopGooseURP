@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Health))]
 public class Turret : MonoBehaviour
 {
     [SerializeField]
@@ -20,7 +21,6 @@ public class Turret : MonoBehaviour
     Gun gun;
 
     Rigidbody targetRb;
-
     private void Start()
     {
         targetRb = target.GetComponent<Rigidbody>();
@@ -29,9 +29,12 @@ public class Turret : MonoBehaviour
 
         GetComponent<Health>().OnDead += () => 
         {
+            gun.Fire = false;
             enabled = false;
         };
     }
+
+    
 
     // Update is called once per frame
     void Update()
