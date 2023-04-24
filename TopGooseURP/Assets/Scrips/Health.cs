@@ -15,11 +15,14 @@ public class Health : MonoBehaviour
 
     public List<DamageModsPair> damageModifier = new();
     private readonly Dictionary<DamageType, float> damageMods = new(); 
+
     public float Amount { get; private set; }
     public bool Dead { get; private set; }
 
     [SerializeField]
     private float startHealth = 100;
+
+
 
 
     public void ChangeHealth(float change, ChangeHealthType damageType , TeamMember damager)
@@ -43,6 +46,7 @@ public class Health : MonoBehaviour
         float damage = info.amount;
         if (damageMods.TryGetValue(info.type, out float mod)){
             damage *= mod;
+            if (damage == 0) return;
         }
         damage = Mathf.Min(damage, Amount); // deal no more damage than there is hp
         Amount -= damage;
