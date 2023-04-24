@@ -26,6 +26,11 @@ public class Turret : MonoBehaviour
         targetRb = target.GetComponent<Rigidbody>();
         gun = GetComponentInChildren<Gun>();
         gun.Fire = true;
+
+        GetComponent<Health>().OnDead += () => 
+        {
+            enabled = false;
+        };
     }
 
     // Update is called once per frame

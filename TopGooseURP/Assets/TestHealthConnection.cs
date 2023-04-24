@@ -9,7 +9,7 @@ public class TestHealthConnection : MonoBehaviour
     private Health health;
     [SerializeField]
     bool removeWhenDead;
-    Color startColor;
+    Color[] startColor;
 
     // Start is called before the first frame update
     void Start()
@@ -19,8 +19,15 @@ public class TestHealthConnection : MonoBehaviour
         if(removeWhenDead)
         health.OnDead += RemoveOnDead;
         health.OnChangeHealth += OnChangeHealth;
+        health.OnDamage += OnDamageHealth;
 
-        startColor = GetComponent<Renderer>().material.color;
+        Renderer[] renderer = GetComponentsInChildren<Renderer>();
+
+        startColor = new Color[renderer.Length];
+        for (int i = 0; i < renderer.Length; i++)
+        {
+            startColor[i] = renderer[i].material.color;
+        }
     }
 
     public void RemoveOnDead()
@@ -38,15 +45,31 @@ public class TestHealthConnection : MonoBehaviour
         }
     }
 
+    public void OnDamageHealth(DamageInfo info, float actualDamage)
+    {
+        if (actualDamage < 0)
+        {
+            // make it red?
+            Invoke("RedBlink", 0f);
+            Invoke("TurnBackBlink", 0.05f);
+        }
+    }
+
     public void RedBlink()
     {
-        Renderer renderer = GetComponent<Renderer>();
-        renderer.material.color = Color.red;
+        Renderer[] renderer = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderer.Length; i++)
+        {
+            renderer[i].material.color = Color.red;
+        }
     }
     public void TurnBackBlink()
     {
-        Renderer renderer = GetComponent<Renderer>();
-        renderer.material.color = startColor;
+        Renderer[] renderer = GetComponentsInChildren<Renderer>();
+        for(int i = 0; i < renderer.Length; i++)
+        {
+            renderer[i].material.color = startColor[i];
+        }
     }
 
 }
