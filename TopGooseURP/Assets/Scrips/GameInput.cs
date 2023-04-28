@@ -6,8 +6,18 @@ using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
-
-    public event EventHandler FireMainAction, FireSecondaryAction, SwitchWeaponAction, InGameMenuAction;
+    /*
+     [X] MouseMove
+     [X] KeyboardMove
+     [X] FireMain
+     [X] FireSecondary
+     [X] ChangeSpeed
+     [X] Freelook
+     [] Yaw
+     [X] IngameMenu
+     [X] SwitchWapon
+     */
+    public event EventHandler FireMainAction, FireSecondaryAction, SwitchWeaponAction, InGameMenuAction, FreeLookStart, FreeLookCancel;
     private PlayerInputAction playerInputAction;
 
     private void Awake()
@@ -22,9 +32,13 @@ public class GameInput : MonoBehaviour
         //Keyboard
         playerInputAction.PlayerControls.SwitchWeapon.performed += SwitchWeapon_performed;
         playerInputAction.PlayerControls.IngameMenu.performed += IngameMenu_performed;
-        playerInputAction.PlayerControls.Freelook.performed += Freelook_performed;
+        playerInputAction.PlayerControls.Freelook.performed += Freelook_started;
+        playerInputAction.PlayerControls.Freelook.canceled += Freelook_canceled;
+
         
     }
+
+    
 
     #region Methods
     public float ThrottleChangeActionNormalized()
@@ -34,6 +48,11 @@ public class GameInput : MonoBehaviour
     public Vector2 MouseAxis()
     {
         return playerInputAction.PlayerControls.MouseMove.ReadValue<Vector2>();
+    }
+    public Vector2 KeyboardMovement()
+    {
+        Vector2 inputVec = playerInputAction.PlayerControls.KeyboardMove.ReadValue<Vector2>();
+        return inputVec;
     }
     #endregion
 
@@ -54,9 +73,13 @@ public class GameInput : MonoBehaviour
     {        
         FireMainAction?.Invoke(this, EventArgs.Empty);
     }
-    private void Freelook_performed(InputAction.CallbackContext obj)
+    private void Freelook_started(InputAction.CallbackContext obj)
     {
-        throw new NotImplementedException();
+        FreeLookStart?.Invoke(this, EventArgs.Empty);
+    }
+    private void Freelook_canceled(InputAction.CallbackContext obj)
+    {
+        FreeLookCancel?.Invoke(this, EventArgs.Empty);
     }
     #endregion
 
