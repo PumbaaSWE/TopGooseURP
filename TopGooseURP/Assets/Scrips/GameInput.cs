@@ -13,7 +13,7 @@ public class GameInput : MonoBehaviour
      [X] FireSecondary
      [X] ChangeSpeed
      [X] Freelook
-     [] Yaw
+     [] Yaw?
      [X] IngameMenu
      [X] SwitchWapon
      */
