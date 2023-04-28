@@ -56,7 +56,7 @@ public class ManualFlightInput : MonoBehaviour
 
     //Sensitivity is 0.15f to match old system input
     [Tooltip("Mouse sensitivity for the mouse flight target")]
-    [SerializeField] private float mouseSensitivity = 0.15f;
+    [SerializeField][Range(0.01f,1f)] private float mouseSensitivity = 0.15f;
 
     [Tooltip("How far the boresight and mouse flight are from the aircraft")]
     [SerializeField] private float aimDistance = 500f;

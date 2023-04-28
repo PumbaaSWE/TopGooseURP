@@ -1591,6 +1591,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7142741441984068073, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
+      propertyPath: gameInput
+      value: 
+      objectReference: {fileID: 1933499156}
+    - target: {fileID: 7142741441984068073, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
       propertyPath: HudUICanvas
       value: 
       objectReference: {fileID: 3436533931199534636}
@@ -9345,7 +9350,7 @@ MonoBehaviour:
   pilot: {fileID: 59483370}
   useFixed: 0
   camSmoothSpeed: 5
-  mouseSensitivity: 3
+  mouseSensitivity: 0.15
   aimDistance: 500
   inputThreshold: 0.25
   camAlignThreshold: 0.9
