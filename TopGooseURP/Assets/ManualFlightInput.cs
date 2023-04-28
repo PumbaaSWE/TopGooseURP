@@ -75,6 +75,8 @@ public class ManualFlightInput : MonoBehaviour
     //[SerializeField] private float mouseXsens = 100.0f;
     //[SerializeField] private float mouseYsens = 100.0f;
 
+    [Space]
+    [SerializeField] private GameInput gameInput;
 
     private Vector3 frozenDirection = Vector3.forward;
 
@@ -158,6 +160,7 @@ public class ManualFlightInput : MonoBehaviour
     private void Start()
     {
         controller.SetThrottleInput(1);
+        
     }
 
     private void Update()
@@ -252,13 +255,18 @@ public class ManualFlightInput : MonoBehaviour
         // Mouse input.
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = -Input.GetAxis("Mouse Y") * mouseSensitivity;
-        float scoll = Input.mouseScrollDelta.y;
-        controller.SetThrottleInput(controller.Throttle + scoll);
 
+        float mouseXN = gameInput.MousePositionX() * mouseSensitivity * Time.deltaTime;
+        float mouseYN = -gameInput.MousePositionY() * mouseSensitivity * Time.deltaTime;
+
+        Debug.Log($"MXN:{mouseXN} MYN:{mouseYN} , MX:{mouseX}  MY:{mouseY}");
+        float scroll = gameInput.ThrottleChangeActionNormalized();
+        controller.SetThrottleInput(controller.Throttle + scroll);
+        
         // Rotate the aim target that the plane is meant to fly towards.
         // Use the camera's axes in world space so that mouse motion is intuitive.
-        mouseAim.Rotate(cam.right, mouseY, Space.World);
-        mouseAim.Rotate(cam.up, mouseX, Space.World);
+        mouseAim.Rotate(cam.right, mouseYN, Space.World);
+        mouseAim.Rotate(cam.up, mouseXN, Space.World);
 
         // The up vector of the camera normally is aligned to the horizon. However, when
         // looking straight up/down this can feel a bit weird. At those extremes, the camera

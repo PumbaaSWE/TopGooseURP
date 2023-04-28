@@ -7,19 +7,23 @@ using UnityEngine.SceneManagement;
 public class InGameMenu : MonoBehaviour
 {
     [Header("Hud")]
-    [SerializeField] Canvas HudUICanvas;
-    [SerializeField] GameObject endScreenPanel;
-    [SerializeField] GameObject pauseScreenPanel;
+    [SerializeField] private Canvas HudUICanvas;
+    [SerializeField] private GameObject endScreenPanel;
+    [SerializeField] private GameObject pauseScreenPanel;
 
     [Header("Button")]
-    [SerializeField] Button mainmenuButton;
-    [SerializeField] Button continueButton;
-    [SerializeField] Button exitToMainMenuButton;
-    [SerializeField] Button exitToDesktopButton;
+    [SerializeField] private Button mainmenuButton;
+    [SerializeField] private Button continueButton;
+    [SerializeField] private Button exitToMainMenuButton;
+    [SerializeField] private Button exitToDesktopButton;
 
     [Header("Scene Number")]
     [Tooltip("The scene index for Main Menu. Look in the build settings if you dont know it. Defautlt should be 0")]
-    [SerializeField] int sceneNum = 0;
+    [SerializeField] private int sceneNum = 0;
+
+    [Header("GameInput")]
+    [SerializeField] private GameInput gameInput;
+
     bool endScreenShown = false;
     private void Awake()
     {
@@ -42,6 +46,7 @@ public class InGameMenu : MonoBehaviour
             Application.Quit();
         });
     }
+
     private void ChangeScene(int sceneNum)
     {
         SceneManager.LoadScene(sceneNum);
@@ -49,31 +54,37 @@ public class InGameMenu : MonoBehaviour
         Cursor.visible = !Cursor.visible;
     }
 
-    public void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !endScreenShown)
-        {
-            PauseGame();
-        }
+        gameInput.InGameMenuAction += GameInput_InGameMenuAction;
+    }
+
+    private void GameInput_InGameMenuAction(object sender, System.EventArgs e)
+    {
+        PauseGame();
     }
 
     private void PauseGame()
     {
-        Time.timeScale = 0f;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = !Cursor.visible;
-        HudUICanvas.gameObject.SetActive(false);
-        pauseScreenPanel.gameObject.SetActive(true);
+        if (!endScreenShown)
+        {
+            gameInput.GamePause();
+            Time.timeScale = 0f;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            HudUICanvas.gameObject.SetActive(false);
+            pauseScreenPanel.gameObject.SetActive(true);
+        }
     }
 
     private void UnPauseGame()
     {
+        gameInput.GameUnPause();
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = !Cursor.visible;
+        Cursor.visible = false;
         pauseScreenPanel.gameObject.SetActive(false);
         HudUICanvas.gameObject.SetActive(true);
         Time.timeScale = 1f;
-
     }
 
     public void EndScreen()
