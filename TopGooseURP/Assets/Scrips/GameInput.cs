@@ -31,13 +31,9 @@ public class GameInput : MonoBehaviour
     {
         return playerInputAction.PlayerControls.ChangeSpeed.ReadValue<Vector2>().y;
     }
-    public float MousePositionY()
+    public Vector2 MouseAxis()
     {
-        return playerInputAction.PlayerControls.MouseMove.ReadValue<Vector2>().y;
-    }
-    public float MousePositionX()
-    {
-        return playerInputAction.PlayerControls.MouseMove.ReadValue<Vector2>().x;
+        return playerInputAction.PlayerControls.MouseMove.ReadValue<Vector2>();
     }
     #endregion
 

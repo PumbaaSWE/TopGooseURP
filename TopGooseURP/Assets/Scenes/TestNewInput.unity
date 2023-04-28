@@ -9319,6 +9319,7 @@ MonoBehaviour:
   camAlignThreshold: 0.9
   showDebugInfo: 0
   useAdvancedAutopilot: 1
+  gameInput: {fileID: 1509754741}
 --- !u!54 &6816109213647509651
 Rigidbody:
   m_ObjectHideFlags: 0

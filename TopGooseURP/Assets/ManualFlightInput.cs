@@ -55,7 +55,7 @@ public class ManualFlightInput : MonoBehaviour
     [SerializeField] private float camSmoothSpeed = 5f;
 
     [Tooltip("Mouse sensitivity for the mouse flight target")]
-    [SerializeField] private float mouseSensitivity = 3f;
+    [SerializeField] private float mouseSensitivity = 0.15f;
 
     [Tooltip("How far the boresight and mouse flight are from the aircraft")]
     [SerializeField] private float aimDistance = 500f;
@@ -160,7 +160,6 @@ public class ManualFlightInput : MonoBehaviour
     private void Start()
     {
         controller.SetThrottleInput(1);
-        
     }
 
     private void Update()
@@ -234,7 +233,6 @@ public class ManualFlightInput : MonoBehaviour
         controller.SetControlInput(input);
     }
 
-
     private void RotateRig()
     {
         if (mouseAim == null || cam == null || cameraRig == null)
@@ -251,22 +249,21 @@ public class ManualFlightInput : MonoBehaviour
             isMouseAimFrozen = false;
             mouseAim.forward = frozenDirection;
         }
+        //// Mouse input.
+        //float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        //float mouseY = -Input.GetAxis("Mouse Y") * mouseSensitivity;
+        
+        Vector2 mouseAxis = gameInput.MouseAxis();
+        float mouseX = mouseAxis.x * mouseSensitivity;
+        float mouseY = -mouseAxis.y * mouseSensitivity;
 
-        // Mouse input.
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = -Input.GetAxis("Mouse Y") * mouseSensitivity;
-
-        float mouseXN = gameInput.MousePositionX() * mouseSensitivity * Time.deltaTime;
-        float mouseYN = -gameInput.MousePositionY() * mouseSensitivity * Time.deltaTime;
-
-        Debug.Log($"MXN:{mouseXN} MYN:{mouseYN} , MX:{mouseX}  MY:{mouseY}");
         float scroll = gameInput.ThrottleChangeActionNormalized();
         controller.SetThrottleInput(controller.Throttle + scroll);
         
         // Rotate the aim target that the plane is meant to fly towards.
         // Use the camera's axes in world space so that mouse motion is intuitive.
-        mouseAim.Rotate(cam.right, mouseYN, Space.World);
-        mouseAim.Rotate(cam.up, mouseXN, Space.World);
+        mouseAim.Rotate(cam.right, mouseY, Space.World);
+        mouseAim.Rotate(cam.up, mouseX, Space.World);
 
         // The up vector of the camera normally is aligned to the horizon. However, when
         // looking straight up/down this can feel a bit weird. At those extremes, the camera
