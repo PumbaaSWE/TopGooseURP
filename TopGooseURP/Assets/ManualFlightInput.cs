@@ -54,6 +54,7 @@ public class ManualFlightInput : MonoBehaviour
     [Tooltip("How quickly the camera tracks the mouse aim point.")]
     [SerializeField] private float camSmoothSpeed = 5f;
 
+    //Sensitivity is 0.15f to match old system input
     [Tooltip("Mouse sensitivity for the mouse flight target")]
     [SerializeField] private float mouseSensitivity = 0.15f;
 
