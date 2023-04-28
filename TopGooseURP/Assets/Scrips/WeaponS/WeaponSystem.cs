@@ -68,33 +68,6 @@ public class WeaponSystem : MonoBehaviour
 
     void Update()
     {
-        //FOR TESTING!!!! *****REMOVE*****
-        //if (Input.GetKeyDown(KeyCode.F))
-        //{
-        //    OnSecondarySwitch();
-        //}
-
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    OnPrimaryFire();
-        //}
-        //if (Input.GetMouseButtonUp(0))
-        //{
-        //    OnPrimaryStop();
-        //}
-
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    OnSecondaryFire();
-        //}
-        //if (Input.GetMouseButtonUp(1))
-        //{
-        //    OnSecondaryStop();
-        //}
-        //*****END OF REMOVE******
-
-        
-
         if (bombs)
         {
             //HandleBombBay();
