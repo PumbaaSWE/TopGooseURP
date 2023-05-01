@@ -23,6 +23,9 @@ public class OnDeath : MonoBehaviour
     [SerializeField]
     float startDissolvingAfter;
 
+    [SerializeField]
+    float instantRagdollBelowYVel;
+
     float t, spin, spinPreviousUpdate;
     bool dissolve, ragdoll, dead, counterClockWise;
 
@@ -96,6 +99,7 @@ public class OnDeath : MonoBehaviour
 
     private void OnDeathDo()
     {
+        if (rigidBody.velocity.y < instantRagdollBelowYVel) ragdollHandler.EnableRagdoll();
         rigidBody.AddRelativeTorque(new Vector3(0, 0, 0.2f), ForceMode.Impulse);
         dead = true;
         flightController.enabled = false;
