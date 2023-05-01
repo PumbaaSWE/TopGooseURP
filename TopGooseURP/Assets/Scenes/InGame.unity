@@ -2015,6 +2015,39 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1870864018}
   m_PrefabAsset: {fileID: 0}
+--- !u!135 &1406932391
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406932378}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1406932405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406932378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eaaeb6db18204f4abc06e7b68099850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrow: {fileID: 2524325631741863860, guid: 30019652bde427148baf9e7423f7be1b, type: 3}
+  sphereCollider: {fileID: 1406932391}
+  detectionRadius: 40
+  detectLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  detectLayerName: HeatSources
+  rig: {fileID: 6816109213647509614}
 --- !u!1001 &1440023360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7681,7 +7714,7 @@ PrefabInstance:
     - target: {fileID: 2759955723384096462, guid: d94c9a56aa88b594fb34416ab31b476b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2759955723384096462, guid: d94c9a56aa88b594fb34416ab31b476b,
         type: 3}
