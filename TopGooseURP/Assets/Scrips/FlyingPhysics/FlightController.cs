@@ -28,36 +28,79 @@ public class FlightController : MonoBehaviour
     [Tooltip("x: pitch, y: yaw, z: roll")][SerializeField] private Vector3 turnAcceleration = new(99, 99, 99);
     [Tooltip("Set to one if unsure")][SerializeField] private AnimationCurve steeringCurve;
 
-
+    /// <summary>
+    /// Read only - Rigidbody velocity
+    /// </summary>
     public Vector3 Velocity { get; private set; }
+    /// <summary>
+    /// Read only - The Rigidbody velocity in this objects local space
+    /// </summary>
     public Vector3 LocalVelocity { get; private set; }
+    /// <summary>
+    /// Read only - The Rigidbody angular velocity in this objects local space
+    /// </summary>
     public Vector3 LocalAngularVelocity { get; private set; }
+    /// <summary>
+    /// Read only - The angle of attack in degrees of the forward vector (pitch)
+    /// </summary>
     public float AngleOfAttack { get; private set; }
+    /// <summary>
+    /// Read only - The yawing angle of attack in degrees of the forward vector
+    /// </summary>
     public float AngleOfAttackYaw { get; private set; }
+    /// <summary>
+    /// Read only - Reference to the attached rigidbody
+    /// </summary>
     public Rigidbody Rigidbody { get; private set; }
+    /// <summary>
+    /// Read only - Current position of the throttle
+    /// </summary>
     public float Throttle { get; private set; }
+    /// <summary>
+    /// Read only - Current Stering vector used as input for steering, pitch, yaw and roll
+    /// </summary>
     public Vector3 Steering { get; private set; }
+    /// <summary>
+    /// Used to ignore any control input set by any other script
+    /// </summary>
     public bool DisableInput { get; set; }
 
     private float throttleInput;
     private Vector3 controlInput;
 
+
+    /// <summary>
+    /// Set the throttle, the value is clamped between 0 and 1. Is how much of the maxThrust that is applied.
+    /// </summary>
+    /// <param name="input"></param>
     public void SetThrottleInput(float input)
     {
         if (DisableInput) return;
         throttleInput = input;
     }
+
+    /// <summary>
+    /// Set the input for pitch, yaw and roll (in that order) with a vector.
+    /// -1 to 1 are max and min values
+    /// </summary>
+    /// <param name="input">The Vector3 representing pitch, yaw and roll</param>
     public void SetControlInput(Vector3 input)
     {
         if (DisableInput) return;
         controlInput = Vector3.ClampMagnitude(input, 1);
     }
-    internal void ResetInput()
+
+    /// <summary>
+    /// Set all inputs to zero, useful for respawns
+    /// </summary>
+    public void ResetInput()
     {
         throttleInput = 0;
         controlInput = Vector3.zero;
     }
-
+    /// <summary>
+    /// Instantly stop this rigidbody, useful for respawns
+    /// </summary>
     public void ResetVelocities()
     {
         Rigidbody.velocity = Vector3.zero;
@@ -98,19 +141,19 @@ public class FlightController : MonoBehaviour
 
     }
 
-    void UpdateThrust()
+    private void UpdateThrust()
     {
         Rigidbody.AddRelativeForce(Throttle * maxThrust * Vector3.forward);
     }
 
-    float CalculateSteering(float dt, float angularVelocity, float targetVelocity, float acceleration)
+    private float CalculateSteering(float dt, float angularVelocity, float targetVelocity, float acceleration)
     {
         float error = targetVelocity - angularVelocity;
         float a = acceleration * dt;
         return Mathf.Clamp(error, -a, a);
     }
 
-    void UpdateThrottle(float dt)
+    private void UpdateThrottle(float dt)
     {
         Throttle = Mathf.Clamp(throttleInput, 0, 1); // dt to be incorporated to not throttle to fast
     }
