@@ -54,6 +54,10 @@ public class GameInput : MonoBehaviour
         Vector2 inputVec = playerInputAction.PlayerControls.KeyboardMove.ReadValue<Vector2>();
         return inputVec;
     }
+    public float YawActionNormalized()
+    {
+        return playerInputAction.PlayerControls.Yaw.ReadValue<Vector2>().x;
+    }
     #endregion
 
     #region Events
