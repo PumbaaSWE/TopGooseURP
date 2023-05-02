@@ -10272,6 +10272,7 @@ GameObject:
   - component: {fileID: 564888263}
   - component: {fileID: 564888264}
   - component: {fileID: 564888265}
+  - component: {fileID: 6899454808476983190}
   m_Layer: 3
   m_Name: Turret
   m_TagString: Untagged
@@ -10338,7 +10339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageModifier: []
-  startHealth: 100
+  startHealth: 1000
 --- !u!114 &564888264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10365,8 +10366,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0
+  aliveTime: 10
   dissolveSpeed: 0.15
   dissolveMaterial: {fileID: 2100000, guid: 6301891a6e55f3c4d8ffe885394cd0a2, type: 2}
+--- !u!114 &6899454808476983190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8682106633928389576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccbd254555d2e194691820bbddc9f811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flatShade: 1
+  splitAmount: 100
+  size: {x: 5, y: 5, z: 5}
+  split: 0
 --- !u!1 &8682106633951472261
 GameObject:
   m_ObjectHideFlags: 0

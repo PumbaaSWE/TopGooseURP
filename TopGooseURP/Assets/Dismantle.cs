@@ -6,29 +6,19 @@ using UnityEngine;
 public class Dismantle : MonoBehaviour
 {
 
-    MeshFilter[] allVisible;
     Health health;
+    Slicer slicer;
 
     // Start is called before the first frame update
     void Start()
     {
         health = GetComponent<Health>();
-
-        allVisible = GetComponentsInChildren<MeshFilter>();
-        health.OnDead += AddRigidbodies;
+        slicer = GetComponent<Slicer>();
+        health.OnDead += Slice;
     }
 
-    private void AddRigidbodies()
+    private void Slice()
     {
-        for (int i = 0; i < allVisible.Length; i++)
-        {
-            allVisible[i].gameObject.AddComponent<Rigidbody>();
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        slicer.split = true;
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 public class DissolveGameObject : MonoBehaviour
 {
     [SerializeField][Range(0.0f, 1.0f)] float time;
+    float dissolveTime;
+    [SerializeField] float aliveTime;
     [SerializeField] float dissolveSpeed;
     [SerializeField] Material dissolveMaterial;
     List<Renderer> dissolveThese = new List<Renderer>();
@@ -17,6 +19,27 @@ public class DissolveGameObject : MonoBehaviour
     void Start()
     {
         health = GetComponent<Health>();
+        health.OnDead += OnDead;
+        doOnce = true;
+        enabled = false;
+
+    }
+
+    private void OnDead()
+    {
+        StartCoroutine(StartDissolve());
+    }
+
+    private IEnumerator StartDissolve()
+    {
+        yield return new WaitForSeconds(aliveTime);
+        enabled = true;
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].sharedMaterial = dissolveMaterial;
+            if (renderers[i].material.shader.name.Contains("Dissolve")) dissolveThese.Add(renderers[i]);
+        }
         doOnce = true;
     }
 
@@ -24,20 +47,9 @@ public class DissolveGameObject : MonoBehaviour
     {
         if(health.Amount <= 0)
         {
-            if(doOnce)
-            {
-                Renderer[] renderers = GetComponentsInChildren<Renderer>();
-                for (int i = 0; i < renderers.Length; i++)
-                {
-                    renderers[i].sharedMaterial = dissolveMaterial;
-                    if (renderers[i].material.shader.name.Contains("Dissolve")) dissolveThese.Add(renderers[i]);
-                }
-                doOnce = true;
-            }
-
-            time += dissolveSpeed * Time.deltaTime;
+            dissolveTime += dissolveSpeed * Time.deltaTime;
             for (int i = 0; i < dissolveThese.Count; i++)
-                dissolveThese[i].material.SetFloat("_T", time);
+                dissolveThese[i].material.SetFloat("_T", dissolveTime);
 
             if (time >= 1)
                 Destroy(gameObject);

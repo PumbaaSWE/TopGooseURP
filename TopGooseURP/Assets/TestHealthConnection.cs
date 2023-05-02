@@ -16,8 +16,9 @@ public class TestHealthConnection : MonoBehaviour
     {
         health = GetComponent<Health>();
 
-        if(removeWhenDead)
-        health.OnDead += RemoveOnDead;
+        if (removeWhenDead)
+            health.OnDead += RemoveOnDead;
+        health.OnDead += TurnBackBlinkOnDead;
         health.OnChangeHealth += OnChangeHealth;
         health.OnDamage += OnDamageHealth;
 
@@ -30,6 +31,11 @@ public class TestHealthConnection : MonoBehaviour
         }
     }
 
+    private void TurnBackBlinkOnDead()
+    {
+        Invoke("TurnBackBlink", 0f);
+    }
+
     public void RemoveOnDead()
     {
         Destroy(gameObject);
@@ -37,7 +43,7 @@ public class TestHealthConnection : MonoBehaviour
 
     public void OnChangeHealth(float change, ChangeHealthType changeHealthType, TeamMember _)
     {
-        if(change < 0)
+        if (change < 0)
         {
             // make it red?
             Invoke("RedBlink", 0f);
@@ -66,7 +72,7 @@ public class TestHealthConnection : MonoBehaviour
     public void TurnBackBlink()
     {
         Renderer[] renderer = GetComponentsInChildren<Renderer>();
-        for(int i = 0; i < renderer.Length; i++)
+        for (int i = 0; i < renderer.Length; i++)
         {
             renderer[i].material.color = startColor[i];
         }
