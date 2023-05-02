@@ -16,6 +16,7 @@ public class InGameMenu : MonoBehaviour
     [SerializeField] private Button continueButton;
     [SerializeField] private Button exitToMainMenuButton;
     [SerializeField] private Button exitToDesktopButton;
+    [SerializeField] private Button exitToDesktopEndScreenButton;
 
     [Header("Scene Number")]
     [Tooltip("The scene index for Main Menu. Look in the build settings if you dont know it. Defautlt should be 0")]
@@ -42,6 +43,10 @@ public class InGameMenu : MonoBehaviour
             ChangeScene(sceneNum);
         });
         exitToDesktopButton.onClick.AddListener(() =>
+        {
+            Application.Quit();
+        });
+        exitToDesktopEndScreenButton.onClick.AddListener(() =>
         {
             Application.Quit();
         });

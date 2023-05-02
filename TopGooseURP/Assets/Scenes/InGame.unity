@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1447,7 +1447,7 @@ PrefabInstance:
     - target: {fileID: 8682106633928389578, guid: 45448d72c1e389a448e6bfb309120ab3,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8682106633928389578, guid: 45448d72c1e389a448e6bfb309120ab3,
         type: 3}
@@ -1631,6 +1631,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3878694822739884250, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_Name
+      value: ExitToDesktopEndScreen Button
+      objectReference: {fileID: 0}
     - target: {fileID: 7142741441212491134, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1639,7 +1644,7 @@ PrefabInstance:
     - target: {fileID: 7142741441288370770, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7142741441469225405, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
@@ -1676,6 +1681,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -202.20001
       objectReference: {fileID: 0}
+    - target: {fileID: 7142741441842893473, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: m_text
+      value: MAIN MENU
+      objectReference: {fileID: 0}
     - target: {fileID: 7142741441984068073, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
       propertyPath: gameInput
@@ -1686,6 +1696,11 @@ PrefabInstance:
       propertyPath: HudUICanvas
       value: 
       objectReference: {fileID: 3436533931199534636}
+    - target: {fileID: 7142741441984068073, guid: 035374256d543e64e96471dfbac1c51b,
+        type: 3}
+      propertyPath: exitToDesktopEndScreenButton
+      value: 
+      objectReference: {fileID: 889695933}
     - target: {fileID: 7142741441984068074, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1794,7 +1809,7 @@ PrefabInstance:
     - target: {fileID: 7142741441984068075, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7142741441984068078, guid: 035374256d543e64e96471dfbac1c51b,
         type: 3}
@@ -1828,6 +1843,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 035374256d543e64e96471dfbac1c51b, type: 3}
+--- !u!114 &889695933 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8380424048241733537, guid: 035374256d543e64e96471dfbac1c51b,
+    type: 3}
+  m_PrefabInstance: {fileID: 889695932}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &924095608 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4287196173505367425, guid: 06ee1b1c66145b64685ebc9698ea4b71,
@@ -1965,7 +1992,7 @@ PrefabInstance:
     - target: {fileID: 8682106633928389578, guid: 45448d72c1e389a448e6bfb309120ab3,
         type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8682106633928389578, guid: 45448d72c1e389a448e6bfb309120ab3,
         type: 3}
@@ -2382,7 +2409,7 @@ PrefabInstance:
     - target: {fileID: 8682106633928389578, guid: 45448d72c1e389a448e6bfb309120ab3,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 8682106633928389578, guid: 45448d72c1e389a448e6bfb309120ab3,
         type: 3}
