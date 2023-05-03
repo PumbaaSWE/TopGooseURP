@@ -56,7 +56,7 @@ public class InGameMenu : MonoBehaviour
     {
         SceneManager.LoadScene(sceneNum);
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = !Cursor.visible;
+        Cursor.visible = true;
     }
 
     private void Start()

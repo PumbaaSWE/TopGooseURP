@@ -22,6 +22,11 @@ public class MissileLauncher : MonoBehaviour
         }
     }
 
+    public int HardpointCount { get { return hardpoints.Length; } }
+
+    private int missileCount = 0;
+    public int MissileCount { get { return missileCount; } }
+
     public bool Active { get; private set; }
 
     public delegate void OnActivated(bool selected);
@@ -76,6 +81,7 @@ public class MissileLauncher : MonoBehaviour
         {
             return;
         }
+        missileCount--;
         Vector3 velocity = rb == null ? Vector3.zero : rb.velocity; 
         LaunchHardpoint(selectedHardpoint, velocity);
     }
@@ -195,7 +201,7 @@ public class MissileLauncher : MonoBehaviour
         Missile missile = Instantiate(this.missile, hardpoints[i].position, hardpoints[i].rotation);
         missile.Initialize(owner);
         hardpointData[i].missile = missile;
-
+        missileCount++;
         //missile.Initialize();
 
         if (selectedHardpoint < 0)

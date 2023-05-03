@@ -14,23 +14,21 @@ public class Health : MonoBehaviour
     public OnDamageEvent OnDamage;
 
     public List<DamageModsPair> damageModifier = new();
-    private readonly Dictionary<DamageType, float> damageMods = new(); 
+    private readonly Dictionary<DamageType, float> damageMods = new();
 
     public float Amount { get; private set; }
     public bool Dead { get; private set; }
 
     [SerializeField]
-    private float startHealth = 100;
+    private float maxHealth = 100;
 
+    [SerializeField] private HealthBar healthBar;
 
-
-
-    public void ChangeHealth(float change, ChangeHealthType damageType , TeamMember damager)
+    public void ChangeHealth(float change, ChangeHealthType damageType, TeamMember damager)
     {
         Amount += change;
         OnChangeHealth?.Invoke(change, damageType, damager);
-
-        if (Amount > startHealth) Amount = startHealth;
+        if (Amount > maxHealth) Amount = maxHealth;
 
         if (Amount <= 0 && !Dead)
         {
@@ -44,7 +42,8 @@ public class Health : MonoBehaviour
     {
         if (Dead) return;
         float damage = info.amount;
-        if (damageMods.TryGetValue(info.type, out float mod)){
+        if (damageMods.TryGetValue(info.type, out float mod))
+        {
             damage *= mod;
             if (damage == 0) return;
         }
@@ -52,7 +51,7 @@ public class Health : MonoBehaviour
         Amount -= damage;
         OnDamage?.Invoke(info, damage);
         OnChangeHealth?.Invoke(-info.amount, ChangeHealthType.bullet, info.dealer);
-        if(Amount <= 0.0f)
+        if (Amount <= 0.0f)
         {
             OnDead?.Invoke();
             Dead = true;
@@ -71,18 +70,26 @@ public class Health : MonoBehaviour
 
     public void Reset()
     {
-        Amount = startHealth;
+        Amount = maxHealth;
         Dead = false;
     }
 
     private void Awake()
     {
-        Amount = startHealth;
+        Amount = maxHealth;
+        if (healthBar != null)
+            healthBar.SetMaxHealth(maxHealth);
+
         for (int i = 0; i < damageModifier.Count; i++)
         {
-            if(damageModifier[i].type != null)
+            if (damageModifier[i].type != null)
                 damageMods.TryAdd(damageModifier[i].type, damageModifier[i].modifier);
         }
+    }
+    private void Update()
+    {
+        if (healthBar != null)
+            healthBar.SetHealth(Amount);
     }
 }
 

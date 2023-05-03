@@ -17,8 +17,8 @@ public class WeaponSystem : MonoBehaviour
     public BombSelected OnBombSelected;
 
     private bool bombs; //the switch :P'
-    private bool fireMain;
-    private bool fireSecondary;
+    private bool fireMain, fireSecondary;
+    private bool firedMissile = false;
 
     void Start()
     {
@@ -59,7 +59,6 @@ public class WeaponSystem : MonoBehaviour
             MissileLauncher.LaunchMissile();
         }
     }
-
     private void GameInput_FireMainAction(object sender, EventArgs e)
     {
         fireMain = !fireMain;

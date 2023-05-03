@@ -13,7 +13,7 @@ public class GameInput : MonoBehaviour
      [X] FireSecondary
      [X] ChangeSpeed
      [X] Freelook
-     [] Yaw?
+     [X] Yaw?
      [X] IngameMenu
      [X] SwitchWapon
      */
@@ -37,8 +37,6 @@ public class GameInput : MonoBehaviour
 
         
     }
-
-    
 
     #region Methods
     public float ThrottleChangeActionNormalized()
