@@ -38,31 +38,44 @@ public class WeaponSystem : MonoBehaviour
         OnSecondarySwitch();
 
         gameInput.FireMainAction += GameInput_FireMainAction;
+        gameInput.FireMainCanceled += GameInput_FireMainCanceled;
         gameInput.FireSecondaryAction += GameInput_FireSecondaryAction;
+        gameInput.FireSecondaryCanceled += GameInput_FireSecondaryCanceled;
         gameInput.SwitchWeaponAction += GameInput_SwitchWeaponAction;
     }
 
+    
     private void GameInput_SwitchWeaponAction(object sender, EventArgs e)
     {
         OnSecondarySwitch();
     }
-
     private void GameInput_FireSecondaryAction(object sender, EventArgs e)
     {
         if (bombs)
         {
-            fireSecondary = !fireSecondary;
-            BombBay.DropBombs(fireSecondary);
+            
+            BombBay.DropBombs(true);
         }
         else
         {
             MissileLauncher.LaunchMissile();
         }
     }
+    private void GameInput_FireSecondaryCanceled(object sender, EventArgs e)
+    {
+        if (bombs)
+        {
+
+            BombBay.DropBombs(false);
+        }
+    }
     private void GameInput_FireMainAction(object sender, EventArgs e)
     {
-        fireMain = !fireMain;
-        FireAllGuns(fireMain);
+        FireAllGuns(true);
+    }
+    private void GameInput_FireMainCanceled(object sender, EventArgs e)
+    {
+        FireAllGuns(false);
     }
 
     void Update()

@@ -17,7 +17,7 @@ public class GameInput : MonoBehaviour
      [X] IngameMenu
      [X] SwitchWapon
      */
-    public event EventHandler FireMainAction, FireSecondaryAction, SwitchWeaponAction, InGameMenuAction, FreeLookStart, FreeLookCancel;
+    public event EventHandler FireMainAction, FireMainCanceled, FireSecondaryAction, FireSecondaryCanceled, SwitchWeaponAction, InGameMenuAction, FreeLookStart, FreeLookCancel;
     private PlayerInputAction playerInputAction;
 
     private void Awake()
@@ -27,8 +27,9 @@ public class GameInput : MonoBehaviour
 
         //Mouse
         playerInputAction.PlayerControls.FireMain.performed += FireMain_performed;
+        playerInputAction.PlayerControls.FireMain.canceled += FireMain_canceled;
         playerInputAction.PlayerControls.FireSecondary.performed += FireSecondary_performed;
-
+        playerInputAction.PlayerControls.FireSecondary.canceled += FireSecondary_canceled;
         //Keyboard
         playerInputAction.PlayerControls.SwitchWeapon.performed += SwitchWeapon_performed;
         playerInputAction.PlayerControls.IngameMenu.performed += IngameMenu_performed;
@@ -36,7 +37,7 @@ public class GameInput : MonoBehaviour
         playerInputAction.PlayerControls.Freelook.canceled += Freelook_canceled;
 
         
-    }
+    }    
 
     #region Methods
     public float ThrottleChangeActionNormalized()
@@ -71,9 +72,17 @@ public class GameInput : MonoBehaviour
     {
         FireSecondaryAction?.Invoke(this, EventArgs.Empty);
     }
+    private void FireSecondary_canceled(InputAction.CallbackContext obj)
+    {
+        FireSecondaryCanceled?.Invoke(this, EventArgs.Empty);
+    }
     private void FireMain_performed(InputAction.CallbackContext obj)
     {        
         FireMainAction?.Invoke(this, EventArgs.Empty);
+    }
+    private void FireMain_canceled(InputAction.CallbackContext obj)
+    {
+        FireMainCanceled?.Invoke(this, EventArgs.Empty);
     }
     private void Freelook_started(InputAction.CallbackContext obj)
     {

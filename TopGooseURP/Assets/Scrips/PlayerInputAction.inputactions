@@ -25,7 +25,7 @@
                 },
                 {
                     "name": "FireMain",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "39e0bf72-6170-47db-acc5-67dbc7316c1c",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -34,7 +34,7 @@
                 },
                 {
                     "name": "FireSecondary",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "e4a4e3b5-1279-4864-bfe7-2b60ba9faede",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -52,7 +52,7 @@
                 },
                 {
                     "name": "Freelook",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "ccff64dd-4d0f-47ca-a7b3-5cf2fd082966",
                     "expectedControlType": "Button",
                     "processors": "",
