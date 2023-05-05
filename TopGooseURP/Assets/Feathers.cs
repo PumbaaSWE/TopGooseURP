@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Feathers : MonoBehaviour
@@ -17,7 +14,8 @@ public class Feathers : MonoBehaviour
 
     private void OnRagdoll()
     {
-        particles.enableEmission = false;
+        //particles.enableEmission = false;
+        particles.Stop();
 
         Destroy(gameObject, 5);
     }
