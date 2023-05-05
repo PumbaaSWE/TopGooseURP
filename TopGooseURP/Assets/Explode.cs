@@ -61,6 +61,7 @@ public class Explode : MonoBehaviour
                 if (health.Dead && rb != null)
                 {
                     rb.AddExplosionForce(force, exposionCenter, maxRange);
+                    //StartCoroutine(DelayedExplosionForce(rb, exposionCenter));
                 }
             }
             else if(rb != null)
@@ -71,6 +72,12 @@ public class Explode : MonoBehaviour
         
 
         StartCoroutine(ReturnToPool());
+    }
+
+    private IEnumerator DelayedExplosionForce(Rigidbody rigidbody, Vector3 exposionCenter)
+    {
+        yield return null;
+        rigidbody.AddExplosionForce(force, exposionCenter, maxRange);
     }
 
     private IEnumerator ReturnToPool()

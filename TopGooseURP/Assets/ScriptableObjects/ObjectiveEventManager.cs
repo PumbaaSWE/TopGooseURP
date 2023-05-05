@@ -66,7 +66,9 @@ public class ObjectiveEventManager : ScriptableObject
 
     public void Completed(Objective objective)
     {
-        ObjectiveCompleted?.Invoke(objective);
+        if(ObjectiveCompleted != null)
+            ObjectiveCompleted?.Invoke(objective);
+
         if (objective.IsPrimary)
         {
             if (!primaries.Contains(objective)) //not very fast.. keep flag in Objective?

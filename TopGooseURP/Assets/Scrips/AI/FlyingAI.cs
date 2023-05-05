@@ -189,7 +189,7 @@ public class FlyingAI : MonoBehaviour, IUtility
 
 
         //similar heading? #Stop the hardcoding!
-        if (Vector3.Dot(transform.forward, targetTransform.forward) > .8f)
+        if (Vector3.Dot(transform.forward, targetTransform.forward) > .8f && preferredDistance < distToTarget)
         {
             autopilot.MatchSpeed(targetRigidbody.velocity.magnitude, dt);
         }
@@ -363,11 +363,16 @@ public class FlyingAI : MonoBehaviour, IUtility
 
     public void Execute()
     {
+        float dt = Time.fixedDeltaTime;
         if (targetGameObject != null)
         {
            
-            DoChase(Time.fixedDeltaTime);
-
+            DoChase(dt);
+            if (zoomin)
+            {
+                DoBoom(dt);
+                DoZoom(dt);
+            }
 
 
             //TrackTarget();

@@ -6,10 +6,11 @@ public class Objective : MonoBehaviour
 
     [SerializeField] private ObjectiveEventManager manager;
     [Space]
-    [SerializeField] protected int score;
-    [SerializeField] protected string title;
-    [SerializeField] protected string description;
-    [SerializeField] protected Texture2D icon;
+    [SerializeField] protected int score = 100;
+    [SerializeField] protected string title = "Objective";
+    [SerializeField] protected string description = "Objective Description";
+    //[SerializeField] protected Texture2D icon;
+    [SerializeField] protected Sprite sprite;
     [SerializeField] private bool isPrimary;
     [SerializeField] protected bool shownOnMap;
     [SerializeField] protected int count = 1;
@@ -19,7 +20,8 @@ public class Objective : MonoBehaviour
     public int Score => score;
     public string Title => title;
     public string Description => description;
-    public Texture2D Icon => icon;
+    //public Texture2D Icon => icon;
+    public Sprite Sprite => sprite;
     public bool IsPrimary => isPrimary;
     public bool ShownOnMap => shownOnMap;
 
@@ -28,6 +30,17 @@ public class Objective : MonoBehaviour
     /// </summary>
     protected virtual void Awake()
     {
+        if(manager == null)
+        {
+            Debug.LogWarning("Objective - ObjectiveEventManager is missing");
+            IsComplete = true;
+            return;
+        }
+
+        //if(icon != null && sprite == null) {
+        //    sprite = Sprite.Create(icon, new Rect(0, 0, icon.width, icon.height), Vector2.one / 2);
+        //}
+
         Register();
         gameObject.name = Title;
     }
@@ -40,6 +53,7 @@ public class Objective : MonoBehaviour
     protected void Completed()
     {
         if(IsComplete) return;
+        Debug.Assert(this != null, "Objective -> HUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUR är this null?????");
         manager.Completed(this);
         IsComplete = true;
         enabled = false;
