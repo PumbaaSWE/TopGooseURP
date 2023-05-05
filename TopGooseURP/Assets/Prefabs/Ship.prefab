@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1234781440380455000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1013421850266670938}
+  m_Layer: 0
+  m_Name: MissileHardpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1013421850266670938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234781440380455000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 14.1, z: 1.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1190307976136430913}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1661383722583394634
 GameObject:
   m_ObjectHideFlags: 0
@@ -48,6 +79,7 @@ GameObject:
   - component: {fileID: 2003822973233745913}
   - component: {fileID: 2003822973233745912}
   - component: {fileID: 2003822973233745910}
+  - component: {fileID: 2003560073057511245}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Untagged
@@ -68,6 +100,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1661383722583394635}
+  - {fileID: 1013421850266670938}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -119,6 +152,20 @@ MonoBehaviour:
   maxVelocity: 50
   turnSpeed: 5
   target: {fileID: 0}
+--- !u!114 &2003560073057511245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003822973233745915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0d3d35f9dc00e4482961d990d6b52e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boatMissile: {fileID: 1960509287298079536, guid: 2204e09e8a0d1474cb9becaa795b9d9e,
+    type: 3}
 --- !u!1 &2717711441596218538
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 using static UnityEngine.Rendering.HableCurve;
 
 [ExecuteInEditMode]
+[RequireComponent(typeof(Rigidbody))]
 public class BoatController : MonoBehaviour
 {
     [SerializeField]
@@ -21,33 +22,32 @@ public class BoatController : MonoBehaviour
 
     [SerializeField]
     Transform target;
-    
-    [SerializeField]
-    Transform boundary;
 
     Vector3 travelAxis;
     Vector3 distanceFromShore;
     Vector3 targetPos;
 
     Rigidbody rigidBody;
+    Transform boundary;
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
+        boundary = transform.parent.GetComponentInChildren<MapBoundary>().gameObject.transform;
 
         if(Mathf.Abs(boundary.position.x - transform.position.x) < Mathf.Abs(boundary.position.z - transform.position.z))
         {
             travelAxis = Vector3.right;
 
             distanceFromShore = Vector3.forward;
-            distanceFromShore *= (transform.position.x - boundary.position.x > 0) ? boundary.position.x + boundary.localScale.x / 2 : boundary.position.x - boundary.localScale.x / 2;
+            distanceFromShore *= (transform.position.z - boundary.position.z > 0) ? boundary.position.z + boundary.localScale.z / 2 : boundary.position.z - boundary.localScale.z / 2;
         }
         else
         {
             travelAxis = Vector3.forward;
 
             distanceFromShore = Vector3.right;
-            distanceFromShore *= (transform.position.z - boundary.position.z > 0) ? boundary.position.z + boundary.localScale.z / 2 : boundary.position.z - boundary.localScale.z / 2;
+            distanceFromShore *= (transform.position.x - boundary.position.x > 0) ? boundary.position.x + boundary.localScale.x / 2 : boundary.position.x - boundary.localScale.x / 2;
         }
     }
 
