@@ -164,17 +164,16 @@ public class ManualFlightInput : MonoBehaviour
         gameInput.FreeLookStart += GameInput_FreeLookStart;
         gameInput.FreeLookCancel += GameInput_FreeLookCancel;
     }
-
-    private void GameInput_FreeLookCancel(object sender, System.EventArgs e)
-    {
-        isMouseAimFrozen = false;
-        mouseAim.forward = frozenDirection;
-    }
-
+    
     private void GameInput_FreeLookStart(object sender, System.EventArgs e)
     {
         isMouseAimFrozen = true;
         frozenDirection = mouseAim.forward;
+    }
+    private void GameInput_FreeLookCancel(object sender, System.EventArgs e)
+    {
+        isMouseAimFrozen = false;
+        mouseAim.forward = frozenDirection;
     }
 
     private void Update()
@@ -202,8 +201,6 @@ public class ManualFlightInput : MonoBehaviour
             UpdateCameraPos();
         RotateRig();
     }
-
-
 
     private void FixedUpdate()
     {
@@ -258,15 +255,14 @@ public class ManualFlightInput : MonoBehaviour
         if (mouseAim == null || cam == null || cameraRig == null)
             return;
 
-        // Mouse input.
-
+        //Mouse input.
+        
         Vector2 mouseAxis = gameInput.MouseAxis();
         float mouseX = mouseAxis.x * mouseSensitivity;
         float mouseY = -mouseAxis.y * mouseSensitivity;
-
         float scroll = gameInput.ThrottleChangeActionNormalized();
         controller.SetThrottleInput(controller.Throttle + scroll);
-        
+
         // Rotate the aim target that the plane is meant to fly towards.
         // Use the camera's axes in world space so that mouse motion is intuitive.
         mouseAim.Rotate(cam.right, mouseY, Space.World);

@@ -26,14 +26,14 @@ public class GameInput : MonoBehaviour
         playerInputAction.PlayerControls.Enable();
 
         //Mouse
-        playerInputAction.PlayerControls.FireMain.performed += FireMain_performed;
+        playerInputAction.PlayerControls.FireMain.started += FireMain_performed;
         playerInputAction.PlayerControls.FireMain.canceled += FireMain_canceled;
-        playerInputAction.PlayerControls.FireSecondary.performed += FireSecondary_performed;
+        playerInputAction.PlayerControls.FireSecondary.started += FireSecondary_performed;
         playerInputAction.PlayerControls.FireSecondary.canceled += FireSecondary_canceled;
         //Keyboard
         playerInputAction.PlayerControls.SwitchWeapon.performed += SwitchWeapon_performed;
         playerInputAction.PlayerControls.IngameMenu.performed += IngameMenu_performed;
-        playerInputAction.PlayerControls.Freelook.performed += Freelook_started;
+        playerInputAction.PlayerControls.Freelook.started += Freelook_started;
         playerInputAction.PlayerControls.Freelook.canceled += Freelook_canceled;
 
         
