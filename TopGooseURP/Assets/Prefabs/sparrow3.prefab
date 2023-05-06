@@ -211,7 +211,7 @@ MonoBehaviour:
   autoPilot: {fileID: 7703223742535470275}
   active: 0
   uncaged: 0
-  drawDebugInfo: 1
+  drawDebugInfo: 0
 --- !u!54 &1277721142054067070
 Rigidbody:
   m_ObjectHideFlags: 0

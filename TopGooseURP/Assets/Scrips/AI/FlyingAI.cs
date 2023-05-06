@@ -189,8 +189,10 @@ public class FlyingAI : MonoBehaviour, IUtility
 
 
         //similar heading? #Stop the hardcoding!
-        if (Vector3.Dot(transform.forward, targetTransform.forward) > .8f && preferredDistance < distToTarget)
+        if (movingTarget && Vector3.Dot(transform.forward, targetTransform.forward) > .8f && preferredDistance < distToTarget)
         {
+            Debug.Assert(autopilot != null);
+            Debug.Assert(targetRigidbody != null);
             autopilot.MatchSpeed(targetRigidbody.velocity.magnitude, dt);
         }
         else

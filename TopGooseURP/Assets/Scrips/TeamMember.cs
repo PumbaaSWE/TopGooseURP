@@ -17,16 +17,19 @@ public class TeamMember : MonoBehaviour
     public int Assists { get; private set; }
     public int Score { get; private set; }
 
-    private Health health;
+    public Health Health { get; private set; }
+
+    public delegate void OnDeathEvent(TeamMember teamMember);
+    public OnDeathEvent OnDeathCallback;
 
     public string info;
 
     // Start is called before the first frame update
     void Start()
     {
-        health = GetComponent<Health>();
-        health.OnChangeHealth += OnChangeHealth;
-        health.OnDead += OnDeath;
+        Health = GetComponent<Health>();
+        Health.OnChangeHealth += OnChangeHealth;
+        Health.OnDead += OnDeath;
         //team.TeamsManager.AddToTeam(this);
     }
 
@@ -42,7 +45,7 @@ public class TeamMember : MonoBehaviour
         info = $"Score: {Score} Kills: {Kills} Assists: {Assists} Deaths: {Deaths}";
     }
 
-    public void OnDeath()
+    private void OnDeath()
     {
         if (currAttacker != null)
         {
@@ -57,6 +60,7 @@ public class TeamMember : MonoBehaviour
             prevAttacker = null;
         }
         Deaths++;
+        OnDeathCallback?.Invoke(this);
     }
 
     private void RewardKill(float value)
