@@ -20,8 +20,7 @@ public class BoatController : MonoBehaviour
     float turnSpeed;
     float turnVelocity;
 
-    [SerializeField]
-    Transform target;
+    public Transform target { private get; set; }
 
     Vector3 travelAxis;
     Vector3 distanceFromShore;

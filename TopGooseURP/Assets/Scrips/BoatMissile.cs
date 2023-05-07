@@ -71,6 +71,7 @@ public class BoatMissile : MonoBehaviour
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(explosion, 10);
 
+            GetComponent<SphereCollider>().enabled = false;
             transform.GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);
             transform.GetComponentInChildren<ParticleSystem>().enableEmission = false;
             Destroy(gameObject, 10);

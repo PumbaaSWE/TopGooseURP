@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static MapBoundary;
 
 [RequireComponent(typeof(TriggerEventUnit))]
 public class MapBoundary : MonoBehaviour
@@ -10,7 +11,7 @@ public class MapBoundary : MonoBehaviour
     GameObject player;
 
     [SerializeField]
-    int waitForSeconds;
+    public int waitForSeconds;
 
     [SerializeField]
     int cooldown;
@@ -18,6 +19,12 @@ public class MapBoundary : MonoBehaviour
     List<Transform> boats;
 
     bool triggered;
+
+    public delegate void OnOutOfBounds();
+    public OnOutOfBounds onOutOfBounds;
+
+    public delegate void OnBackInBounds();
+    public OnBackInBounds onBackInBounds;
 
     private void Start()
     {
@@ -31,9 +38,8 @@ public class MapBoundary : MonoBehaviour
                 continue;
 
             boats.Add(child);
+            b.target = player.transform;
         }
-
-        Debug.Log($"Boats {boats.Count}");
     }
 
     public void OnTriggerExit(Collider other)
@@ -44,10 +50,7 @@ public class MapBoundary : MonoBehaviour
         if(triggered) return;
         triggered = true;
 
-        //Get the closest boat to the collider
-        
-
-        //Debug.Log($"Closest boat is {closestBoat.name}");
+        onOutOfBounds.Invoke();
         StartCoroutine(CountThenFire());
     }
 
@@ -61,6 +64,7 @@ public class MapBoundary : MonoBehaviour
             triggered = false;
 
             //Stop CountThenFire()
+            onBackInBounds.Invoke();
             StopAllCoroutines();
             //Debug.Log($"You're safe again :)");
         }
