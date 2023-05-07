@@ -56,11 +56,11 @@ public class OutOfBoundsUI : MonoBehaviour
             tempColor.a = (mapBoundary.waitForSeconds - countDown) / (float)mapBoundary.waitForSeconds / 5f;
             panel.color = tempColor;
 
-            text.text = $"Get back to the playable area!\n{countDown}";
+            text.text = $"RETURN TO THE ISLAND!\n{countDown}";
             countDown--;
             yield return new WaitForSeconds(1);
         }
 
-        text.text = "Get back to the playable area!";
+        text.text = "RETURN TO THE ISLAND!";
     }
 }
