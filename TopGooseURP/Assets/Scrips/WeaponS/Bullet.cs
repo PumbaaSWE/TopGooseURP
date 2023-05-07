@@ -6,8 +6,9 @@ using UnityEngine.Pool;
 [RequireComponent(typeof(TrailRenderer))]
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private LayerMask layerMask;
-    [SerializeField] private float gravity = 10;
+    //[SerializeField] private LayerMask layerMask;
+    //[SerializeField] private float gravity = 10;
+    //[SerializeField] private DamageType type;
     //[SerializeField] private HitEffectManager hitEffectManager;
 
     private BulletData data;
@@ -19,15 +20,18 @@ public class Bullet : MonoBehaviour
     private ObjectPool<Bullet> bulletPool;
     private bool returned;
 
+    private TeamMember owner;
+
     void Awake()
     {
         trail = GetComponent<TrailRenderer>();
         //hitEffectManager = Instantiate(hitEffectManager);
     }
 
-    public void Init(BulletData data, Vector3 position, Quaternion rotation)
+    public void Init(BulletData data, TeamMember owner, Vector3 position, Quaternion rotation)
     {
         this.data = data;
+        this.owner = owner;
         transform.SetPositionAndRotation(position, rotation);
         if (data.trailTime > 0)
         {
@@ -57,7 +61,7 @@ public class Bullet : MonoBehaviour
             StartCoroutine(ReturnToPool());
             return;
         }
-        velocity.y -= gravity * Time.fixedDeltaTime; //v = a * dt
+        velocity.y -= data.gravity * Time.fixedDeltaTime; //v = a * dt
         nextPosition = transform.position + velocity * Time.fixedDeltaTime;  //p = v * dt
         RayCast();
     }
@@ -65,7 +69,7 @@ public class Bullet : MonoBehaviour
     private void RayCast()
     {
 
-        if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, velocity.magnitude, layerMask))
+        if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, velocity.magnitude, data.hitLayer, QueryTriggerInteraction.Ignore))
         {
 
             transform.position = hit.point;
@@ -77,21 +81,20 @@ public class Bullet : MonoBehaviour
                 HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal, material);
             }
 
-            Health health;
-            if (hit.collider.gameObject.TryGetComponent(out health))
+            if (hit.collider.gameObject.TryGetComponent(out Health health))
             {
-                health.ChangeHealth(-data.damage);
+                //health.ChangeHealth(-data.damage, ChangeHealthType.impact, owner);
+                health.DealDamage(new DamageInfo(owner, data.damage, data.damageType, hit.point));
             }
             else
             {
-                bool foundComponent = false;
-                
-                health = hit.collider.gameObject.GetComponentInParent<Health>();
-                if(health != null) foundComponent = true;
 
-                if (foundComponent)
+                health = hit.collider.gameObject.GetComponentInParent<Health>();
+
+                if (health != null)
                 {
-                    health.ChangeHealth(-data.damage);
+                    health.DealDamage(new DamageInfo(owner, data.damage, data.damageType, hit.point));
+                    //health.ChangeHealth(-data.damage, ChangeHealthType.impact, owner);
                 }
             }
 

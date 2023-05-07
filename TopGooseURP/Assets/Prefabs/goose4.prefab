@@ -713,7 +713,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2525386046613579349}
   serializedVersion: 2
-  m_Mass: 5
+  m_Mass: 4
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 1
@@ -788,6 +788,17 @@ MonoBehaviour:
     proportionalGain: 2
     integralGain: 0
     derivativeGain: -0.1
+    outputMin: -1
+    outputMax: 1
+    integralSaturation: 0
+    errorLast: 0
+    valueLast: 0
+    integrationStored: 0
+    derivativeInitialized: 0
+  speedPID:
+    proportionalGain: 1
+    integralGain: 0
+    derivativeGain: 1
     outputMin: -1
     outputMax: 1
     integralSaturation: 0

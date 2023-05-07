@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.GridLayoutGroup;
 using Random = UnityEngine.Random;
 
 public class BombBay : MonoBehaviour
 {
-    [SerializeField] private GameObject bombPrefab;
+    [SerializeField] private Bomb bombPrefab;
     [SerializeField] private float spread = .1f;
     [SerializeField] private int magazineSize = 10;
     [SerializeField] private float  reloadTime = 5.5f;
@@ -24,9 +25,12 @@ public class BombBay : MonoBehaviour
     private bool drop = false;
     private Rigidbody rb;
 
+    private TeamMember owner;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        owner = GetComponentInParent<TeamMember>();
     }
 
     void Update()
@@ -63,7 +67,8 @@ public class BombBay : MonoBehaviour
     {
         bombTime = 0;
         --Magazine;
-        GameObject bomb = Instantiate(bombPrefab, transform.position, transform.rotation);
+        Bomb bomb = Instantiate(bombPrefab, transform.position, transform.rotation);
+        bomb.SetOwner(owner);
 
         float randomNumberX = Random.Range(-spread, spread);
         //float randomNumberY = Random.Range(-spread, spread);

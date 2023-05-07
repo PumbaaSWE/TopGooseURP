@@ -155,5 +155,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerMask:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 200
   gravity: 10
+  type: {fileID: 11400000, guid: aa52475f8c59c9546b5b7f7cac71d29d, type: 2}

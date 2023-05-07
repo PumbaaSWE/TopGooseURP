@@ -1,20 +1,20 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 public class Explode : MonoBehaviour
 {
 
-    private static Collider[] _colliders = new Collider[20];
+    private static readonly Collider[] _colliders = new Collider[20];
 
     public ParticleSystem[] systems;
 
     [SerializeField] float damage = 60;
     [SerializeField] float maxRange = 5;
-    [SerializeField] float minRange = 1;
+    //[SerializeField] float minRange = 1;
     [SerializeField] LayerMask layerMask;
 
     [SerializeField] float force = 1000;
+    [SerializeField] DamageType type;
     //[SerializeField] bool explodeOnStart = true;
 
     void Awake()
@@ -32,7 +32,7 @@ public class Explode : MonoBehaviour
         //if(explodeOnStart) ExplodeNow();    
     }
 
-    public void ExplodeNow()
+    public void ExplodeNow( TeamMember owner = null )
     {
         for (int i = 0; i < systems.Length; i++)
         {
@@ -51,11 +51,17 @@ public class Explode : MonoBehaviour
                 Vector3 closestPoint = _colliders[i].ClosestPoint(exposionCenter); // if we do distance to collider transform.pos we might not "hit" if collider is big, still touching part of it
                 float dist = Vector3.Distance(closestPoint, exposionCenter); //maybe ray cast to see if nothing is between first?
                 float damage = (1 - dist / maxRange) * this.damage;
+                //Debug.Log("sfghsfghjsdfghjtsfgjsdfghjdghjdghjkdghjkdghkjdghkdghk : " + _colliders[i].gameObject.name);
+                //health.ChangeHealth(-damage, ChangeHealthType.explosion, owner);
 
-                health.ChangeHealth(-damage);
-                if (health.dead && rb != null)
+
+
+                health.DealDamage(new DamageInfo(owner, damage, type, exposionCenter, force, maxRange));
+
+                if (health.Dead && rb != null)
                 {
                     rb.AddExplosionForce(force, exposionCenter, maxRange);
+                    //StartCoroutine(DelayedExplosionForce(rb, exposionCenter));
                 }
             }
             else if(rb != null)
@@ -68,13 +74,20 @@ public class Explode : MonoBehaviour
         StartCoroutine(ReturnToPool());
     }
 
+    private IEnumerator DelayedExplosionForce(Rigidbody rigidbody, Vector3 exposionCenter)
+    {
+        yield return null;
+        rigidbody.AddExplosionForce(force, exposionCenter, maxRange);
+    }
+
     private IEnumerator ReturnToPool()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
         for (int i = 0; i < systems.Length; i++)
         {
             systems[i].Stop();
             systems[i].Clear();
         }
+        Destroy(gameObject);
     }
 }

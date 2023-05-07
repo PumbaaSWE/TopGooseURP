@@ -41,7 +41,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7782371524068451444}
   serializedVersion: 8
-  lengthInSec: 1
+  lengthInSec: 2
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -14636,11 +14636,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   systems: []
-  damage: 60
+  damage: 600
   maxRange: 5
-  minRange: 1
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   force: 100
-  explodeOnStart: 1
+  type: {fileID: 11400000, guid: 3fd5300f509de7a409099148f1fa8375, type: 2}

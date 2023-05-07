@@ -38,12 +38,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""KeyboardMove"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""5838900b-f5ee-4751-a728-d9a9f5f02158"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""FireMain"",
@@ -65,12 +65,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""ChangeSpeed"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""a3b74c4a-9c46-426e-af2f-f0e22021eda7"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Freelook"",

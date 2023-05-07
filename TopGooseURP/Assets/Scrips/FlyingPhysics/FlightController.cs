@@ -12,50 +12,98 @@ public class FlightController : MonoBehaviour
 
     [Header("Dragging")]
     //[SerializeField] private AnimationCurve dragCurve;
-    [Tooltip("x: up/down, y: sideways, z: going forward(/backward)")][SerializeField] private Vector3 dragPower = new(1, 1, 0.5f);
+    [Tooltip("Drag multiplier x: up/down, y: sideways, z: going forward(/backward)")][SerializeField] private Vector3 dragPower = new(3, 3, 1);
     [Tooltip("x: pitch, y: yaw, z: roll")][SerializeField] private Vector3 angularDrag = new(0.5f, 0.5f, 0.5f);
     [Tooltip("How much do the airframe want to turn into the airflow")][SerializeField] private float directionalDragCoeff = 1;
-    [Tooltip("Soft speed limit (m/s), drag increases alot arount this speed")][SerializeField] private float speedDragLimit = 17;
+    //[Tooltip("Soft speed limit (m/s), drag increases alot arount this speed")][SerializeField] private float speedDragLimit = 17;
     //[Tooltip("How much should gravity affect the soft speed limit?")][SerializeField] private float angleDragFactor = 5;
+    [Tooltip("DONT CHANGE! Computed drag Coeff")][SerializeField] private float dragCoeff = 0;
 
     [Header("Thrusting")]
     [Tooltip("poweeeeeeerrrr!!!")][SerializeField] private float maxThrust = 50;
+    [Tooltip("Soft speed limit (m/s), compote drag coeaf based on thism maxThrust and mass.")][SerializeField] private float softSpeedLimit = 17;
 
     [Header("Steering")]
     [Tooltip("x: pitch, y: yaw, z: roll")][SerializeField] private Vector3 turnSpeed = new(50, 50, 99);
     [Tooltip("x: pitch, y: yaw, z: roll")][SerializeField] private Vector3 turnAcceleration = new(99, 99, 99);
     [Tooltip("Set to one if unsure")][SerializeField] private AnimationCurve steeringCurve;
 
+    [Header("Cieling")]
+    [Tooltip("Flight Cieling in meters, will push the controller down with max thrust")][SerializeField] private float flightCieling = 200;
 
+    /// <summary>
+    /// Read only - Rigidbody velocity
+    /// </summary>
     public Vector3 Velocity { get; private set; }
+    /// <summary>
+    /// Read only - The Rigidbody velocity in this objects local space
+    /// </summary>
     public Vector3 LocalVelocity { get; private set; }
+    /// <summary>
+    /// Read only - The Rigidbody angular velocity in this objects local space
+    /// </summary>
     public Vector3 LocalAngularVelocity { get; private set; }
+    /// <summary>
+    /// Read only - The angle of attack in degrees of the forward vector (pitch)
+    /// </summary>
     public float AngleOfAttack { get; private set; }
+    /// <summary>
+    /// Read only - The yawing angle of attack in degrees of the forward vector
+    /// </summary>
     public float AngleOfAttackYaw { get; private set; }
+    /// <summary>
+    /// Read only - Reference to the attached rigidbody
+    /// </summary>
     public Rigidbody Rigidbody { get; private set; }
+    /// <summary>
+    /// Read only - Current position of the throttle
+    /// </summary>
     public float Throttle { get; private set; }
+    /// <summary>
+    /// Read only - Current Stering vector used as input for steering, pitch, yaw and roll
+    /// </summary>
     public Vector3 Steering { get; private set; }
+    /// <summary>
+    /// Used to ignore any control input set by any other script
+    /// </summary>
     public bool DisableInput { get; set; }
 
     private float throttleInput;
     private Vector3 controlInput;
 
+
+    /// <summary>
+    /// Set the throttle, the value is clamped between 0 and 1. Is how much of the maxThrust that is applied.
+    /// </summary>
+    /// <param name="input"></param>
     public void SetThrottleInput(float input)
     {
         if (DisableInput) return;
         throttleInput = input;
     }
+
+    /// <summary>
+    /// Set the input for pitch, yaw and roll (in that order) with a vector.
+    /// -1 to 1 are max and min values
+    /// </summary>
+    /// <param name="input">The Vector3 representing pitch, yaw and roll</param>
     public void SetControlInput(Vector3 input)
     {
         if (DisableInput) return;
         controlInput = Vector3.ClampMagnitude(input, 1);
     }
-    internal void ResetInput()
+
+    /// <summary>
+    /// Set all inputs to zero, useful for respawns
+    /// </summary>
+    public void ResetInput()
     {
         throttleInput = 0;
         controlInput = Vector3.zero;
     }
-
+    /// <summary>
+    /// Instantly stop this rigidbody, useful for respawns
+    /// </summary>
     public void ResetVelocities()
     {
         Rigidbody.velocity = Vector3.zero;
@@ -65,6 +113,18 @@ public class FlightController : MonoBehaviour
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
+        Rigidbody.velocity = transform.forward * softSpeedLimit;
+
+        //terminal velocity v = sqrt(2ma/pAC)
+        //pAC is simplified to a single number in this simulation. ie, air dencity and cross area are ignored and bundled into drag coeff
+        //a is derived from F=ma -> a = F/m
+        //so 2ma -> 2F because m cancels out
+        //we want to know C so rearanging gives : C = 2F/v^2
+        //but when computing drag that formula contains 1/2 so I'll ignore the *2 now and the *.5 later... a pro-gamer move
+
+        float v2 = softSpeedLimit * softSpeedLimit;
+        dragCoeff = maxThrust / v2;
+
     }
 
     void FixedUpdate()
@@ -80,23 +140,32 @@ public class FlightController : MonoBehaviour
         UpdateLift();
         UpdateDrag();
         UpdateAngularDrag();
+
+
+        if(flightCieling < transform.position.y)
+        {
+            //float force = transform.position.y - flightCieling;
+            Rigidbody.AddForce(Vector3.down*maxThrust, ForceMode.Acceleration);
+            Debug.Log("Flight Cieling reached");
+        }
+
         UpdateState(dt);
 
     }
 
-    void UpdateThrust()
+    private void UpdateThrust()
     {
         Rigidbody.AddRelativeForce(Throttle * maxThrust * Vector3.forward);
     }
 
-    float CalculateSteering(float dt, float angularVelocity, float targetVelocity, float acceleration)
+    private float CalculateSteering(float dt, float angularVelocity, float targetVelocity, float acceleration)
     {
         float error = targetVelocity - angularVelocity;
         float a = acceleration * dt;
         return Mathf.Clamp(error, -a, a);
     }
 
-    void UpdateThrottle(float dt)
+    private void UpdateThrottle(float dt)
     {
         Throttle = Mathf.Clamp(throttleInput, 0, 1); // dt to be incorporated to not throttle to fast
     }
@@ -147,21 +216,21 @@ public class FlightController : MonoBehaviour
         Vector3 lvn = LocalVelocity.normalized; // directon to apply the drag in
         float lv2 = LocalVelocity.sqrMagnitude;
 
-        Vector3 coefficient = Vector3.Scale(lvn, dragPower);
+        Vector3 coefficient = Vector3.Scale(lvn, dragPower)*dragCoeff;
 
         Vector3 drag = coefficient.magnitude * lv2 * -lvn;
 
         Rigidbody.AddRelativeForce(drag);
 
 
-        
+
         //if we pass speedDragLimit the drag should increase by alot
-        if(1.0f < LocalVelocity.z / speedDragLimit) // this will be over one when speed is over speedDragLimit
-        {
-            float dirFactor = 1 + Vector3.Dot(Rigidbody.velocity.normalized, Vector3.up); // are we going downwards, i.e. gravity helps? then less drag, add 1 to make it >=0 [0-2]
-            //we are over the desired speed so we remove the delta multiplied with a factor related to direction so diving is less affected. (and going up is more)
-            Rigidbody.AddRelativeForce(dirFactor * dirFactor * -(LocalVelocity - lvn * speedDragLimit), ForceMode.VelocityChange);
-        }
+        //if (1.0f < LocalVelocity.z / speedDragLimit) // this will be over one when speed is over speedDragLimit
+        //{
+        //    float dirFactor = 1 + Vector3.Dot(Rigidbody.velocity.normalized, Vector3.up); // are we going downwards, i.e. gravity helps? then less drag, add 1 to make it >=0 [0-2]
+        //    we are over the desired speed so we remove the delta multiplied with a factor related to direction so diving is less affected. (and going up is more)
+        //    Rigidbody.AddRelativeForce(dirFactor * dirFactor * -(LocalVelocity - lvn * speedDragLimit), ForceMode.VelocityChange);
+        //}
 
     }
 
