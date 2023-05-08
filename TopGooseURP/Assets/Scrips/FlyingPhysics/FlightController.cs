@@ -28,6 +28,9 @@ public class FlightController : MonoBehaviour
     [Tooltip("x: pitch, y: yaw, z: roll")][SerializeField] private Vector3 turnAcceleration = new(99, 99, 99);
     [Tooltip("Set to one if unsure")][SerializeField] private AnimationCurve steeringCurve;
 
+    [Header("Cieling")]
+    [Tooltip("Flight Cieling in meters, will push the controller down with max thrust")][SerializeField] private float flightCieling = 200;
+
     /// <summary>
     /// Read only - Rigidbody velocity
     /// </summary>
@@ -137,6 +140,15 @@ public class FlightController : MonoBehaviour
         UpdateLift();
         UpdateDrag();
         UpdateAngularDrag();
+
+
+        if(flightCieling < transform.position.y)
+        {
+            //float force = transform.position.y - flightCieling;
+            Rigidbody.AddForce(Vector3.down*maxThrust, ForceMode.Acceleration);
+            Debug.Log("Flight Cieling reached");
+        }
+
         UpdateState(dt);
 
     }

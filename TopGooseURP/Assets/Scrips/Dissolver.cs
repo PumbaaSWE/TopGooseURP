@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Dissolver : MonoBehaviour
 {
-    [SerializeField] [Range(0.0f, 1.0f)] float time;
-    [SerializeField] Renderer renderer;
+    [SerializeField] [Range(0.0f, 1.0f)] private float time;
+    [SerializeField] private Renderer _renderer;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +19,6 @@ public class Dissolver : MonoBehaviour
 
     private void OnValidate()
     {
-        renderer.material.SetFloat("_T", time);
+        _renderer.material.SetFloat("_T", time);
     }
 }

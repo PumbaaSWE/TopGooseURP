@@ -69,7 +69,7 @@ public class Bullet : MonoBehaviour
     private void RayCast()
     {
 
-        if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, velocity.magnitude, data.hitLayer))
+        if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, velocity.magnitude, data.hitLayer, QueryTriggerInteraction.Ignore))
         {
 
             transform.position = hit.point;

@@ -44,7 +44,7 @@ public class FlightHUD : MonoBehaviour
         if (mousePos != null)
         {
             mousePos.position = playerCam.WorldToScreenPoint(controller.MouseAimPos);
-            //mousePos.gameObject.SetActive(mousePos.position.z > 1f);
+            mousePos.gameObject.SetActive(mousePos.position.z > 1f);
         }
     }
 
