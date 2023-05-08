@@ -7,17 +7,19 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     GameObject enemy;
 
+    //The enemies will be spawned as children to these points, to keep track of which spawner that has active enemies
     [SerializeField]
     Transform[] spawnPoints;
 
-    int[] spawnPointSpawnAmount;
+    [SerializeField]
+    WaypointsPath path;
 
     [SerializeField]
     float delay;
     float counter;
 
     [SerializeField]
-    int maxSpawnsPerPoint;
+    int enemiesPerPoint;
 
     [SerializeField]
     int maxTotalSpawns;
@@ -27,8 +29,6 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         counter = delay;
-
-        spawnPointSpawnAmount = new int[spawnPoints.Length];
     }
 
     void Update()
@@ -60,16 +60,17 @@ public class EnemySpawner : MonoBehaviour
         {
             if (spawnPointsNotVisible[i].childCount < spawnPoint.childCount)
             {
-                if (spawnPointSpawnAmount[i] > maxSpawnsPerPoint) continue;
+                if (spawnPointsNotVisible[i].childCount > enemiesPerPoint) continue;
                 spawnPoint = spawnPointsNotVisible[i];
             }
         }
         
 
         //If it still has too many enemies, don't spawn at all.
-        if (spawnPoint.childCount >= maxSpawnsPerPoint) return;
+        if (spawnPoint.childCount >= enemiesPerPoint) return;
 
-        Instantiate(enemy, spawnPoint.position, Quaternion.identity, spawnPoint);
+        var enemyInstance = Instantiate(enemy, spawnPoint.position, Quaternion.identity, spawnPoint);
+        enemyInstance.GetComponent<PathUtility>().currentPath = path;
 
         int spawnPointIndex = 0;
         for (int i = 0; i < spawnPoints.Length; i++)
@@ -81,11 +82,10 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        Debug.Log($"Spawned new enemy at spawnpoint {spawnPointIndex}");
-
         counter = delay;
         totalSpawns++;
-        spawnPointSpawnAmount[spawnPointIndex]++;
+
+        //Debug.Log($"Spawned new enemy at spawnpoint {spawnPointIndex} ({spawnPoint.childCount}/{enemiesPerPoint}) Total: {totalSpawns}/{maxTotalSpawns}");
     }
 
     private bool LookingAt(Transform Object)
