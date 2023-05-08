@@ -45,7 +45,7 @@ public class LevelLoader : MonoBehaviour
 
     private void LockMouse()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = false;
     }
 }

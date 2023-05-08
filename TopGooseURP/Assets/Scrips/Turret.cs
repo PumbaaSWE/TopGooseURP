@@ -39,11 +39,6 @@ public class Turret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(target == null)
-        {
-            
-            return;
-        }
         if (Vector3.Distance(target.position, transform.position) < range)
         {
             TargetingMath.ComputeImpact(target.position, targetRb.velocity, transform.position, gun.BulletSpeed, out Vector3 location, out float _);

@@ -19,9 +19,6 @@ public class OnDeath : MonoBehaviour
     [SerializeField]
     float startDissolvingAfter;
 
-    [SerializeField]
-    bool destroyGameObject;
-
     float t, spin, spinPreviousUpdate;
     bool dissolve, ragdoll, dead, counterClockWise;
 
@@ -90,7 +87,7 @@ public class OnDeath : MonoBehaviour
         //When fully dissolved, remove gameObject from the scene
         else
         {
-            if (destroyGameObject) Destroy(gameObject); else gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 

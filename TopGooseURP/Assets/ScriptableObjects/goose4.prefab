@@ -31,75 +31,6 @@ Transform:
   m_Father: {fileID: 2759955723384096462}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1827258049
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1827258050}
-  - component: {fileID: 1827258051}
-  - component: {fileID: 1827258052}
-  m_Layer: 6
-  m_Name: Tracker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1827258050
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827258049}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2759955723384096462}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1827258051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827258049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bba756e7618f7c45b22cf1d62235c89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetVolume: {fileID: 1827258052}
-  pool: {fileID: 0}
-  targets: []
-  range: 300
-  radius: 60
-  searchLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  bulletSpeed: 100
-  flyRange: 500
---- !u!136 &1827258052
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827258049}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 50
-  m_Height: 300
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 100}
 --- !u!1 &2064773258
 GameObject:
   m_ObjectHideFlags: 0
@@ -1007,7 +938,6 @@ GameObject:
   - component: {fileID: 1406932379}
   - component: {fileID: 1406932390}
   - component: {fileID: 1406932391}
-  - component: {fileID: 1870864033}
   m_Layer: 6
   m_Name: goose4
   m_TagString: Player
@@ -1033,7 +963,6 @@ Transform:
   - {fileID: 2064773259}
   - {fileID: 1510951432259966617}
   - {fileID: 8426147712917253936}
-  - {fileID: 1827258050}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1300,7 +1229,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  flightCieling: 200
 --- !u!114 &1142582462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1473,28 +1401,6 @@ MonoBehaviour:
     type: 3}
   dissolveSpeed: 0.2
   startDissolvingAfter: 1
---- !u!114 &1870864033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3244427602905914484}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bba756e7618f7c45b22cf1d62235c89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetVolume: {fileID: 0}
-  pool: {fileID: 0}
-  targets: []
-  range: 300
-  radius: 60
-  searchLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  bulletSpeed: 100
-  flyRange: 500
 --- !u!1 &3739327751847070683
 GameObject:
   m_ObjectHideFlags: 0
