@@ -6180,6 +6180,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1873674121990336820, guid: da4f2cf8fc2cc41488b15b761d3c3bc9,
         type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1873674121990336820, guid: da4f2cf8fc2cc41488b15b761d3c3bc9,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 1873674121990336820, guid: da4f2cf8fc2cc41488b15b761d3c3bc9,
+        type: 3}
       propertyPath: ForceModule.enabled
       value: 1
       objectReference: {fileID: 0}

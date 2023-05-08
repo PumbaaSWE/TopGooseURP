@@ -6912,7 +6912,7 @@ PrefabInstance:
     - target: {fileID: 1873674121990336820, guid: da4f2cf8fc2cc41488b15b761d3c3bc9,
         type: 3}
       propertyPath: ForceModule.z.scalar
-      value: 0.05
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 1873674121990336820, guid: da4f2cf8fc2cc41488b15b761d3c3bc9,
         type: 3}
