@@ -23,8 +23,10 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField]
     int maxTotalSpawns;
-
     int totalSpawns;
+
+    [SerializeField]
+    int minDistance;
 
     private void Start()
     {
@@ -49,7 +51,7 @@ public class EnemySpawner : MonoBehaviour
         List<Transform> spawnPointsNotVisible = new List<Transform>();
         for (int i = 0; i < spawnPoints.Length; i++)
         {
-            if (LookingAt(spawnPoints[i])) continue;
+            if (LookingAt(spawnPoints[i]) || Vector3.Distance(spawnPoints[i].position, Camera.main.transform.position) < minDistance) continue;
             
             spawnPointsNotVisible.Add(spawnPoints[i]);
         }
