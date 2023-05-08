@@ -46,8 +46,9 @@ public class Destruction : MonoBehaviour
             //if (renderer.material.shader.name.Contains("Dissolve")) dissolveThese.Add(renderer);
 
         }
-        foundation.SetActive(false);
-        radius = model.GetComponent<Collider>().bounds.extents.magnitude;
+        if(foundation != null)
+            foundation.SetActive(false);
+        radius = model.GetComponent<Collider>().bounds.extents.magnitude; // does not necessarily bound everything, revisit this!!!!
 
         if(smoke == null)
             smoke = GetComponentInChildren<ParticleSystem>(true);
@@ -85,7 +86,8 @@ public class Destruction : MonoBehaviour
     {
         if (destroyed) return;
         model.SetActive(false);
-        foundation.SetActive(true);
+        if (foundation != null)
+            foundation.SetActive(true);
         for (int i = 0; i < rigidbodies.Length; i++)
         {
             rigidbodies[i].gameObject.SetActive(true);

@@ -10,8 +10,9 @@ public class KillMultipleObjective : Objective
     // Start is called before the first frame update
     void Start()
     {
-        count = toKill.Count;
-        for (int i = 0; i < count; i++)
+        if(count < 2)
+            count = toKill.Count;
+        for (int i = 0; i < toKill.Count; i++)
         {
             toKill[i].OnDead += CountOne;
         }
