@@ -679,7 +679,7 @@ RectTransform:
   - {fileID: 432859588}
   - {fileID: 1607211693}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1783,18 +1783,6 @@ MonoBehaviour:
   spawn: {fileID: 2663623895530026239, guid: a324aca8502a77248bec22e829fc7341, type: 3}
   delay: 1
   maxAmount: 10
---- !u!114 &566383863 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6045602789953114322, guid: 040c546b9dbfbbb4f96d8c6590fd49ba,
-    type: 3}
-  m_PrefabInstance: {fileID: 2007029902}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6df87bcd55c87b44a5e43291d5fd5bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &598898653
 GameObject:
   m_ObjectHideFlags: 0
@@ -3813,7 +3801,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
