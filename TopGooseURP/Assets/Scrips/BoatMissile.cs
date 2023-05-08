@@ -11,6 +11,7 @@ public class BoatMissile : MonoBehaviour
 {
     SimpleFlight simpleFlight;
     Rigidbody rigidBody;
+    AudioSource audioSource;
     Rigidbody targetRigidBody;
     Transform target;
 
@@ -23,6 +24,7 @@ public class BoatMissile : MonoBehaviour
     {
         simpleFlight = GetComponent<SimpleFlight>();
         rigidBody = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
         simpleFlight.SetThrottleInput(1);
     }
 
@@ -68,6 +70,7 @@ public class BoatMissile : MonoBehaviour
     {
         if (other.gameObject == target.gameObject)
         {
+            audioSource.enabled = false;
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(explosion, 10);
 

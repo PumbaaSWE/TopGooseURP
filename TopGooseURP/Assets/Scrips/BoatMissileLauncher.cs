@@ -10,11 +10,18 @@ public class BoatMissileLauncher : MonoBehaviour
     [SerializeField]
     Transform hardPoint;
 
+    ParticleSystem particleSystem;
+
+    private void Start()
+    {
+        particleSystem = hardPoint.GetComponent<ParticleSystem>();
+    }
+
     public void Fire(Transform target)
     {
         GameObject missile = Instantiate(boatMissile);
 
-        //Change later
+        particleSystem.Play();
         missile.transform.position = hardPoint.position;
         missile.GetComponent<BoatMissile>().SetTarget(target);
         missile.SetActive(true);
