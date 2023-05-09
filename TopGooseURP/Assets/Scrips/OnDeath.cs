@@ -22,6 +22,9 @@ public class OnDeath : MonoBehaviour
     [SerializeField]
     bool destroyGameObject;
 
+    [Space]
+    [SerializeField] private InGameMenu inGameMenu;
+
     float t, spin, spinPreviousUpdate;
     bool dissolve, ragdoll, dead, counterClockWise;
 
@@ -90,7 +93,18 @@ public class OnDeath : MonoBehaviour
         //When fully dissolved, remove gameObject from the scene
         else
         {
-            if (destroyGameObject) Destroy(gameObject); else gameObject.SetActive(false);
+            if (destroyGameObject) Destroy(gameObject);
+
+            else
+            {
+                gameObject.SetActive(false);
+                if(inGameMenu != null)
+                {
+                    inGameMenu.EndScreen();
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;                    
+                }
+            }
         }
     }
 

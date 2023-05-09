@@ -1252,6 +1252,18 @@ Terrain:
   m_GroupingID: 0
   m_RenderingLayerMask: 1
   m_AllowAutoConnect: 1
+--- !u!114 &502979640 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7142741441984068073, guid: 035374256d543e64e96471dfbac1c51b,
+    type: 3}
+  m_PrefabInstance: {fileID: 889695932}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af1c1fe3153850b42ab260d67e318c61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &504682310
 GameObject:
   m_ObjectHideFlags: 0
@@ -8157,6 +8169,10 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 237852359352560346}
+    - target: {fileID: 1406932391, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: inGameMenu
+      value: 
+      objectReference: {fileID: 502979640}
     - target: {fileID: 1827258051, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: pool
       value: 
