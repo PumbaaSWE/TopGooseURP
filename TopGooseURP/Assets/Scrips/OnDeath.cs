@@ -23,7 +23,7 @@ public class OnDeath : MonoBehaviour
     bool destroyGameObject;
 
     [Space]
-    [SerializeField] private InGameMenu inGameMenu;
+    //[SerializeField] private InGameMenu inGameMenu;
 
     float t, spin, spinPreviousUpdate;
     bool dissolve, ragdoll, dead, counterClockWise;
@@ -98,10 +98,10 @@ public class OnDeath : MonoBehaviour
             else
             {
                 gameObject.SetActive(false);
-                if(inGameMenu != null)
-                {
-                    inGameMenu.EndScreen();
-                }
+                //if(inGameMenu != null)
+                //{
+                //    inGameMenu.EndScreen();
+                //}
             }
         }
     }
