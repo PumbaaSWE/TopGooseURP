@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8978,6 +8978,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ObjectivesHUD
       objectReference: {fileID: 0}
+    - target: {fileID: 165387325209123205, guid: ef87d45c9d6990b489f8f399c92a1675,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 165387325209123206, guid: ef87d45c9d6990b489f8f399c92a1675,
         type: 3}
       propertyPath: m_Pivot.x
@@ -15899,7 +15904,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6101047408442938526}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
@@ -17714,6 +17719,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2316470686936093518, guid: eced725790102184296422beba794672,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2316470686936093519, guid: eced725790102184296422beba794672,
         type: 3}
@@ -23727,6 +23737,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TargetHUD
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203779813102395154, guid: 194fb923d28b3f646a9c40688e81b4ab,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9203779813102395159, guid: 194fb923d28b3f646a9c40688e81b4ab,
         type: 3}
