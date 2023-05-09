@@ -10,6 +10,7 @@ public class TestHealthConnection : MonoBehaviour
     [SerializeField]
     bool removeWhenDead;
     Color[] startColor;
+    Renderer[] renderers;
 
     // Start is called before the first frame update
     void Start()
@@ -22,12 +23,12 @@ public class TestHealthConnection : MonoBehaviour
         health.OnChangeHealth += OnChangeHealth;
         health.OnDamage += OnDamageHealth;
 
-        Renderer[] renderer = GetComponentsInChildren<Renderer>();
+        renderers = GetComponentsInChildren<Renderer>();
 
-        startColor = new Color[renderer.Length];
-        for (int i = 0; i < renderer.Length; i++)
+        startColor = new Color[renderers.Length];
+        for (int i = 0; i < renderers.Length; i++)
         {
-            startColor[i] = renderer[i].material.color;
+            startColor[i] = renderers[i].material.color;
         }
     }
 
@@ -38,6 +39,8 @@ public class TestHealthConnection : MonoBehaviour
 
     public void RemoveOnDead()
     {
+        CancelInvoke(nameof(RedBlink));
+        CancelInvoke(nameof(TurnBackBlink));
         Destroy(gameObject);
     }
 
@@ -63,18 +66,18 @@ public class TestHealthConnection : MonoBehaviour
 
     public void RedBlink()
     {
-        Renderer[] renderer = GetComponentsInChildren<Renderer>();
-        for (int i = 0; i < renderer.Length; i++)
+        //renderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
         {
-            renderer[i].material.color = Color.red;
+            renderers[i].material.color = Color.red;
         }
     }
     public void TurnBackBlink()
     {
-        Renderer[] renderer = GetComponentsInChildren<Renderer>();
-        for (int i = 0; i < renderer.Length; i++)
+        //renderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
         {
-            renderer[i].material.color = startColor[i];
+            renderers[i].material.color = startColor[i];
         }
     }
 
