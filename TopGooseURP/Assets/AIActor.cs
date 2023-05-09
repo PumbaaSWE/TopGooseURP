@@ -20,19 +20,19 @@ public class AIActor : MonoBehaviour
     [SerializeField] private float rangeModifier = 2;
     [SerializeField] private LayerMask groundLayer;
 
-    [Space]
-    [Header("Shooting")]
-    [SerializeField][Range(0.0f, 1.0f)] float ramming = 0;
-    [SerializeField][Range(0.0f, 1.0f)] float guns = 0;
-    [SerializeField][Range(0.0f, 45.0f)] float gunsConeToFire = 1.0f;
-    private float gunsAlignToFire;
-    [SerializeField][Range(0.0f, 1.0f)] float minHeat = 0.3f;
-    [SerializeField][Range(0.0f, 1.0f)] float maxHeat = 0.9f;
-    private bool gunsOverheat;
-    [SerializeField] private LayerMask targetLayer;
-    private Vector3 ramTarget; // vector to ram target
-    private Vector3 gunSolutionTarget; // vector to get guns on target target
-    [SerializeField] private float bulletSpeed = 800; //to be allocated from Guns attached later
+    //[Space]
+    //[Header("Shooting")]
+    //[SerializeField][Range(0.0f, 1.0f)] float ramming = 0;
+    //[SerializeField][Range(0.0f, 1.0f)] float guns = 0;
+    //[SerializeField][Range(0.0f, 45.0f)] float gunsConeToFire = 1.0f;
+    //private float gunsAlignToFire;
+    //[SerializeField][Range(0.0f, 1.0f)] float minHeat = 0.3f;
+    //[SerializeField][Range(0.0f, 1.0f)] float maxHeat = 0.9f;
+    //private bool gunsOverheat;
+    //[SerializeField] private LayerMask targetLayer;
+    //private Vector3 ramTarget; // vector to ram target
+    //private Vector3 gunSolutionTarget; // vector to get guns on target target
+    //[SerializeField] private float bulletSpeed = 800; //to be allocated from Guns attached later
 
 
     private Autopilot autopilot;
