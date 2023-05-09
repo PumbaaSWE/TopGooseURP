@@ -75,7 +75,7 @@ public class BoatMissile : MonoBehaviour
         {
             audioSource.enabled = false;
             Explode explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            explosion.ExplodeNow(999,5,100);
+            explosion.ExplodeNow(3400,5,100);
             //Destroy(explosion, 10);
 
             GetComponent<SphereCollider>().enabled = false;

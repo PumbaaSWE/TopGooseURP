@@ -30,12 +30,12 @@ public class FlyingAI : MonoBehaviour, IUtility
 
 
     
-    [Space]
-    [Header("Ground Avoiding")]
-    [SerializeField] private float radius = 3;
-    [SerializeField] private float bumbModifier = 2;
-    [SerializeField] private float rangeModifier = 2;
-    [SerializeField] private LayerMask groundLayer;
+    //[Space]
+    //[Header("Ground Avoiding")]
+    //[SerializeField] private float radius = 3;
+    //[SerializeField] private float bumbModifier = 2;
+    //[SerializeField] private float rangeModifier = 2;
+    //[SerializeField] private LayerMask groundLayer;
 
     [Space]
     [Header("Shooting")]
@@ -77,7 +77,7 @@ public class FlyingAI : MonoBehaviour, IUtility
         actor = GetComponent<AIActor>();
         if(gunArray != null && gunArray.Length > 0)
             bulletSpeed = gunArray[0].BulletSpeed;
-
+        actor = GetComponent<AIActor>();
     }
     private void OnValidate()
     {
@@ -146,36 +146,36 @@ public class FlyingAI : MonoBehaviour, IUtility
         }
     }
 
-    private void UpdateAutopilot()
-    {
-        if (Physics.SphereCast(transform.position, radius, transform.forward, out RaycastHit hit, controller.LocalVelocity.z * rangeModifier, groundLayer))
-        {
-            flyTarget = transform.position + transform.forward + (hit.normal+Vector3.up) * bumbModifier;
-        }
-        else if (Physics.SphereCast(transform.position, radius, flyTarget - transform.position, out hit, controller.LocalVelocity.z * rangeModifier, groundLayer))
-        //else if (Physics.Linecast(transform.position, flyTarget, out hit, groundLayer))
-        {
-            flyTarget = hit.point + (hit.normal + Vector3.up) * bumbModifier;
-        }
-        if (Physics.CheckSphere(transform.position+transform.forward+Vector3.down, radius, groundLayer))
-        {
-            flyTarget = transform.position + transform.forward + Vector3.up * radius;
-        }
+    //private void UpdateAutopilot()
+    //{
+    //    if (Physics.SphereCast(transform.position, radius, transform.forward, out RaycastHit hit, controller.LocalVelocity.z * rangeModifier, groundLayer))
+    //    {
+    //        flyTarget = transform.position + transform.forward + (hit.normal + Vector3.up) * bumbModifier;
+    //    }
+    //    else if (Physics.SphereCast(transform.position, radius, flyTarget - transform.position, out hit, controller.LocalVelocity.z * rangeModifier, groundLayer))
+    //    //else if (Physics.Linecast(transform.position, flyTarget, out hit, groundLayer))
+    //    {
+    //        flyTarget = hit.point + (hit.normal + Vector3.up) * bumbModifier;
+    //    }
+    //    if (Physics.CheckSphere(transform.position + transform.forward + Vector3.down, radius, groundLayer))
+    //    {
+    //        flyTarget = transform.position + transform.forward + Vector3.up * radius;
+    //    }
 
 
-        if (Physics.Raycast(flyTarget+Vector3.up*100, Vector3.down, out hit, 200, groundLayer))
-        {
-            if(hit.point.y > flyTarget.y)
-            {
-                flyTarget.y = hit.point.y + radius;
-            }
-        }
-        
-        
-        autopilot.RunAutopilot(flyTarget, out float pitch, out float yaw, out float roll);
-        Vector3 input = new(pitch, yaw, roll);
-        controller.SetControlInput(input);
-    }
+    //    if (Physics.Raycast(flyTarget + Vector3.up * 100, Vector3.down, out hit, 200, groundLayer))
+    //    {
+    //        if (hit.point.y > flyTarget.y)
+    //        {
+    //            flyTarget.y = hit.point.y + radius;
+    //        }
+    //    }
+
+
+    //    autopilot.RunAutopilot(flyTarget, out float pitch, out float yaw, out float roll);
+    //    Vector3 input = new(pitch, yaw, roll);
+    //    controller.SetControlInput(input);
+    //}
 
     private void DoChase(float dt)
     {
@@ -385,6 +385,6 @@ public class FlyingAI : MonoBehaviour, IUtility
             SearchTarget();
         }
 
-        UpdateAutopilot();
+        actor.SetFlyTarget(flyTarget);
     }
 }
