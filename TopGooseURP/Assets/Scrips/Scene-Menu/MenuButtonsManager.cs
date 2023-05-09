@@ -26,8 +26,8 @@ public class MenuButtonsManager : MonoBehaviour
         settingButton.onClick.AddListener(() =>
         {
             MainMenu.SetActive(false);
-            SoundSettings.SetActive(false);
-            HotkeysSettings.SetActive(true);
+            HotkeysSettings.SetActive(false);
+            SoundSettings.SetActive(true);
             Settings.SetActive(true);
 
         });
