@@ -34,6 +34,12 @@ public class Explode : MonoBehaviour
 
     public void ExplodeNow( TeamMember owner = null )
     {
+        ExplodeNow(damage, maxRange, force, owner);
+    }
+
+
+    public void ExplodeNow(float maxDamage, float maxRange, float force, TeamMember owner = null)
+    {
         for (int i = 0; i < systems.Length; i++)
         {
             systems[i].Play();
@@ -41,38 +47,41 @@ public class Explode : MonoBehaviour
 
         Vector3 exposionCenter = transform.position;
 
-        int nrHits = Physics.OverlapSphereNonAlloc(exposionCenter, maxRange, _colliders, layerMask);
+        int nrHits = Physics.OverlapSphereNonAlloc(exposionCenter, maxRange, _colliders, layerMask, QueryTriggerInteraction.Ignore);
 
         for (int i = 0; i < nrHits; i++) //if a gameObj have multiple colliders it will be hit mutiple times ...-.-
         {
             Rigidbody rb = _colliders[i].attachedRigidbody;
-            if (_colliders[i].TryGetComponent(out Health health))
+            if (!_colliders[i].TryGetComponent(out Health health))
+            {
+                health = _colliders[i].GetComponentInParent<Health>();
+            }
+
+            if (health != null)
             {
                 Vector3 closestPoint = _colliders[i].ClosestPoint(exposionCenter); // if we do distance to collider transform.pos we might not "hit" if collider is big, still touching part of it
                 float dist = Vector3.Distance(closestPoint, exposionCenter); //maybe ray cast to see if nothing is between first?
-                float damage = (1 - dist / maxRange) * this.damage;
-                //Debug.Log("sfghsfghjsdfghjtsfgjsdfghjdghjdghjkdghjkdghkjdghkdghk : " + _colliders[i].gameObject.name);
-                //health.ChangeHealth(-damage, ChangeHealthType.explosion, owner);
-
-
+                float damage = (1 - dist / maxRange) * maxDamage;
 
                 health.DealDamage(new DamageInfo(owner, damage, type, exposionCenter, force, maxRange));
 
                 if (health.Dead && rb != null)
                 {
                     rb.AddExplosionForce(force, exposionCenter, maxRange);
-                    //StartCoroutine(DelayedExplosionForce(rb, exposionCenter));
+
                 }
             }
-            else if(rb != null)
+
+            if (rb != null)
             {
                 rb.AddExplosionForce(force, exposionCenter, maxRange);
             }
         }
-        
+
 
         StartCoroutine(ReturnToPool());
     }
+
 
     private IEnumerator DelayedExplosionForce(Rigidbody rigidbody, Vector3 exposionCenter)
     {

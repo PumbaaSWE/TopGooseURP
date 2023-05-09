@@ -16,9 +16,11 @@ public class BoatMissile : MonoBehaviour
     Transform target;
 
     [SerializeField]
-    GameObject explosionPrefab;
+    Explode explosionPrefab;
 
     Vector3 desiredDirection;
+
+    ParticleSystem.EmissionModule emission;
 
     void Start()
     {
@@ -26,6 +28,7 @@ public class BoatMissile : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
         simpleFlight.SetThrottleInput(1);
+        emission = GetComponentInChildren<ParticleSystem>().emission;
     }
 
     private void Update()
@@ -71,12 +74,14 @@ public class BoatMissile : MonoBehaviour
         if (other.gameObject == target.gameObject)
         {
             audioSource.enabled = false;
-            GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            Destroy(explosion, 10);
+            Explode explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            explosion.ExplodeNow(999,5,100);
+            //Destroy(explosion, 10);
 
             GetComponent<SphereCollider>().enabled = false;
             transform.GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);
-            transform.GetComponentInChildren<ParticleSystem>().enableEmission = false;
+            //transform.GetComponentInChildren<ParticleSystem>().enableEmission = false;
+            emission.enabled = false;
             Destroy(gameObject, 10);
         }
     }
