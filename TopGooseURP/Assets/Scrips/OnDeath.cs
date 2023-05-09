@@ -101,8 +101,6 @@ public class OnDeath : MonoBehaviour
                 if(inGameMenu != null)
                 {
                     inGameMenu.EndScreen();
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;                    
                 }
             }
         }
