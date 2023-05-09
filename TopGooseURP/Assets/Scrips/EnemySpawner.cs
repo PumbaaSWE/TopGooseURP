@@ -11,8 +11,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     Transform[] spawnPoints;
 
-    [SerializeField]
-    WaypointsPath path;
+    //[SerializeField]
+    //WaypointsPath path;
 
     [SerializeField]
     float delay;
@@ -56,6 +56,9 @@ public class EnemySpawner : MonoBehaviour
             spawnPointsNotVisible.Add(spawnPoints[i]);
         }
 
+        //Return if there is no desirable spawnpoint
+        if (spawnPointsNotVisible.Count == 0) return;
+
         //Choose the spawnpoint with least enemies attached to it.
         Transform spawnPoint = spawnPointsNotVisible[0];
         for (int i = 1; i < spawnPointsNotVisible.Count; i++)
@@ -72,7 +75,7 @@ public class EnemySpawner : MonoBehaviour
         if (spawnPoint.childCount >= enemiesPerPoint) return;
 
         var enemyInstance = Instantiate(enemy, spawnPoint.position, Quaternion.identity, spawnPoint);
-        enemyInstance.GetComponent<PathUtility>().currentPath = path;
+        enemyInstance.GetComponent<PathUtility>().currentPath = spawnPoint.GetComponentInChildren<WaypointsPath>();
 
         int spawnPointIndex = 0;
         for (int i = 0; i < spawnPoints.Length; i++)

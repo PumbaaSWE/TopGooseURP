@@ -941,6 +941,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  flightCieling: 200
 --- !u!114 &2103879418806298609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,6 +1066,7 @@ MonoBehaviour:
     type: 3}
   dissolveSpeed: 1
   startDissolvingAfter: 10
+  destroyGameObject: 1
 --- !u!114 &7327930071706230394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1078,7 +1080,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageModifier: []
-  startHealth: 100
+  maxHealth: 100
+  healthBar: {fileID: 0}
 --- !u!114 &4779735588342292964
 MonoBehaviour:
   m_ObjectHideFlags: 0
