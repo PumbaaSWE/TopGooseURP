@@ -2054,6 +2054,7 @@ MonoBehaviour:
   sinkSpeed: 1
   removeTime: 5
   smoke: {fileID: 0}
+  destructionSmoke: {fileID: 0}
 --- !u!114 &1370038248357940351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2066,7 +2067,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7923e5bf4c99eb540a4a5d0bfbd7fafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageModifier: []
+  damageModifier:
+  - type: {fileID: 11400000, guid: aa52475f8c59c9546b5b7f7cac71d29d, type: 2}
+    modifier: 0.01
   maxHealth: 100
   healthBar: {fileID: 0}
 --- !u!1 &2297148343478642492

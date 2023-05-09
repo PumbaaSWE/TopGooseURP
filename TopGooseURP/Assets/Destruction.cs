@@ -62,7 +62,7 @@ public class Destruction : MonoBehaviour
 
         health = GetComponent<Health>();
         health.OnDead += StartDestruction;
-        //enabled = false;
+        enabled = false;
 
         if (destructionSmoke != null) { 
             destructionSmoke = Instantiate(destructionSmoke, transform);
@@ -76,12 +76,12 @@ public class Destruction : MonoBehaviour
     void Update()
     {
         //test
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            Debug.Log("dfgsdfghsfghsftrhgjsrftjhsrfjhsdrfj");
-            StartDestruction();
-        }
-        if (!destroyed) return;
+        //if (Input.GetKeyDown(KeyCode.Y))
+        //{
+        //    Debug.Log("dfgsdfghsfghsftrhgjsrftjhsrfjhsdrfj");
+        //    StartDestruction();
+        //}
+        //if (!destroyed) return;
         //test
 
         removeTime -= Time.deltaTime;
