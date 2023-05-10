@@ -4935,6 +4935,7 @@ MonoBehaviour:
   turnForce: 1
   maxVelocity: 50
   turnSpeed: 5
+  howFarFromShore: 500
 --- !u!114 &2003560073057511245
 MonoBehaviour:
   m_ObjectHideFlags: 0
