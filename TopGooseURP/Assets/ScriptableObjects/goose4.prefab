@@ -1008,6 +1008,7 @@ GameObject:
   - component: {fileID: 1406932390}
   - component: {fileID: 1406932391}
   - component: {fileID: 1870864033}
+  - component: {fileID: 1870864034}
   m_Layer: 6
   m_Name: goose4
   m_TagString: Player
@@ -1473,6 +1474,8 @@ MonoBehaviour:
     type: 3}
   dissolveSpeed: 0.2
   startDissolvingAfter: 1
+  destroyGameObject: 0
+  inGameMenu: {fileID: 0}
 --- !u!114 &1870864033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1495,6 +1498,26 @@ MonoBehaviour:
     m_Bits: 0
   bulletSpeed: 100
   flyRange: 500
+--- !u!114 &1870864034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3244427602905914484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d5346934c721bc4c8930ee591a5df2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 11400000, guid: 09cf57161e890494798854fdb6472ca9, type: 2}
+  score: 100
+  title: Ace
+  description: Kill 5 Enemies!
+  sprite: {fileID: 21300000, guid: f5d10490938a96e4a9b66f81a9876d62, type: 3}
+  isPrimary: 0
+  shownOnMap: 0
+  count: 5
 --- !u!1 &3739327751847070683
 GameObject:
   m_ObjectHideFlags: 0

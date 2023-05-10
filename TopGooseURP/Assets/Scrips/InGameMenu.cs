@@ -94,9 +94,12 @@ public class InGameMenu : MonoBehaviour
 
     public void EndScreen()
     {
+        Time.timeScale = 0f;
         endScreenShown = true;
         HudUICanvas.gameObject.SetActive(false);
         pauseScreenPanel.gameObject.SetActive(false);
         endScreenPanel.gameObject.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

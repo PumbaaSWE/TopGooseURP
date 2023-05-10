@@ -146,7 +146,7 @@ public class FlightController : MonoBehaviour
         {
             //float force = transform.position.y - flightCieling;
             Rigidbody.AddForce(Vector3.down*maxThrust, ForceMode.Acceleration);
-            Debug.Log("Flight Cieling reached");
+            //Debug.Log("Flight Cieling reached");
         }
 
         UpdateState(dt);

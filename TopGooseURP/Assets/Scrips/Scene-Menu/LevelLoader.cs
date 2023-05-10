@@ -10,10 +10,15 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] private Slider slider;
     [SerializeField] private TextMeshProUGUI progressText;
     [SerializeField] private TextMeshProUGUI continueText;
+    [SerializeField] private Button playButton;
+
+    private bool pressedPlay = false;
+    public bool PressedPlay { get { return pressedPlay; } set {  pressedPlay = value; } }
 
     public void LoadLevel(int sceneIndex)
     {
         continueText.enabled = false;
+        playButton.enabled = false;
         loadingScreen.SetActive(true);
         StartCoroutine(LoadAsynchronously(sceneIndex));
     }
@@ -30,12 +35,14 @@ public class LevelLoader : MonoBehaviour
             progressText.text = progress * 100f + "%";
 
             if (operation.progress >= 0.9f)
-            {
+            {                
+                playButton.enabled = true;
                 continueText.enabled = true;
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) || pressedPlay)
                 {
                     operation.allowSceneActivation = true;
                     LockMouse();
+                    pressedPlay = false;
                 }
             }
 

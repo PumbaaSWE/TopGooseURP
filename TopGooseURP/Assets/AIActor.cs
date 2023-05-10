@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class AIActor : MonoBehaviour
 {
@@ -11,14 +12,47 @@ public class AIActor : MonoBehaviour
     private int previusUtil = 0;
     private int currentUtil = 0;
 
+
+    [Space]
+    [Header("Ground Avoiding")]
+    [SerializeField] private float radius = 3;
+    [SerializeField] private float bumbModifier = 2;
+    [SerializeField] private float rangeModifier = 2;
+    [SerializeField] private LayerMask groundLayer;
+
+    //[Space]
+    //[Header("Shooting")]
+    //[SerializeField][Range(0.0f, 1.0f)] float ramming = 0;
+    //[SerializeField][Range(0.0f, 1.0f)] float guns = 0;
+    //[SerializeField][Range(0.0f, 45.0f)] float gunsConeToFire = 1.0f;
+    //private float gunsAlignToFire;
+    //[SerializeField][Range(0.0f, 1.0f)] float minHeat = 0.3f;
+    //[SerializeField][Range(0.0f, 1.0f)] float maxHeat = 0.9f;
+    //private bool gunsOverheat;
+    //[SerializeField] private LayerMask targetLayer;
+    //private Vector3 ramTarget; // vector to ram target
+    //private Vector3 gunSolutionTarget; // vector to get guns on target target
+    //[SerializeField] private float bulletSpeed = 800; //to be allocated from Guns attached later
+
+
+    private Autopilot autopilot;
+    private FlightController controller;
+    private Vector3 flyTarget = Vector3.zero; // actual fly towards target
+
     void Start()
     {
+
+        autopilot = GetComponent<Autopilot>();
+        controller = GetComponent<FlightController>();
+        controller.SetThrottleInput(1.0f);
+
         //auto fill list based on attached components implementing IUtility?
         Component[] utilities = GetComponents(typeof(IUtility));
 
         for (int i = 0; i < utilities.Length; i++)
         {
             this.utilities.Add(utilities[i] as IUtility);
+            //utilities[i].
         }
 
         if(TryGetComponent(out Health health))
@@ -36,6 +70,8 @@ public class AIActor : MonoBehaviour
         EvaluateUtils();
 
         utilities[currentUtil].Execute();
+
+        UpdateAutopilot();
     }
 
     private void EvaluateUtils()
@@ -88,4 +124,40 @@ public class AIActor : MonoBehaviour
     {
         ReturnRole();
     }
+
+    public void SetFlyTarget(Vector3 flyTarget)
+    {
+        this.flyTarget = flyTarget;
+    }
+    private void UpdateAutopilot()
+    {
+        if (Physics.SphereCast(transform.position, radius, transform.forward, out RaycastHit hit, controller.LocalVelocity.z * rangeModifier, groundLayer))
+        {
+            flyTarget = transform.position + transform.forward + (hit.normal + Vector3.up) * bumbModifier;
+        }
+        else if (Physics.SphereCast(transform.position, radius, flyTarget - transform.position, out hit, controller.LocalVelocity.z * rangeModifier, groundLayer))
+        //else if (Physics.Linecast(transform.position, flyTarget, out hit, groundLayer))
+        {
+            flyTarget = hit.point + (hit.normal + Vector3.up) * bumbModifier;
+        }
+        if (Physics.CheckSphere(transform.position + transform.forward + Vector3.down, radius, groundLayer))
+        {
+            flyTarget = transform.position + transform.forward + Vector3.up * radius;
+        }
+
+
+        if (Physics.Raycast(flyTarget + Vector3.up * 100, Vector3.down, out hit, 200, groundLayer))
+        {
+            if (hit.point.y > flyTarget.y)
+            {
+                flyTarget.y = hit.point.y + radius;
+            }
+        }
+
+
+        autopilot.RunAutopilot(flyTarget, out float pitch, out float yaw, out float roll);
+        Vector3 input = new(pitch, yaw, roll);
+        controller.SetControlInput(input);
+    }
+
 }

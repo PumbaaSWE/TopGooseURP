@@ -22,6 +22,9 @@ public class OnDeath : MonoBehaviour
     [SerializeField]
     bool destroyGameObject;
 
+    [Space]
+    //[SerializeField] private InGameMenu inGameMenu;
+
     float t, spin, spinPreviousUpdate;
     bool dissolve, ragdoll, dead, counterClockWise;
 
@@ -50,11 +53,11 @@ public class OnDeath : MonoBehaviour
             spinPreviousUpdate = spin;
             spin = transform.rotation.eulerAngles.z;
 
-            //For now, die when pressing space
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                health.ChangeHealth(-99999, ChangeHealthType.bullet, null);
-            }
+            //For now, die when pressing space - removed for the build (testers might press space for somea reason )
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    health.ChangeHealth(-99999, ChangeHealthType.bullet, null);
+            //}
         }
 
         //If you haven't died yet, you shall not pass!
@@ -90,7 +93,16 @@ public class OnDeath : MonoBehaviour
         //When fully dissolved, remove gameObject from the scene
         else
         {
-            if (destroyGameObject) Destroy(gameObject); else gameObject.SetActive(false);
+            if (destroyGameObject) Destroy(gameObject);
+
+            else
+            {
+                gameObject.SetActive(false);
+                //if(inGameMenu != null)
+                //{
+                //    inGameMenu.EndScreen();
+                //}
+            }
         }
     }
 

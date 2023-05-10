@@ -28,6 +28,8 @@ public class Destruction : MonoBehaviour
     [Tooltip("Set the smoke pillar when destryed (if null it will try children)")][SerializeField] private ParticleSystem smoke;
     //public bool destroyPieces = true;
 
+    public ParticleSystem destructionSmoke;
+
     void Awake()
     {
         //foundation = 
@@ -46,11 +48,11 @@ public class Destruction : MonoBehaviour
             //if (renderer.material.shader.name.Contains("Dissolve")) dissolveThese.Add(renderer);
 
         }
-        if(foundation != null)
+        if (foundation != null)
             foundation.SetActive(false);
         radius = model.GetComponent<Collider>().bounds.extents.magnitude; // does not necessarily bound everything, revisit this!!!!
 
-        if(smoke == null)
+        if (smoke == null)
             smoke = GetComponentInChildren<ParticleSystem>(true);
         if (smoke != null)
         {
@@ -61,11 +63,27 @@ public class Destruction : MonoBehaviour
         health = GetComponent<Health>();
         health.OnDead += StartDestruction;
         enabled = false;
+
+        if (destructionSmoke != null) { 
+            destructionSmoke = Instantiate(destructionSmoke, transform);
+            ParticleSystem.ShapeModule sm = destructionSmoke.shape;
+            //sm.enabled = true;
+            sm.meshRenderer = model.GetComponent<MeshRenderer>();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        //test
+        //if (Input.GetKeyDown(KeyCode.Y))
+        //{
+        //    Debug.Log("dfgsdfghsfghsftrhgjsrftjhsrfjhsdrfj");
+        //    StartDestruction();
+        //}
+        //if (!destroyed) return;
+        //test
+
         removeTime -= Time.deltaTime;
         for (int i = 0; i < rigidbodies.Length; i++)
         {
@@ -96,6 +114,8 @@ public class Destruction : MonoBehaviour
         }
         if(smoke != null)
             smoke.Play();
+        if(destructionSmoke !=null)
+            destructionSmoke.Play();
         StartCoroutine(StartSink(sinkTime));
     }
 

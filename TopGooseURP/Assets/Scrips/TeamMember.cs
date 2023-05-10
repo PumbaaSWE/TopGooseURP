@@ -1,4 +1,5 @@
 using UnityEngine;
+using static TeamMember;
 
 public class TeamMember : MonoBehaviour
 {
@@ -21,6 +22,12 @@ public class TeamMember : MonoBehaviour
 
     public delegate void OnDeathEvent(TeamMember teamMember);
     public OnDeathEvent OnDeathCallback;
+
+    public delegate void OnKillEvent(TeamMember teamMember, int score);
+    public OnKillEvent OnKillCallback;
+
+    public delegate void OnAssistEvent(TeamMember teamMember, int score);
+    public OnAssistEvent OnAssistCallback;
 
     public string info;
 
@@ -69,15 +76,18 @@ public class TeamMember : MonoBehaviour
         //Debug.Assert(team.TeamsManager != null, "team.TeamsManager == null");
         Score += team.TeamsManager.KillScore;
         Kills++;
+        OnKillCallback?.Invoke(this, team.TeamsManager.KillScore);
     }
 
     private void RewardAssist(float value)
     {
         Assists++;
+        int score = team.TeamsManager.AssistScore;
         if (team.TeamsManager.DamageBasedAssistScore)
-            Score += Mathf.RoundToInt(value); //ciel?
-        else
-            Score += team.TeamsManager.AssistScore;
+            score = Mathf.RoundToInt(value); //ciel?
+
+        Score += score;
+        OnAssistCallback?.Invoke(this, score);
     }
 
     //public void Heal(TeamMember healer, float value)

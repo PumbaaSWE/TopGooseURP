@@ -32,11 +32,14 @@ public class RagdollHandler : MonoBehaviour
     Vector3 storedVelocity;
     Vector3 storedAngularVelocity;
 
+    Health health;
+
     // Start is called before the first frame update
     void Start()
     {
-        
-        
+        health = GetComponent<Health>();
+
+
         GetRagdollBits();
 
     }
@@ -141,7 +144,11 @@ public class RagdollHandler : MonoBehaviour
             //collision.re
             //Debug.Log("RagdollHandler - Enabling Ragdoll, Impulse magnitude: " + impulse + " computed impact force(I think): " + impulse / Time.fixedDeltaTime);
             EnableRagdoll();
-            
+            if (health != null)
+                health.ChangeHealth(-999999, ChangeHealthType.impact, null);
+
+            //health.DealDamage(new DamageInfo(f))
+
         }
         
         
