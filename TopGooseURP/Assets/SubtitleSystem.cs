@@ -55,7 +55,14 @@ public class SubtitleSystem : MonoBehaviour
             yield return new WaitForSeconds(wait);
         }
         yield return new WaitForSeconds(subtitles[index].nextSpeed);
-        NextSubtitle();
+        if (subtitles[index].triggerNext)
+        {
+            NextSubtitle();
+        }
+        else
+        {
+            text.text = string.Empty;
+        }
     }
 
     [Serializable]
@@ -65,6 +72,7 @@ public class SubtitleSystem : MonoBehaviour
         public float textSpeed;
         public float nextSpeed;
         public bool reset;
+        public bool triggerNext;
 
         public SubtitleLine(string text, float speed = 0.1f)
         {
@@ -72,6 +80,7 @@ public class SubtitleSystem : MonoBehaviour
             textSpeed = speed;
             nextSpeed = 0;
             reset = true;
+            triggerNext = true;
         }
 
 
