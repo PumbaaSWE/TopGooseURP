@@ -8,28 +8,34 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-
-    [SerializeField] private Slider slider;
+    [SerializeField] private Health health;
     [Space]
-    [SerializeField] private TextMeshProUGUI healthText;
+    [SerializeField] private Image circleHp;
+    [SerializeField] private TextMeshProUGUI hpText;
 
+    private float maxHealth, currentHP;
 
-    private float maxHealth;
-
+    private void Start()
+    {
+        SetMaxHealth(health.Amount);
+        health.OnChangeHealth += SetHealth;
+    }
     public void SetMaxHealth(float health)
     {
-        slider.maxValue = health;
-        slider.value = health;
         maxHealth = health;
+        currentHP = health;
+        circleHp.fillAmount = currentHP / maxHealth;
     }
 
-    public void SetHealth(float health)
+    public void SetHealth(float change, ChangeHealthType damageType, TeamMember damager)
     {
-        slider.value = health;
+        currentHP += change;
+
+        circleHp.fillAmount = currentHP / maxHealth;
     }
 
     private void Update()
     {
-        healthText.text = slider.value + "/" + maxHealth;
+        hpText.text = (circleHp.fillAmount * 100).ToString("n1") + "%";
     }
 }

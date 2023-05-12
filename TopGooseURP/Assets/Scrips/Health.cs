@@ -22,7 +22,6 @@ public class Health : MonoBehaviour
     [SerializeField]
     private float maxHealth = 100;
 
-    [SerializeField] private HealthBar healthBar;
 
     public void ChangeHealth(float change, ChangeHealthType damageType, TeamMember damager)
     {
@@ -77,8 +76,7 @@ public class Health : MonoBehaviour
     private void Awake()
     {
         Amount = maxHealth;
-        if (healthBar != null)
-            healthBar.SetMaxHealth(maxHealth);
+        
 
         for (int i = 0; i < damageModifier.Count; i++)
         {
@@ -88,8 +86,7 @@ public class Health : MonoBehaviour
     }
     private void Update()
     {
-        if (healthBar != null)
-            healthBar.SetHealth(Amount);
+        
     }
 }
 
