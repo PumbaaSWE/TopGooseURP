@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,8 +8,9 @@ public class HealthBar : MonoBehaviour
     [Space]
     [SerializeField] private Image circleHp;
     [SerializeField] private TextMeshProUGUI hpText;
+    [SerializeField] private float lerpTime;
 
-    private float maxHealth, currentHP;
+    private float maxHealth, currentHP, lerpSpeed;
 
     private void Start()
     {
@@ -30,12 +27,12 @@ public class HealthBar : MonoBehaviour
     public void SetHealth(float change, ChangeHealthType damageType, TeamMember damager)
     {
         currentHP += change;
-
-        circleHp.fillAmount = currentHP / maxHealth;
     }
 
     private void Update()
     {
+        lerpSpeed = lerpTime * Time.deltaTime; 
+        circleHp.fillAmount = Mathf.Lerp(circleHp.fillAmount, currentHP / maxHealth, lerpSpeed);
         hpText.text = (circleHp.fillAmount * 100).ToString("n1") + "%";
     }
 }
