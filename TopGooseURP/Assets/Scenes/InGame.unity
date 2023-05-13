@@ -2841,6 +2841,7 @@ MonoBehaviour:
   health: {fileID: 1870864024}
   circleHp: {fileID: 1770764314}
   hpText: {fileID: 958656248}
+  lerpTime: 3
 --- !u!4 &1290170870 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4160848240147034, guid: 2b0bdfea730db9d40a94777d36f09cb3,
