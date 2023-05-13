@@ -163,6 +163,8 @@ public class ManualFlightInput : MonoBehaviour
         controller.SetThrottleInput(1);
         gameInput.FreeLookStart += GameInput_FreeLookStart;
         gameInput.FreeLookCancel += GameInput_FreeLookCancel;
+
+        _ = gameInput.ThrottleChangeActionNormalized();
     }
     
     private void GameInput_FreeLookStart(object sender, System.EventArgs e)
@@ -226,7 +228,15 @@ public class ManualFlightInput : MonoBehaviour
         if (Mathf.Abs(keyboardPitch) > inputThreshold)
         {
             pitchOverride = true;
-            rollOverride = true; // why?
+            rollOverride = true;
+        }
+
+        bool yawOverride = false;
+        float keyboardYaw = gameInput.YawActionNormalized();
+        if (Mathf.Abs(keyboardYaw) > inputThreshold)
+        {
+            yawOverride = true;
+            rollOverride = true;
         }
 
         float autoPitch;
@@ -242,7 +252,7 @@ public class ManualFlightInput : MonoBehaviour
             pilot.RunAdvancedAutopilot2(MouseAimPos, dt, out autoPitch, out autoYaw, out autoRoll);
         }
 
-        float yaw = autoYaw;
+        float yaw = (yawOverride) ? keyboardYaw : autoYaw;
         float pitch = (pitchOverride) ? keyboardPitch : autoPitch;
         float roll = (rollOverride) ? keyboardRoll : autoRoll;
 

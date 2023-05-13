@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,8 +8,8 @@ public class PathUtility : MonoBehaviour, IUtility
     public float acceptableDistance;
     public float maxDistance = 100;
 
-    private Autopilot autopilot;
-    FlightController flightController;
+    //private Autopilot autopilot;
+    //FlightController flightController;
 
     private int waypointId = 0;
     private Vector3 currentWaypoint;
@@ -64,8 +62,8 @@ public class PathUtility : MonoBehaviour, IUtility
     // Start is called before the first frame update
     void Start()
     {
-        autopilot = GetComponent<Autopilot>();
-        flightController = GetComponent<FlightController>();
+        //autopilot = GetComponent<Autopilot>();
+        //flightController = GetComponent<FlightController>();
         currentWaypoint = currentPath.GetClosest(transform.position, ref waypointId);
         prevWaypoint = currentWaypoint;
         actor = GetComponent<AIActor>();

@@ -8562,6 +8562,10 @@ PrefabInstance:
       propertyPath: seekerView
       value: 
       objectReference: {fileID: 4490844213121548715}
+    - target: {fileID: 1142582458, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: directionalDragCoeff
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1142582462, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: triggerForce
       value: 1500
