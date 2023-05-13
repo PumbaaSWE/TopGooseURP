@@ -998,8 +998,8 @@ MonoBehaviour:
   role: 0
   CombatCoordinator: {fileID: 0}
   radius: 3
-  bumbModifier: 2
-  rangeModifier: 2
+  bumbModifier: 3
+  rangeModifier: 3
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -1025,12 +1025,6 @@ MonoBehaviour:
   zoomDirection: 45
   climbRate: 0.5
   boomFireDist: 5
-  radius: 3
-  bumbModifier: 2
-  rangeModifier: 3
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
   ramming: 0
   guns: 1
   gunsConeToFire: 1.6
@@ -1055,7 +1049,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentPath: {fileID: 0}
   acceptableDistance: 4
-  maxDistance: 400
+  maxDistance: 200
   showDebugInfo: 0
 --- !u!114 &7869128439128220966
 MonoBehaviour:
@@ -1074,7 +1068,6 @@ MonoBehaviour:
   dissolveSpeed: 1
   startDissolvingAfter: 10
   destroyGameObject: 1
-  inGameMenu: {fileID: 0}
 --- !u!114 &7327930071706230394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1089,7 +1082,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageModifier: []
   maxHealth: 100
-  healthBar: {fileID: 0}
 --- !u!114 &4779735588342292964
 MonoBehaviour:
   m_ObjectHideFlags: 0

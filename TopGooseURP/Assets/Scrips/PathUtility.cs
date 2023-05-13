@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PathUtility : MonoBehaviour, IUtility
@@ -14,23 +15,27 @@ public class PathUtility : MonoBehaviour, IUtility
 
     private int waypointId = 0;
     private Vector3 currentWaypoint;
-    private float distFromWaypoint;
+    private Vector3 prevWaypoint;
+    private float distFromPath;
 
     public bool showDebugInfo;
 
     public float Evaluate()
     {
         if(currentPath == null) return -1f;
-        distFromWaypoint = Vector3.Distance(currentWaypoint, transform.position);
+        //distFromWaypoint = Vector3.Distance(currentWaypoint, transform.position);
 
-        if (distFromWaypoint > maxDistance) //if we fly really far off find the nearest one
+        distFromPath = HandleUtility.DistancePointLine(transform.position, prevWaypoint, currentWaypoint);
+        if (showDebugInfo) Debug.Log("Distance From  Path: " + distFromPath);
+        if (distFromPath > maxDistance) //if we fly really far off find the nearest one
         {
+            prevWaypoint = currentWaypoint;
             currentWaypoint = currentPath.GetClosest(transform.position, ref waypointId);
             if (showDebugInfo) Debug.Log("GetClosest Path: " + waypointId);
-            distFromWaypoint = Vector3.Distance(currentWaypoint, transform.position);
+            //distFromWaypoint = Vector3.Distance(currentWaypoint, transform.position);
         }
 
-        float ratio = distFromWaypoint / maxDistance; // to be used to compute final utility score, i.e. the further away from waypoint the highter utility
+        float ratio = distFromPath / maxDistance; // to be used to compute final utility score, i.e. the further away from waypoint the highter utility
         //maybe better from closest waypoint and or the center i.e. currentPath.pos
         if (showDebugInfo) Debug.Log("Evaluate Path: " + ratio);
         return ratio;
@@ -38,9 +43,11 @@ public class PathUtility : MonoBehaviour, IUtility
 
     public void Execute()
     {
-        if(distFromWaypoint < acceptableDistance)
+        float distFromWaypoint = Vector3.Distance(currentWaypoint, transform.position);
+        if (distFromWaypoint < acceptableDistance)
         {
             if(showDebugInfo)Debug.Log("GetNext Path: " + waypointId);
+            prevWaypoint = currentWaypoint;
             currentWaypoint = currentPath.GetNext(ref waypointId);
             if (showDebugInfo) Debug.Log("GotNext Path: " + waypointId);
         }
@@ -60,6 +67,7 @@ public class PathUtility : MonoBehaviour, IUtility
         autopilot = GetComponent<Autopilot>();
         flightController = GetComponent<FlightController>();
         currentWaypoint = currentPath.GetClosest(transform.position, ref waypointId);
+        prevWaypoint = currentWaypoint;
         actor = GetComponent<AIActor>();
 
     }
@@ -77,6 +85,9 @@ public class PathUtility : MonoBehaviour, IUtility
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(transform.position, currentWaypoint);
             Gizmos.DrawWireSphere(currentWaypoint, 3);
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawLine(transform.position, prevWaypoint);
+            Gizmos.DrawWireSphere(prevWaypoint, 3);
         }
     }
 }
