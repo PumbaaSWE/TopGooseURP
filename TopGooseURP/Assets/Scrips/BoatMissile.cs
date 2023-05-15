@@ -20,6 +20,9 @@ public class BoatMissile : MonoBehaviour
 
     Vector3 desiredDirection;
 
+    float explodeAfter;
+    bool exploded;
+
     ParticleSystem.EmissionModule emission;
 
     void Start()
@@ -29,10 +32,21 @@ public class BoatMissile : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         simpleFlight.SetThrottleInput(1);
         emission = GetComponentInChildren<ParticleSystem>().emission;
+
+        TargetingMath.ComputeImpact(target.position, targetRigidBody.velocity, transform.position, simpleFlight.MaxSpeed, out Vector3 location, out explodeAfter);
     }
 
     private void Update()
     {
+        if (exploded) return;
+
+        explodeAfter -= Time.deltaTime;
+        if (explodeAfter < 0)
+        {
+            exploded = true;
+            Explode();
+        }
+
         desiredDirection = DesiredTravelDirection(transform.position, simpleFlight.MaxSpeed, target.position, targetRigidBody.velocity);
 
         simpleFlight.RunAutopilot(transform.position + desiredDirection * rigidBody.velocity.magnitude);
@@ -71,18 +85,10 @@ public class BoatMissile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == target.gameObject)
+        if (other.gameObject == target.gameObject && !exploded)
         {
-            audioSource.enabled = false;
-            Explode explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            explosion.ExplodeNow(3400,5,100);
-            //Destroy(explosion, 10);
-
-            GetComponent<SphereCollider>().enabled = false;
-            transform.GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);
-            //transform.GetComponentInChildren<ParticleSystem>().enableEmission = false;
-            emission.enabled = false;
-            Destroy(gameObject, 10);
+            exploded = true;
+            Explode();
         }
     }
 
@@ -91,4 +97,16 @@ public class BoatMissile : MonoBehaviour
     //    Gizmos.color = Color.red;
     //    Gizmos.DrawLine(transform.position, transform.position + desiredDirection * rigidBody.velocity.magnitude);
     //}
+
+    private void Explode()
+    {
+        audioSource.enabled = false;
+        Explode explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        explosion.ExplodeNow(3400, 5, 100);
+
+        GetComponent<SphereCollider>().enabled = false;
+        transform.GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);
+        emission.enabled = false;
+        Destroy(gameObject, 10);
+    }
 }

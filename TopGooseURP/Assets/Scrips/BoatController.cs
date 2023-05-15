@@ -20,6 +20,9 @@ public class BoatController : MonoBehaviour
     float turnSpeed;
     float turnVelocity;
 
+    [SerializeField]
+    int howFarFromShore;
+
     public Transform target { private get; set; }
 
     Vector3 travelAxis;
@@ -39,14 +42,14 @@ public class BoatController : MonoBehaviour
             travelAxis = Vector3.right;
 
             distanceFromShore = Vector3.forward;
-            distanceFromShore *= (transform.position.z - boundary.position.z > 0) ? boundary.position.z + boundary.localScale.z / 2 : boundary.position.z - boundary.localScale.z / 2;
+            distanceFromShore *= (transform.position.z - boundary.position.z > 0) ? boundary.position.z + boundary.localScale.z / 2 + howFarFromShore : boundary.position.z - boundary.localScale.z / 2 - howFarFromShore;
         }
         else
         {
             travelAxis = Vector3.forward;
 
             distanceFromShore = Vector3.right;
-            distanceFromShore *= (transform.position.x - boundary.position.x > 0) ? boundary.position.x + boundary.localScale.x / 2 : boundary.position.x - boundary.localScale.x / 2;
+            distanceFromShore *= (transform.position.x - boundary.position.x > 0) ? boundary.position.x + boundary.localScale.x / 2 + howFarFromShore : boundary.position.x - boundary.localScale.x / 2 - howFarFromShore;
         }
     }
 
