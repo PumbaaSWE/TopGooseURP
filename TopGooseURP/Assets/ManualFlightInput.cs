@@ -56,13 +56,13 @@ public class ManualFlightInput : MonoBehaviour
 
     //Sensitivity is 0.15f to match old system input
     [Tooltip("Mouse sensitivity for the mouse flight target")]
-    [SerializeField][Range(0.01f,1f)] private float mouseSensitivity = 0.15f;
+    [SerializeField][Range(0.01f, 1f)] private float mouseSensitivity = 0.15f;
 
     [Tooltip("How far the boresight and mouse flight are from the aircraft")]
     [SerializeField] private float aimDistance = 500f;
 
     [Tooltip("Deadzone like, not too relevant for keyboard")]
-    [SerializeField][Range(0,1)] private float inputThreshold = .25f;
+    [SerializeField][Range(0, 1)] private float inputThreshold = .25f;
 
     [Tooltip("When looking up or down stop aligning with horizon and align with local up")]
     [SerializeField][Range(0, 1)] private float camAlignThreshold = .9f;
@@ -166,7 +166,7 @@ public class ManualFlightInput : MonoBehaviour
 
         _ = gameInput.ThrottleChangeActionNormalized();
     }
-    
+
     private void GameInput_FreeLookStart(object sender, System.EventArgs e)
     {
         isMouseAimFrozen = true;
@@ -210,7 +210,7 @@ public class ManualFlightInput : MonoBehaviour
             UpdateCameraPos();
         HandleFlightInput(Time.fixedDeltaTime);
     }
-    
+
     private void HandleFlightInput(float dt)
     {
         bool rollOverride = false;
@@ -266,12 +266,17 @@ public class ManualFlightInput : MonoBehaviour
             return;
 
         //Mouse input.
-        
+
         Vector2 mouseAxis = gameInput.MouseAxis();
         float mouseX = mouseAxis.x * mouseSensitivity;
         float mouseY = -mouseAxis.y * mouseSensitivity;
         float scroll = gameInput.ThrottleChangeActionNormalized();
-        controller.SetThrottleInput(controller.Throttle + scroll);
+        if (scroll != 0)
+        {
+            controller.SetThrottleInput(controller.Throttle + scroll);
+
+        }
+        Debug.Log(scroll);
 
         // Rotate the aim target that the plane is meant to fly towards.
         // Use the camera's axes in world space so that mouse motion is intuitive.
