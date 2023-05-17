@@ -259,7 +259,7 @@ PrefabInstance:
     - target: {fileID: 3552172302249499264, guid: 42aad157dccf9d94985c4bd0d4157324,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3552172302249499264, guid: 42aad157dccf9d94985c4bd0d4157324,
         type: 3}
@@ -532,7 +532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4160848240147034, guid: 2b0bdfea730db9d40a94777d36f09cb3, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4160848240147034, guid: 2b0bdfea730db9d40a94777d36f09cb3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1014,7 +1014,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4160848240147034, guid: 2b0bdfea730db9d40a94777d36f09cb3, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4160848240147034, guid: 2b0bdfea730db9d40a94777d36f09cb3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1228,7 +1228,7 @@ PrefabInstance:
     - target: {fileID: 3552172302249499264, guid: 42aad157dccf9d94985c4bd0d4157324,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3552172302249499264, guid: 42aad157dccf9d94985c4bd0d4157324,
         type: 3}
@@ -1484,7 +1484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4918093718847478, guid: e09a598f8d47d3549a1cfa79857bb3a9, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4918093718847478, guid: e09a598f8d47d3549a1cfa79857bb3a9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1631,7 +1631,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 819134000}
-  - component: {fileID: 819134001}
   m_Layer: 0
   m_Name: ---Village---
   m_TagString: Untagged
@@ -1656,35 +1655,10 @@ Transform:
   - {fileID: 1858652447}
   - {fileID: 1263322855}
   - {fileID: 1235063134}
+  - {fileID: 1538640972}
   m_Father: {fileID: 598898654}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &819134001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819133999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50dae9c5a6c963245935fd9f4194d6b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manager: {fileID: 11400000, guid: 09cf57161e890494798854fdb6472ca9, type: 2}
-  score: 200
-  title: Village Killer
-  description: The pesky villagers are harboring enemies!
-  sprite: {fileID: 21300000, guid: 4d89fd83cd645ef4e9190eeddf68779e, type: 3}
-  isPrimary: 1
-  shownOnMap: 1
-  count: 4
-  toKill:
-  - {fileID: 1105636220}
-  - {fileID: 351682378}
-  - {fileID: 1858652448}
-  - {fileID: 1263322856}
-  - {fileID: 1235063135}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -2643,7 +2617,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4626559001553990, guid: 1f9417710f05e184d9d07e278a7c59ee, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4626559001553990, guid: 1f9417710f05e184d9d07e278a7c59ee, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2919,6 +2893,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9b8f1f6cbefe9a42ab5b51b37ad5781, type: 3}
+--- !u!1 &1490389382 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 165387325209123203, guid: ef87d45c9d6990b489f8f399c92a1675,
+    type: 3}
+  m_PrefabInstance: {fileID: 165387325447744001}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1490389389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490389382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bca1f957d4297a54b998e9d83225ceef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventManager: {fileID: 11400000, guid: 09cf57161e890494798854fdb6472ca9, type: 2}
+  objectiveMarkerPrefab: {fileID: 4563085079489084340, guid: 76cd89e1ba6cbc54b94bf45e3f35dafa,
+    type: 3}
+  primary: {r: 1, g: 0, b: 0, a: 1}
+  secondary: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  offset: 50
 --- !u!1001 &1492915797
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2997,7 +2995,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1494465433}
-  - component: {fileID: 1494465434}
   m_Layer: 0
   m_Name: ---Airfield---
   m_TagString: Untagged
@@ -3021,32 +3018,10 @@ Transform:
   - {fileID: 9027295757281078591}
   - {fileID: 1127322798}
   - {fileID: 842461763}
+  - {fileID: 1611522441}
   m_Father: {fileID: 598898654}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1494465434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1494465432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50dae9c5a6c963245935fd9f4194d6b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manager: {fileID: 11400000, guid: 09cf57161e890494798854fdb6472ca9, type: 2}
-  score: 100
-  title: Airport Raider
-  description: Kill all supporing buildings on the airfield!
-  sprite: {fileID: 0}
-  isPrimary: 0
-  shownOnMap: 1
-  count: 1
-  toKill:
-  - {fileID: 1127322799}
-  - {fileID: 842461764}
 --- !u!1 &1516122516
 GameObject:
   m_ObjectHideFlags: 0
@@ -3093,6 +3068,64 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1603591894161209449, guid: c3da4ccec042fb245937f3d0e58718bb,
     type: 3}
+--- !u!1 &1538640971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1538640972}
+  - component: {fileID: 1538640973}
+  m_Layer: 0
+  m_Name: VillageObjective
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1538640972
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538640971}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -129.88, y: 5, z: 319.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 819134000}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1538640973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538640971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50dae9c5a6c963245935fd9f4194d6b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 11400000, guid: 09cf57161e890494798854fdb6472ca9, type: 2}
+  score: 200
+  title: Village Killer
+  description: The pesky villagers are harboring enemies!
+  sprite: {fileID: 21300000, guid: 4d89fd83cd645ef4e9190eeddf68779e, type: 3}
+  isPrimary: 1
+  shownOnMap: 1
+  count: 4
+  toKill:
+  - {fileID: 1105636220}
+  - {fileID: 351682378}
+  - {fileID: 1858652448}
+  - {fileID: 1263322856}
+  - {fileID: 1235063135}
 --- !u!1001 &1591059307
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3124,6 +3157,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Parameters.colorGradient.key0.a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1441027750229949754, guid: 040c546b9dbfbbb4f96d8c6590fd49ba,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4108912275689774398, guid: 040c546b9dbfbbb4f96d8c6590fd49ba,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6045602789937349192, guid: 040c546b9dbfbbb4f96d8c6590fd49ba,
         type: 3}
@@ -3235,6 +3278,116 @@ Transform:
   m_Father: {fileID: 598898654}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1611522440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1611522441}
+  - component: {fileID: 1611522442}
+  m_Layer: 3
+  m_Name: AirFieldSupportObjective
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1611522441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611522440}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 289.39, y: 6.09, z: -76.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1494465433}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1611522442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611522440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50dae9c5a6c963245935fd9f4194d6b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 11400000, guid: 09cf57161e890494798854fdb6472ca9, type: 2}
+  score: 100
+  title: Airport Raider
+  description: Kill all supporing buildings on the airfield!
+  sprite: {fileID: 0}
+  isPrimary: 0
+  shownOnMap: 1
+  count: 1
+  toKill:
+  - {fileID: 1127322799}
+  - {fileID: 842461764}
+--- !u!1 &1632586066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1632586067}
+  - component: {fileID: 1632586068}
+  m_Layer: 3
+  m_Name: HarbourObjective
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1632586067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632586066}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -127, y: -2.9, z: 419}
+  m_LocalScale: {x: 5, y: 5, z: 50}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1755752881}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1632586068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632586066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50dae9c5a6c963245935fd9f4194d6b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 11400000, guid: 09cf57161e890494798854fdb6472ca9, type: 2}
+  score: 100
+  title: Yeah Bouy
+  description: Sink the harbour
+  sprite: {fileID: 0}
+  isPrimary: 1
+  shownOnMap: 1
+  count: 2
+  toKill:
+  - {fileID: 2026669721}
+  - {fileID: 88854477}
 --- !u!114 &1642189266 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9203779813102395155, guid: 194fb923d28b3f646a9c40688e81b4ab,
@@ -3391,7 +3544,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1755752881}
-  - component: {fileID: 1755752882}
   m_Layer: 3
   m_Name: ---Beach---
   m_TagString: Untagged
@@ -3411,6 +3563,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1632586067}
   - {fileID: 2026669718}
   - {fileID: 1967079334}
   - {fileID: 666077767}
@@ -3420,29 +3573,6 @@ Transform:
   m_Father: {fileID: 598898654}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1755752882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1755752880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50dae9c5a6c963245935fd9f4194d6b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manager: {fileID: 11400000, guid: 09cf57161e890494798854fdb6472ca9, type: 2}
-  score: 100
-  title: Yeah Bouy
-  description: Sink the harbour
-  sprite: {fileID: 0}
-  isPrimary: 1
-  shownOnMap: 0
-  count: 2
-  toKill:
-  - {fileID: 2026669721}
-  - {fileID: 88854477}
 --- !u!1 &1770764312
 GameObject:
   m_ObjectHideFlags: 0
@@ -11493,6 +11623,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 176590609, guid: 53cc6e9a7b025a147beb1c00f3f73990, type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1047426328, guid: 53cc6e9a7b025a147beb1c00f3f73990, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1144765104, guid: 53cc6e9a7b025a147beb1c00f3f73990, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1252504796, guid: 53cc6e9a7b025a147beb1c00f3f73990, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2004827574, guid: 53cc6e9a7b025a147beb1c00f3f73990, type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 2085959899399140952, guid: 53cc6e9a7b025a147beb1c00f3f73990,
         type: 3}
       propertyPath: m_LocalPosition.x

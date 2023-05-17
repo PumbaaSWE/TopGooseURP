@@ -18,6 +18,9 @@ public class BoatMissile : MonoBehaviour
     [SerializeField]
     Explode explosionPrefab;
 
+    [SerializeField]
+    private float engineStart = 0.5f;
+
     Vector3 desiredDirection;
 
     float explodeAfter;
@@ -30,10 +33,21 @@ public class BoatMissile : MonoBehaviour
         simpleFlight = GetComponent<SimpleFlight>();
         rigidBody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
-        simpleFlight.SetThrottleInput(1);
+        //simpleFlight.SetThrottleInput(1);
         emission = GetComponentInChildren<ParticleSystem>().emission;
+        transform.forward = Vector3.up;
+        rigidBody.velocity = Vector3.up * simpleFlight.MaxSpeed;
+        //TargetingMath.ComputeImpact(target.position, targetRigidBody.velocity, transform.position, simpleFlight.MaxSpeed, out Vector3 location, out explodeAfter);
+        StartCoroutine(EngineStart(engineStart));
+        enabled = false;
+    }
 
-        TargetingMath.ComputeImpact(target.position, targetRigidBody.velocity, transform.position, simpleFlight.MaxSpeed, out Vector3 location, out explodeAfter);
+    private IEnumerator EngineStart(float t)
+    {
+        yield return new WaitForSeconds(t);
+        simpleFlight.SetThrottleInput(1);
+        TargetingMath.ComputeImpact(target.position, targetRigidBody.velocity, transform.position, simpleFlight.MaxSpeed, out Vector3 _, out explodeAfter);
+        enabled = true;
     }
 
     private void Update()

@@ -16,6 +16,8 @@ public class Objective : MonoBehaviour
     [SerializeField] protected int count = 1;
     public bool IsComplete { get; private set; }
 
+    public delegate void OnCompleteEvent();
+    public event OnCompleteEvent OnComplete;
 
     public int Score => score;
     public string Title => title;
@@ -57,6 +59,7 @@ public class Objective : MonoBehaviour
         manager.Completed(this);
         IsComplete = true;
         enabled = false;
+        OnComplete?.Invoke();
     }
 
     public void CountOne()

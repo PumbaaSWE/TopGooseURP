@@ -12,12 +12,15 @@ public class EndScreenManager : MonoBehaviour
     [SerializeField]
     private float waitAfterDeath = 12;
     [SerializeField]
+    private float waitAfterRagdoll = 3;
+    [SerializeField]
     private float waitAfterWin = 5;
 
 
     private void Start()
     {
         playerHealth.OnDead += OnPlayerDeath;
+        playerHealth.gameObject.GetComponent<RagdollHandler>().onRagdollEnable += OnPlayerRagdoll;
         objectiveEventManager.AllPrimaryCompleted.AddListener(OnPlayerWin);
     }
 
@@ -27,6 +30,12 @@ public class EndScreenManager : MonoBehaviour
         StartCoroutine(ShowEndScreen(waitAfterDeath));
     }
 
+    private void OnPlayerRagdoll()
+    {
+        StopAllCoroutines();
+        StartCoroutine(ShowEndScreen(waitAfterRagdoll));
+    }
+
     private IEnumerator ShowEndScreen(float wait)
     {
         yield return new WaitForSeconds(wait);
@@ -34,6 +43,7 @@ public class EndScreenManager : MonoBehaviour
         {
             inGameMenu.EndScreen();
         }
+        objectiveEventManager.OnEnable();
     }
 
     private void OnPlayerWin(bool win)
