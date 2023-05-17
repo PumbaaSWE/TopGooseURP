@@ -276,7 +276,6 @@ public class ManualFlightInput : MonoBehaviour
             controller.SetThrottleInput(controller.Throttle + scroll);
 
         }
-        Debug.Log(scroll);
 
         // Rotate the aim target that the plane is meant to fly towards.
         // Use the camera's axes in world space so that mouse motion is intuitive.
