@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -33,11 +32,14 @@ public class RagdollHandler : MonoBehaviour
     Vector3 storedVelocity;
     Vector3 storedAngularVelocity;
 
+    Health health;
+
     // Start is called before the first frame update
     void Start()
     {
-        
-        
+        health = GetComponent<Health>();
+
+
         GetRagdollBits();
 
     }
@@ -57,7 +59,17 @@ public class RagdollHandler : MonoBehaviour
         hitBox = GetComponentsInParent<Collider>();
 
         //ragdolly bits are in children but GetComponentsInChildren also gets this objects things so need to exclude them...
-        colliders = GetComponentsInChildren<Collider>(true).Except(hitBox).ToArray();
+        //colliders = GetComponentsInChildren<Collider>(true).Except(hitBox).ToArray();
+        List<Collider> temp = GetComponentsInChildren<Collider>(true).Except(hitBox).ToList(); //get all colliders except the hitbox ones
+        for (int i = 0; i < temp.Count; i++)
+        {
+            if (temp[i].isTrigger) //also remove all marked as triggers.
+            {
+                temp.RemoveAt(i);
+            }
+        }
+        colliders = temp.ToArray();
+
 
         List<Rigidbody> rigidbodies = GetComponentsInChildren<Rigidbody>(true).ToList();
         rigidbodies.Remove(Rigidbody);
@@ -129,9 +141,14 @@ public class RagdollHandler : MonoBehaviour
         float impulse = collision.impulse.magnitude;
         if(impulse >= triggerForce * Time.fixedDeltaTime)
         {
-            
-            Debug.Log("RagdollHandler - Enabling Ragdoll, Impulse magnitude: " + impulse + " computed impact force(I think): " + impulse / Time.fixedDeltaTime);
+            //collision.re
+            //Debug.Log("RagdollHandler - Enabling Ragdoll, Impulse magnitude: " + impulse + " computed impact force(I think): " + impulse / Time.fixedDeltaTime);
             EnableRagdoll();
+            if (health != null)
+                health.ChangeHealth(-999999, ChangeHealthType.impact, null);
+
+            //health.DealDamage(new DamageInfo(f))
+
         }
         
         

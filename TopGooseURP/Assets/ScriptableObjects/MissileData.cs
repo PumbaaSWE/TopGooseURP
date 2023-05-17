@@ -7,7 +7,7 @@ public class MissileData : ScriptableObject
     [Header("Miscing")]
     [Tooltip("Auto destruct in seconds")] public float timeToLive = 5;
 
-
+    [Tooltip("Should the collider be enabled")] public bool enableCollider = true;
 
     //public float trailTime = 5;
 

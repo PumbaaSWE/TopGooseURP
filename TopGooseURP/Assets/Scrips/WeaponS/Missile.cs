@@ -5,37 +5,42 @@ using UnityEngine;
 public class Missile : MonoBehaviour
 {
 
-    [SerializeField]private MissileData missileData; 
+    [SerializeField] private MissileData missileData;
+
+    [SerializeField] private Explode explosion;
     public Rigidbody Rigidbody { get; private set; }
     public SeekerHead SeekerHead { get; private set; }
     public SimpleFlight SimpleFlight { get; private set; }
 
-    public FlappyWings flappyWings;
+    public FlappyWingsModel flappyWings;
     public Trail trail;
     public Collider Collider { get; private set; }
 
     private SphereCollider proxyRange;
 
-    private Transform hardpoint;
+    //private Transform hardpoint;
     //private float lifeTime;
 
+    private TeamMember owner;
 
-    void Start()
+    void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
         SeekerHead = GetComponent<SeekerHead>();
         SimpleFlight = GetComponent<SimpleFlight>();
         Collider = GetComponent<Collider>();
         TryGetComponent(out flappyWings);
-        TryGetComponent(out trail);
+        //TryGetComponent(out trail);
+        trail = GetComponentInChildren<Trail>();
         proxyRange = gameObject.AddComponent<SphereCollider>();
-
+        proxyRange.isTrigger = true;
         //Initialize(missileData);
     }
 
-    public void Initialize(MissileData missileData, bool enabledCollider = false)
+    public void Initialize(MissileData missileData, TeamMember owner, bool enabledCollider = true)
     {
         this.missileData = missileData;
+        this.owner = owner;
         proxyRange.radius = missileData.proxyFuseRange;
         proxyRange.enabled = false;
         Rigidbody.isKinematic = true;
@@ -49,22 +54,26 @@ public class Missile : MonoBehaviour
             trail.Emitting(false);
             //trail.
         }
-        
     }
 
-    public void SetHardpoint(Transform hardpoint)
+    public void Initialize(TeamMember owner)
     {
-        this.hardpoint = hardpoint;
-        transform.SetPositionAndRotation(hardpoint.position, hardpoint.rotation);
+        Initialize(missileData, owner);
     }
 
-    public void Launch(Vector3 initialVelocity, float intialThrottle = 0)
+    //public void SetHardpoint(Transform hardpoint)
+    //{
+    //    this.hardpoint = hardpoint;
+    //    transform.SetPositionAndRotation(hardpoint.position, hardpoint.rotation);
+    //}
+
+    public void Launch(Vector3 initialVelocity, float intialThrottle = 1.0f)
     {
         Rigidbody.isKinematic = false;
         Rigidbody.velocity = initialVelocity;
         SeekerHead.Launch();
         SimpleFlight.SetThrottleInput(intialThrottle);
-        hardpoint = null;
+        //hardpoint = null;
         if(flappyWings != null)
         {
             flappyWings.Flap(true);
@@ -76,24 +85,29 @@ public class Missile : MonoBehaviour
         if (missileData.proxyFuseArmTime > 0) StartCoroutine(ArmProxyFuse(missileData.proxyFuseArmTime));
         enabled = false; // remove if this prevents OnTriggerEnter from being called!
         //lifeTime = 0;
+        Destroy(gameObject, missileData.timeToLive);
     }
 
     void Update()
     {
         //float dt = Time.deltaTime;
-        //if()
+        //lifeTime += dt;
+        //if(lifeTime > missileData.timeToLive) Explode();
+
     }
 
     void LateUpdate()
     {
-        if(hardpoint != null)
-            transform.SetPositionAndRotation(hardpoint.position, hardpoint.rotation);
+        //if(hardpoint != null)
+        //    transform.SetPositionAndRotation(hardpoint.position, hardpoint.rotation);
     }
 
     private IEnumerator ArmProxyFuse(float t)
     {
         yield return new WaitForSeconds(t);
+        //Debug.LogWarning("ProxyFuse Enabled");
         proxyRange.enabled = true;
+        Collider.enabled = true;
     }
 
 
@@ -102,20 +116,35 @@ public class Missile : MonoBehaviour
         gameObject.SetActive(false);
         //spawn explosion?
         //return to a pool?
+        if(explosion != null)
+            Instantiate(explosion, transform.position, transform.rotation).ExplodeNow(owner);
+
         Destroy(gameObject);
     }
 
-    public void OnTriggerEnter(Collider other)
+    //public void OnTriggerEnter(Collider other)
+    //{
+    //    //if(!SeekerHead.Launched) return;
+    //    if ((missileData.targetLayer.value & (1 << other.transform.gameObject.layer)) > 0)
+    //    {
+    //        Debug.Log("Hit with Layermask");
+    //        //Explode();
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("Hit something, but not in Layermask");
+    //    }
+    //}
+    public void OnTriggerExit(Collider other)
     {
         //if(!SeekerHead.Launched) return;
         if ((missileData.targetLayer.value & (1 << other.transform.gameObject.layer)) > 0)
         {
-            Debug.Log("Hit with Layermask");
             Explode();
         }
         else
         {
-            Debug.Log("Hit something, but not in Layermask");
+            
         }
     }
 }

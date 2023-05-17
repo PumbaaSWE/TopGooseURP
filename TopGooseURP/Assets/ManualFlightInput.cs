@@ -54,14 +54,15 @@ public class ManualFlightInput : MonoBehaviour
     [Tooltip("How quickly the camera tracks the mouse aim point.")]
     [SerializeField] private float camSmoothSpeed = 5f;
 
+    //Sensitivity is 0.15f to match old system input
     [Tooltip("Mouse sensitivity for the mouse flight target")]
-    [SerializeField] private float mouseSensitivity = 3f;
+    [SerializeField][Range(0.01f, 1f)] private float mouseSensitivity = 0.15f;
 
     [Tooltip("How far the boresight and mouse flight are from the aircraft")]
     [SerializeField] private float aimDistance = 500f;
 
     [Tooltip("Deadzone like, not too relevant for keyboard")]
-    [SerializeField][Range(0,1)] private float inputThreshold = .25f;
+    [SerializeField][Range(0, 1)] private float inputThreshold = .25f;
 
     [Tooltip("When looking up or down stop aligning with horizon and align with local up")]
     [SerializeField][Range(0, 1)] private float camAlignThreshold = .9f;
@@ -75,6 +76,8 @@ public class ManualFlightInput : MonoBehaviour
     //[SerializeField] private float mouseXsens = 100.0f;
     //[SerializeField] private float mouseYsens = 100.0f;
 
+    [Space]
+    [SerializeField] private GameInput gameInput;
 
     private Vector3 frozenDirection = Vector3.forward;
 
@@ -158,32 +161,48 @@ public class ManualFlightInput : MonoBehaviour
     private void Start()
     {
         controller.SetThrottleInput(1);
+        gameInput.FreeLookStart += GameInput_FreeLookStart;
+        gameInput.FreeLookCancel += GameInput_FreeLookCancel;
+
+        _ = gameInput.ThrottleChangeActionNormalized();
+    }
+
+    private void GameInput_FreeLookStart(object sender, System.EventArgs e)
+    {
+        isMouseAimFrozen = true;
+        frozenDirection = mouseAim.forward;
+    }
+    private void GameInput_FreeLookCancel(object sender, System.EventArgs e)
+    {
+        isMouseAimFrozen = false;
+        mouseAim.forward = frozenDirection;
     }
 
     private void Update()
     {
         //this should not be here
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    Cursor.lockState = CursorLockMode.Locked;
-        //    Cursor.visible = !Cursor.visible;
-        //    if (Cursor.visible)
-        //    {
-        //        Cursor.lockState = CursorLockMode.None;
-        //    }
-        //}
-
-       
-        
+        if (Input.GetKeyDown(KeyCode.F1) || Input.GetKeyDown(KeyCode.P))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = !Cursor.visible;
+            if (Cursor.visible)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            logDebug = !logDebug;
+        }
     }
+    bool logDebug = false;
+
     private void LateUpdate()
     {
         if (useFixed == false)
             UpdateCameraPos();
         RotateRig();
     }
-
-
 
     private void FixedUpdate()
     {
@@ -197,17 +216,27 @@ public class ManualFlightInput : MonoBehaviour
         bool rollOverride = false;
         bool pitchOverride = false;
 
-        float keyboardRoll = -Input.GetAxisRaw("Horizontal");
+        Vector2 keyboardNew = gameInput.KeyboardMovement();
+        float keyboardRoll = -keyboardNew.x;
+        float keyboardPitch = keyboardNew.y;
+
         if (Mathf.Abs(keyboardRoll) > inputThreshold)
         {
             rollOverride = true;
         }
 
-        float keyboardPitch = Input.GetAxisRaw("Vertical");
         if (Mathf.Abs(keyboardPitch) > inputThreshold)
         {
             pitchOverride = true;
-            rollOverride = true; // why?
+            rollOverride = true;
+        }
+
+        bool yawOverride = false;
+        float keyboardYaw = gameInput.YawActionNormalized();
+        if (Mathf.Abs(keyboardYaw) > inputThreshold)
+        {
+            yawOverride = true;
+            rollOverride = true;
         }
 
         float autoPitch;
@@ -223,7 +252,7 @@ public class ManualFlightInput : MonoBehaviour
             pilot.RunAdvancedAutopilot2(MouseAimPos, dt, out autoPitch, out autoYaw, out autoRoll);
         }
 
-        float yaw = autoYaw;
+        float yaw = (yawOverride) ? keyboardYaw : autoYaw;
         float pitch = (pitchOverride) ? keyboardPitch : autoPitch;
         float roll = (rollOverride) ? keyboardRoll : autoRoll;
 
@@ -231,29 +260,23 @@ public class ManualFlightInput : MonoBehaviour
         controller.SetControlInput(input);
     }
 
-
     private void RotateRig()
     {
         if (mouseAim == null || cam == null || cameraRig == null)
             return;
 
-        // Freeze the mouse aim direction when the free look key is pressed.
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            isMouseAimFrozen = true;
-            frozenDirection = mouseAim.forward;
-        }
-        else if (Input.GetKeyUp(KeyCode.C))
-        {
-            isMouseAimFrozen = false;
-            mouseAim.forward = frozenDirection;
-        }
+        //Mouse input.
 
-        // Mouse input.
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = -Input.GetAxis("Mouse Y") * mouseSensitivity;
-        float scoll = Input.mouseScrollDelta.y;
-        controller.SetThrottleInput(controller.Throttle + scoll);
+        Vector2 mouseAxis = gameInput.MouseAxis();
+        float mouseX = mouseAxis.x * mouseSensitivity;
+        float mouseY = -mouseAxis.y * mouseSensitivity;
+        float scroll = gameInput.ThrottleChangeActionNormalized();
+        if (scroll != 0)
+        {
+            controller.SetThrottleInput(controller.Throttle + scroll);
+
+        }
+        Debug.Log(scroll);
 
         // Rotate the aim target that the plane is meant to fly towards.
         // Use the camera's axes in world space so that mouse motion is intuitive.

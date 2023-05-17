@@ -51,9 +51,9 @@ public class BulletManager : MonoBehaviour
         //bullet.ResetVelocities();
     }
 
-    public void SpawnBullet(BulletData data, Vector3 position, Quaternion rotation)
+    public void SpawnBullet(BulletData data, TeamMember owner, Vector3 position, Quaternion rotation)
     {
-        bulletPool.Get().Init(data, position, rotation);
+        bulletPool.Get().Init(data, owner, position, rotation);
     }
 
     public Bullet SpawnBullet()

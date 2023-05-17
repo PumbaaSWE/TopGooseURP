@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Health))]
 public class Turret : MonoBehaviour
 {
     [SerializeField]
@@ -20,17 +21,29 @@ public class Turret : MonoBehaviour
     Gun gun;
 
     Rigidbody targetRb;
-
     private void Start()
     {
         targetRb = target.GetComponent<Rigidbody>();
         gun = GetComponentInChildren<Gun>();
         gun.Fire = true;
+
+        GetComponent<Health>().OnDead += () => 
+        {
+            gun.Fire = false;
+            enabled = false;
+        };
     }
+
+    
 
     // Update is called once per frame
     void Update()
     {
+        if(target == null)
+        {
+            
+            return;
+        }
         if (Vector3.Distance(target.position, transform.position) < range)
         {
             TargetingMath.ComputeImpact(target.position, targetRb.velocity, transform.position, gun.BulletSpeed, out Vector3 location, out float _);

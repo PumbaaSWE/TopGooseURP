@@ -20,7 +20,7 @@ public class FlappyWingsModel : MonoBehaviour
     private Vector3 rightOriginal;
     private Vector3 tailOriginal;
 
-    internal void Flap(bool flap)
+    public void Flap(bool flap)
     {
         this.flap = flap;
     }
@@ -35,6 +35,7 @@ public class FlappyWingsModel : MonoBehaviour
         leftOriginal = left.localEulerAngles;
         rightOriginal = right.localEulerAngles;
         tailOriginal = tail.localEulerAngles;
+        flap = false;
     }
 
     // Update is called once per frame

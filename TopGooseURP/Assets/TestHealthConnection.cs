@@ -9,7 +9,8 @@ public class TestHealthConnection : MonoBehaviour
     private Health health;
     [SerializeField]
     bool removeWhenDead;
-    Color startColor;
+    Color[] startColor;
+    Renderer[] renderers;
 
     // Start is called before the first frame update
     void Start()
@@ -18,32 +19,32 @@ public class TestHealthConnection : MonoBehaviour
 
         if (removeWhenDead)
             health.OnDead += RemoveOnDead;
+        health.OnDead += TurnBackBlinkOnDead;
         health.OnChangeHealth += OnChangeHealth;
+        health.OnDamage += OnDamageHealth;
 
-        if (TryGetComponent<Renderer>(out Renderer renderer))
+        renderers = GetComponentsInChildren<Renderer>();
+
+        startColor = new Color[renderers.Length];
+        for (int i = 0; i < renderers.Length; i++)
         {
-            startColor = renderer.material.color;
+            startColor[i] = renderers[i].material.color;
         }
-        else
-        {
-            renderer = GetComponentInChildren<Renderer>();
-            if (renderer != null)
-            {
-                startColor = renderer.material.color;
-            }
-            else
-            {
-                startColor = Color.white;
-            }
-        }
+    }
+
+    private void TurnBackBlinkOnDead()
+    {
+        Invoke("TurnBackBlink", 0f);
     }
 
     public void RemoveOnDead()
     {
+        CancelInvoke(nameof(RedBlink));
+        CancelInvoke(nameof(TurnBackBlink));
         Destroy(gameObject);
     }
 
-    public void OnChangeHealth(float change, ChangeHealthType changeHealthType)
+    public void OnChangeHealth(float change, ChangeHealthType changeHealthType, TeamMember _)
     {
         if (change < 0)
         {
@@ -53,17 +54,31 @@ public class TestHealthConnection : MonoBehaviour
         }
     }
 
+    public void OnDamageHealth(DamageInfo info, float actualDamage)
+    {
+        if (actualDamage < 0)
+        {
+            // make it red?
+            Invoke("RedBlink", 0f);
+            Invoke("TurnBackBlink", 0.05f);
+        }
+    }
+
     public void RedBlink()
     {
-        Renderer[] renderer = GetComponentsInChildren<Renderer>();
-        for (int i = 0; i < renderer.Length; i++)
-            renderer[i].material.color = Color.red;
+        //renderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material.color = Color.red;
+        }
     }
     public void TurnBackBlink()
     {
-        Renderer[] renderer = GetComponentsInChildren<Renderer>();
-        for (int i = 0; i < renderer.Length; i++)
-            renderer[i].material.color = startColor;
+        //renderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material.color = startColor[i];
+        }
     }
 
 }

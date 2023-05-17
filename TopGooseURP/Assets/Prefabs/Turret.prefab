@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1585263642093257519}
   - component: {fileID: 1671115542816305761}
   - component: {fileID: 1672183628410147059}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MuzzleFlash01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4894,7 +4894,7 @@ GameObject:
   - component: {fileID: 1584757155293189251}
   - component: {fileID: 1671397782596203207}
   - component: {fileID: 1672114039073739371}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FlashHeadon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9774,7 +9774,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2749045325874163346}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9805,7 +9805,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8682106632892576248}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Canon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9840,7 +9840,7 @@ GameObject:
   - component: {fileID: 8682106633175526534}
   - component: {fileID: 8682106633175526535}
   - component: {fileID: 8682106633175526536}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9896,7 +9896,8 @@ AudioSource:
   m_GameObject: {fileID: 8682106633175526533}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -552537320246343239, guid: eef3e122e38e22e4baf2f321e810df22,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -10076,7 +10077,7 @@ GameObject:
   - component: {fileID: 8682106633808016170}
   - component: {fileID: 8682106633808016169}
   - component: {fileID: 8682106633808016168}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10173,7 +10174,7 @@ GameObject:
   - component: {fileID: 8682106633879396640}
   - component: {fileID: 8682106633879396671}
   - component: {fileID: 8682106633879396670}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10268,7 +10269,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8682106633928389578}
   - component: {fileID: 8682106633928389577}
-  m_Layer: 0
+  - component: {fileID: 564888260}
+  - component: {fileID: 564888263}
+  - component: {fileID: 564888264}
+  - component: {fileID: 564888265}
+  - component: {fileID: 6899454808476983190}
+  m_Layer: 3
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10309,6 +10315,78 @@ MonoBehaviour:
   canon: {fileID: 8682106632892576248}
   range: 200
   bulletData: {fileID: 11400000, guid: 0dc652202db1bf549a50059e8ee61479, type: 2}
+--- !u!114 &564888260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8682106633928389576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2819d805736b9e74f866e7fb69021d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &564888263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8682106633928389576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7923e5bf4c99eb540a4a5d0bfbd7fafa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageModifier: []
+  maxHealth: 100
+  healthBar: {fileID: 0}
+--- !u!114 &564888264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8682106633928389576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656773422d263bf4fa22669c402dfa88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  removeWhenDead: 0
+--- !u!114 &564888265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8682106633928389576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a9d217f85fa64448e7f569ed8ba79b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 0
+  aliveTime: 10
+  dissolveSpeed: 0.15
+  dissolveMaterial: {fileID: 2100000, guid: 6301891a6e55f3c4d8ffe885394cd0a2, type: 2}
+--- !u!114 &6899454808476983190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8682106633928389576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccbd254555d2e194691820bbddc9f811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flatShade: 1
+  splitAmount: 100
+  size: {x: 5, y: 5, z: 5}
+  split: 0
 --- !u!1 &8682106633951472261
 GameObject:
   m_ObjectHideFlags: 0
@@ -10321,7 +10399,7 @@ GameObject:
   - component: {fileID: 8682106633951472265}
   - component: {fileID: 8682106633951472264}
   - component: {fileID: 8682106633951472263}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: base
   m_TagString: Untagged
   m_Icon: {fileID: 0}

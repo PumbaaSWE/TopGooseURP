@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -38,7 +39,7 @@ public class ObjectiveEventManager : ScriptableObject
     {
         if (objective.IsPrimary)
         {
-            if (!primaries.Contains(objective))
+            if (primaries.Contains(objective))
             {
                 Debug.LogWarning("Trying to register alredy registered Primary Objective: " + objective.Title);
                 return;
@@ -48,7 +49,7 @@ public class ObjectiveEventManager : ScriptableObject
         }
         else
         {
-            if (!secondaries.Contains(objective))
+            if (secondaries.Contains(objective))
             {
                 Debug.LogWarning("Trying to register already registered Secondary Objective: " + objective.Title);
                 return;
@@ -65,7 +66,9 @@ public class ObjectiveEventManager : ScriptableObject
 
     public void Completed(Objective objective)
     {
-        ObjectiveCompleted?.Invoke(objective);
+        if(ObjectiveCompleted != null)
+            ObjectiveCompleted?.Invoke(objective);
+
         if (objective.IsPrimary)
         {
             if (!primaries.Contains(objective)) //not very fast.. keep flag in Objective?
@@ -100,4 +103,8 @@ public class ObjectiveEventManager : ScriptableObject
         return displayed;
     }
 
+    internal void Complete(ObjectiveEvent objectiveEvent)
+    {
+        
+    }
 }

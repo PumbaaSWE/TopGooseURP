@@ -11,10 +11,16 @@ public class Bomb : MonoBehaviour
     public LayerMask layer;
 
     private Rigidbody rb;
+    private TeamMember owner;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+    public void SetOwner(TeamMember owner)
+    {
+        this.owner = owner;
     }
 
     // Update is called once per frame
@@ -24,7 +30,7 @@ public class Bomb : MonoBehaviour
         {
             Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
             GameObject explosion = Instantiate(explosionPrefab, hit.point, rotation * explosionPrefab.transform.rotation);
-            //explosion.GetComponent<Explode>().ExplodeNow();
+            explosion.GetComponent<Explode>().ExplodeNow(owner);
             StartCoroutine(ReturnToPool(explosion));
             Destroy(explosion, 20);
             Destroy(gameObject,5);

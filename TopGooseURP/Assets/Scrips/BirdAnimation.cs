@@ -16,9 +16,9 @@ public class BirdAnimation : MonoBehaviour
 
     [Space]
     [SerializeField] private float maxPitch = 45;
-    [SerializeField] private float speedPitch = 45;
+    //[SerializeField] private float speedPitch = 45;
     [SerializeField] private float accelerationPitch = 45;
-    [SerializeField] private float strengthYaw = 0;
+    //[SerializeField] private float strengthYaw = 0;
     [SerializeField] private float strengthRoll = 20;
     [Space]
     [SerializeField] private bool useFixed = false;

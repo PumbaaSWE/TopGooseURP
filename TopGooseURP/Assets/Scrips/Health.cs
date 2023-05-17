@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -6,22 +7,27 @@ public class Health : MonoBehaviour
     public delegate void OnDeadEvent();
     public OnDeadEvent OnDead;
 
-    public delegate void OnChangeHealthEvent(float change, ChangeHealthType damageType);
+    public delegate void OnChangeHealthEvent(float change, ChangeHealthType damageType, TeamMember damager);
     public OnChangeHealthEvent OnChangeHealth;
+
+    public delegate void OnDamageEvent(DamageInfo info, float actualDamage);
+    public OnDamageEvent OnDamage;
+
+    public List<DamageModsPair> damageModifier = new();
+    private readonly Dictionary<DamageType, float> damageMods = new();
 
     public float Amount { get; private set; }
     public bool Dead { get; private set; }
 
     [SerializeField]
-    private float startHealth;
+    private float maxHealth = 100;
 
 
-    public void ChangeHealth(float change, ChangeHealthType damageType/*, add some identifier that can tell who is changing the health*/)
+    public void ChangeHealth(float change, ChangeHealthType damageType, TeamMember damager)
     {
         Amount += change;
-        OnChangeHealth?.Invoke(change, damageType);
-
-        if (Amount > startHealth) Amount = startHealth;
+        OnChangeHealth?.Invoke(change, damageType, damager);
+        if (Amount > maxHealth) Amount = maxHealth;
 
         if (Amount <= 0 && !Dead)
         {
@@ -30,15 +36,57 @@ public class Health : MonoBehaviour
         }
     }
 
+
+    public void DealDamage(DamageInfo info)
+    {
+        if (Dead) return;
+        float damage = info.amount;
+        if (damageMods.TryGetValue(info.type, out float mod))
+        {
+            damage *= mod;
+            if (damage == 0) return;
+        }
+        damage = Mathf.Min(damage, Amount); // deal no more damage than there is hp
+        Amount -= damage;
+        OnDamage?.Invoke(info, damage);
+        OnChangeHealth?.Invoke(-info.amount, ChangeHealthType.bullet, info.dealer);
+        if (Amount <= 0.0f)
+        {
+            OnDead?.Invoke();
+            Dead = true;
+        }
+    }
+
+    private void OnValidate()
+    {
+        damageMods.Clear();
+        for (int i = 0; i < damageModifier.Count; i++)
+        {
+            if (damageModifier[i].type != null)
+                damageMods.TryAdd(damageModifier[i].type, damageModifier[i].modifier);
+        }
+    }
+
     public void Reset()
     {
-        Amount = startHealth;
+        Amount = maxHealth;
         Dead = false;
     }
 
     private void Awake()
     {
-        Amount = startHealth;
+        Amount = maxHealth;
+        
+
+        for (int i = 0; i < damageModifier.Count; i++)
+        {
+            if (damageModifier[i].type != null)
+                damageMods.TryAdd(damageModifier[i].type, damageModifier[i].modifier);
+        }
+    }
+    private void Update()
+    {
+        
     }
 }
 
@@ -49,4 +97,11 @@ public enum ChangeHealthType
     explosion,
     impact,
     regeneration
+}
+
+[Serializable]
+public class DamageModsPair
+{
+    public DamageType type;
+    public float modifier;
 }
