@@ -13017,7 +13017,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &588489926
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13035,8 +13035,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000002861, y: -34.864}
-  m_SizeDelta: {x: 777.5836, y: 661.9449}
+  m_AnchoredPosition: {x: 2.1219, y: -34.864}
+  m_SizeDelta: {x: 820.0226, y: 661.9449}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &588489927
 MonoBehaviour:
@@ -13058,13 +13058,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "In a world where animals have advanced technology, rogue squirrels and
-    geese form an alliance, threatening peaceful existence. \n\nThe top geese, known
-    for bravery and strategic skills, form their own army, with access to advanced
-    weaponry, to stop the squirrel-geese alliance and restore peace. \n\nA full-blown
-    war ensues, with the geese fighting for survival and the squirrel-geese alliance
-    determined to dominate. Who will emerge victorious? \n\nThat's up to you and
-    your gaming skills to decide."
+  m_text: "In a world where animals have advanced technology,  rogue canadian geese
+    are  threatening a peaceful existence between all the geese.\n\nSo the top geese,
+    known for bravery and strategic skills, form their own army, with access to advanced
+    weaponry, to stop the canadian geese  and restore peace. \n\nA full-blown war
+    ensues, with the top geese fighting for survival and the canadian geese determined
+    to dominate. Who will emerge victorious? \n\nThat's up to you and your gaming
+    skills to decide."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
