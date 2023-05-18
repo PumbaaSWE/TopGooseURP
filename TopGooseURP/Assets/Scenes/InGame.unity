@@ -1181,7 +1181,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &410087042
 MonoBehaviour:
@@ -1461,7 +1461,7 @@ Transform:
   - {fileID: 819134000}
   - {fileID: 1494465433}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &642073639
 PrefabInstance:
@@ -1706,7 +1706,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &842461762
 PrefabInstance:
@@ -1828,7 +1828,7 @@ Transform:
   - {fileID: 504682311}
   - {fileID: 930786176}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &889695932
 PrefabInstance:
@@ -2142,6 +2142,101 @@ MonoBehaviour:
   waitAfterDeath: 12
   waitAfterRagdoll: 3
   waitAfterWin: 5
+--- !u!1001 &957925920
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 285.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.258873
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 288.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.5747195
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.8183505
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -250.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022263759602294688, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4366841514307208474, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+        type: 3}
+      propertyPath: m_Name
+      value: tower3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4fab9d6f52bc8cb4390061b1686b6154, type: 3}
+--- !u!1 &957925921 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4366841514307208474, guid: 4fab9d6f52bc8cb4390061b1686b6154,
+    type: 3}
+  m_PrefabInstance: {fileID: 957925920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &957925922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957925921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b8c3bce2db62e43ae76ec1be4b21d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 11400000, guid: 09cf57161e890494798854fdb6472ca9, type: 2}
+  score: 100
+  title: Watch Yo Jet!
+  description: Destroy the watchtower by the broken jet
+  sprite: {fileID: 0}
+  isPrimary: 0
+  shownOnMap: 1
+  count: 1
 --- !u!1 &958656246
 GameObject:
   m_ObjectHideFlags: 0
@@ -8638,7 +8733,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!4 &1858652447 stripped
 Transform:
