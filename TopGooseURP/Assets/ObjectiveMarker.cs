@@ -8,15 +8,15 @@ public class ObjectiveMarker : MonoBehaviour
     [SerializeField] float bobDist = 5;
     [SerializeField] float bobSpeed = 5;
 
-    float time = 0;
+    //float time = 0;
 
 
     // Start is called before the first frame update
     void Start()
     {
         //enabled = false;
-        startPos = transform.position + bobDist / 2 * Vector3.down;
-        endPos = transform.position + bobDist / 2 * Vector3.up;
+        startPos = transform.position + bobDist  * Vector3.down;
+        endPos = transform.position + bobDist  * Vector3.up;
     }
 
     // Update is called once per frame
@@ -32,6 +32,6 @@ public class ObjectiveMarker : MonoBehaviour
 
     void Update()
     {
-        transform.position = Vector3.Lerp(startPos, endPos, (Mathf.Sin(Time.time)+1)*0.5f);
+        transform.position = Vector3.Lerp(startPos, endPos, (Mathf.Sin(Time.time * bobSpeed) +1)*0.5f);
     }
 }

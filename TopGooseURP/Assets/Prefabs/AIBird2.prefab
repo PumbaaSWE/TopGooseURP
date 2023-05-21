@@ -94,6 +94,51 @@ Transform:
   m_Father: {fileID: 13265174372048710}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1474282422123346345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6453232300723101444}
+  - component: {fileID: 54414696645082784}
+  m_Layer: 7
+  m_Name: HeatSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6453232300723101444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474282422123346345}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4218846479149734830}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &54414696645082784
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474282422123346345}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1921826487009765823
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +477,7 @@ GameObject:
   - component: {fileID: 3586987539825738005}
   - component: {fileID: 3586987539825738013}
   - component: {fileID: 3586987539825738010}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: AIBird2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,6 +500,7 @@ Transform:
   - {fileID: 8882557242638160101}
   - {fileID: 6462026076626565791}
   - {fileID: 6462026077280659599}
+  - {fileID: 6453232300723101444}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -761,7 +807,7 @@ MonoBehaviour:
   directionalDragCoeff: 1
   dragCoeff: 0
   maxThrust: 25
-  softSpeedLimit: 22
+  softSpeedLimit: 20
   turnSpeed: {x: 15, y: 15, z: 40}
   turnAcceleration: {x: 20, y: 20, z: 75}
   steeringCurve:

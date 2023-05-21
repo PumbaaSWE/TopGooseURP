@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -22,6 +21,8 @@ public class Bullet : MonoBehaviour
 
     private TeamMember owner;
 
+    [SerializeField]private LayerMask birdLayer;
+
     void Awake()
     {
         trail = GetComponent<TrailRenderer>();
@@ -33,17 +34,16 @@ public class Bullet : MonoBehaviour
         this.data = data;
         this.owner = owner;
         transform.SetPositionAndRotation(position, rotation);
-        if (data.trailTime > 0)
+        if (data.hasTrail)
         {
-            trail.enabled = true;
-            trail.emitting = true;
-            trail.time = data.trailTime;
-            trail.Clear();
-        }
-        else
-        {
-            trail.enabled = false;
-            trail.emitting = false;
+            trail.time = data.trailConfig.time;
+            trail.material = data.trailConfig.material;
+            trail.colorGradient = data.trailConfig.color;
+            trail.widthCurve = data.trailConfig.width;
+            trail.minVertexDistance = data.trailConfig.minVertDistance;
+            trail.numCapVertices = data.trailConfig.endCapVerices;
+            trail.numCornerVertices = data.trailConfig.cornerVerices;
+            trail.shadowCastingMode = data.trailConfig.castShadow;
         }
         velocity = transform.forward * data.speed;
         time = data.timeToLive;
@@ -69,7 +69,7 @@ public class Bullet : MonoBehaviour
     private void RayCast()
     {
 
-        if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, velocity.magnitude, data.hitLayer, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, velocity.magnitude * Time.fixedDeltaTime, data.hitLayer, QueryTriggerInteraction.Ignore))
         {
 
             transform.position = hit.point;
@@ -80,6 +80,31 @@ public class Bullet : MonoBehaviour
                 Material material = renderer.sharedMaterial;
                 HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal, material);
             }
+            else
+            {
+                //renderer = hit.collider.gameObject.GetComponentInChildren<Renderer>();
+                //Debug.Log("birdLayer " + birdLayer + " birdLayer.value " + birdLayer.value);
+                //Debug.Log("hit.transform.gameObject.layer " + hit.transform.gameObject.layer);
+
+                if ((birdLayer.value & (1 << hit.transform.gameObject.layer)) > 0)
+                {
+                    HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal, 3);
+                    Debug.Log("Layer HIT " + hit.collider.gameObject.name);
+                }
+                else
+                {
+                    HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal);
+                    //Debug.Log("No Mat HIT " + hit.collider.gameObject.name);
+                }
+            }
+
+            //hit.collider.gameObject.layer
+
+            //if ((data.hitLayer.value & (1 << other.transform.gameObject.layer)) > 0)
+            //{
+
+            //}
+
 
             if (hit.collider.gameObject.TryGetComponent(out Health health))
             {
@@ -98,7 +123,7 @@ public class Bullet : MonoBehaviour
                 }
             }
 
-            HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal);
+            //HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal);
             StartCoroutine(ReturnToPool());
         }
         else
@@ -109,7 +134,7 @@ public class Bullet : MonoBehaviour
     private IEnumerator ReturnToPool()
     {
         returned = true;
-        yield return new WaitForSeconds(data.trailTime); //wait until the trail is done and disapreared...
+        yield return new WaitForSeconds(data.trailConfig.time); //wait until the trail is done and disapreared...
         bulletPool.Release(this);
         gameObject.SetActive(false);
 

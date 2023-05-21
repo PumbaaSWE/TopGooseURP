@@ -522,6 +522,51 @@ Transform:
   m_Father: {fileID: 5174630914434030879}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1949482736271942433
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4254182574300670526}
+  - component: {fileID: 5278462632334381453}
+  m_Layer: 7
+  m_Name: HeatSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4254182574300670526
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949482736271942433}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4287196173505367425}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &5278462632334381453
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949482736271942433}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2242252481782863872
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,7 +697,7 @@ GameObject:
   - component: {fileID: 7869128439128220966}
   - component: {fileID: 7327930071706230394}
   - component: {fileID: 4779735588342292964}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: AIGoose4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -666,8 +711,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3473681141775718203}
-  m_LocalRotation: {x: 0.13895366, y: -0.7584587, z: 0.17189996, w: 0.6130927}
-  m_LocalPosition: {x: 154.4, y: 50, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -675,9 +720,10 @@ Transform:
   - {fileID: 1604056879324170587}
   - {fileID: 322281117410101564}
   - {fileID: 322281118008248455}
+  - {fileID: 4254182574300670526}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 25.54, y: -102.1, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2103879418806298610
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -905,7 +951,7 @@ MonoBehaviour:
   directionalDragCoeff: 1
   dragCoeff: 0
   maxThrust: 25
-  softSpeedLimit: 17
+  softSpeedLimit: 20
   turnSpeed: {x: 15, y: 15, z: 40}
   turnAcceleration: {x: 20, y: 20, z: 75}
   steeringCurve:
@@ -1032,8 +1078,8 @@ MonoBehaviour:
   maxHeat: 0.9
   targetLayer:
     serializedVersion: 2
-    m_Bits: 64
-  bulletSpeed: 800
+    m_Bits: 512
+  bulletSpeed: 400
   showDebugInfo: 0
 --- !u!114 &6605812319767363188
 MonoBehaviour:

@@ -75,6 +75,15 @@ public class HitEffectManager : MonoBehaviour
         StartCoroutine(ReturnToPool(pool, system));
     }
 
+    internal void SpawnEffect(Vector3 position, Vector3 normal, int id)
+    {
+        id = Math.Clamp(id, 0, impactEffects.Count-1);
+        ObjectPool<ParticleSystem> pool = impactEffects[id].GetPool();
+        ParticleSystem system = pool.Get();
+        SpawnEffect(position, normal, system); // default
+        StartCoroutine(ReturnToPool(pool, system));
+    }
+
     [Serializable]
     internal class ImpactEffect
     {

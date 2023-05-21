@@ -312,7 +312,7 @@ public class FlyingAI : MonoBehaviour, IUtility
             int bestIndex = 0;
             for (int i = 0; i < hits; i++)
             {
-
+                //check for team?
                 float dist = (transform.position - colliders[i].transform.position).sqrMagnitude;
                 if(dist < bestDist)
                 {
