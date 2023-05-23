@@ -1457,7 +1457,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageModifier: []
   maxHealth: 10000
-  healthBar: {fileID: 0}
 --- !u!114 &1406932391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1472,10 +1471,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   feathers: {fileID: 2967957887465413949, guid: 4fd9f67c5bffb414a960e8071c416b5a,
     type: 3}
+  velocityCheck: 0.5
+  velocityCountTime: 1
   dissolveSpeed: 0.2
   startDissolvingAfter: 1
   destroyGameObject: 0
-  inGameMenu: {fileID: 0}
 --- !u!114 &1870864033
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class OnDeath : MonoBehaviour
 {
@@ -12,6 +14,12 @@ public class OnDeath : MonoBehaviour
 
     [SerializeField]
     GameObject feathers;
+
+    [SerializeField]
+    float velocityCheck;
+
+    [SerializeField]
+    int velocityCountTime;
 
     [SerializeField]
     float dissolveSpeed;
@@ -52,13 +60,9 @@ public class OnDeath : MonoBehaviour
         {
             spinPreviousUpdate = spin;
             spin = transform.rotation.eulerAngles.z;
-
-            //For now, die when pressing space - removed for the build (testers might press space for somea reason )
-            //if (Input.GetKeyDown(KeyCode.Space))
-            //{
-            //    health.ChangeHealth(-99999, ChangeHealthType.bullet, null);
-            //}
         }
+
+        if (rigidBody.velocity.magnitude < velocityCheck) StartCoroutine(CheckVelocity(velocityCountTime));
 
         //If you haven't died yet, you shall not pass!
         if (!dead) return;
@@ -66,6 +70,12 @@ public class OnDeath : MonoBehaviour
         //If you haven't ragdolled yet, roll!
         if (!ragdoll)
         {
+            if (rigidBody.velocity.magnitude < velocityCheck)
+            {
+                ragdollHandler.EnableRagdoll();
+                return;
+            }
+
             spin += (counterClockWise) ? Time.deltaTime * 180 : Time.deltaTime * -180;
             transform.forward = rigidBody.velocity;
             transform.Rotate(Vector3.forward * spin, Space.Self);
@@ -123,5 +133,12 @@ public class OnDeath : MonoBehaviour
 
         var feathersInstance = Instantiate(feathers, gameObject.transform.position, Quaternion.identity);
         feathersInstance.transform.parent = gameObject.transform;
+    }
+
+    private IEnumerator CheckVelocity(int t)
+    {
+        yield return new WaitForSeconds(t);
+
+        if(rigidBody.velocity.magnitude < velocityCheck) health.ChangeHealth(-99999, ChangeHealthType.bullet, null);
     }
 }
