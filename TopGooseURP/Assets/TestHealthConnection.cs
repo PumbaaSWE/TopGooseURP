@@ -77,7 +77,8 @@ public class TestHealthConnection : MonoBehaviour
         //renderers = GetComponentsInChildren<Renderer>();
         for (int i = 0; i < renderers.Length; i++)
         {
-            renderers[i].material.color = startColor[i];
+            if (!renderers[i].IsDestroyed())
+                renderers[i].material.color = startColor[i];
         }
     }
 
