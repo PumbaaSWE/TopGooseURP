@@ -37,9 +37,9 @@ public class Turret : MonoBehaviour
     float turnSpeed;
 
     [SerializeField]
-    BulletData bulletData;
-
-
+    float burstShootWait;
+    bool burstShoot;
+    float burstShootCounter;
 
     Gun gun;
 
@@ -97,7 +97,28 @@ public class Turret : MonoBehaviour
 
             float rotationCloseness = Vector3.Dot(fullRotation.eulerAngles.normalized, rotation.eulerAngles.normalized);
 
-            Debug.Log(rotationCloseness);
+            if(burstShoot)
+            {
+                burstShootCounter += Time.deltaTime;
+                if(burstShootCounter >= burstShootWait)
+                {
+                    burstShoot = false;
+                    burstShootCounter = 0;
+                }
+                else
+                {
+                    gun.Fire = false;
+                    
+                    return;
+                }
+            }
+
+            if (gun.Heat >= 1)
+            {
+                burstShoot = true;
+                return;
+            }
+
             if (rotationCloseness >= 1f - 0.001f)
             {
                 gun.Fire = true;
