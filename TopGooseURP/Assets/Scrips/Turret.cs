@@ -41,6 +41,10 @@ public class Turret : MonoBehaviour
     bool burstShoot;
     float burstShootCounter;
 
+    [SerializeField]
+    [Range(0, 1)]
+    float howCloseRotationForShoot;
+
     Gun gun;
 
     Rigidbody targetRb;
@@ -72,18 +76,17 @@ public class Turret : MonoBehaviour
             Vector3 direction = location - barrel.position;
             Quaternion rotation = Quaternion.LookRotation(direction.normalized);
 
-            float distance = Vector3.Distance(target.position, transform.position);
-            Vector3 outPos = direction.normalized * 10;
+            Vector3 outPos = direction.normalized * 5;
             Vector3 rayPosition = barrel.position + outPos;
             if (Physics.Raycast(rayPosition, direction.normalized, out RaycastHit hitInfo, direction.magnitude * 0.9f - outPos.magnitude, LayerMask.NameToLayer("everything"), QueryTriggerInteraction.Ignore))
             {
-                if (hitInfo.transform != null)
-                    Debug.DrawRay(rayPosition, direction.normalized * direction.magnitude - direction.normalized * 5 - outPos, Color.red);
+                Debug.DrawRay(rayPosition, direction.normalized * direction.magnitude - direction.normalized * 5 - outPos, Color.red);
+                gun.Fire = false;
                 return;
             }
             else
             {
-                Debug.DrawRay(rayPosition, direction.normalized * direction.magnitude - direction.normalized * 5 - outPos, Color.yellow);
+                Debug.DrawRay(rayPosition, direction.normalized * direction.magnitude - direction.normalized * 3 - outPos, Color.yellow);
             }
 
             float startRotationY = transform.rotation.eulerAngles.y;
@@ -131,7 +134,7 @@ public class Turret : MonoBehaviour
                 return;
             }
 
-            if (rotationCloseness >= 1f - 0.001f)
+            if (rotationCloseness >= howCloseRotationForShoot)
             {
                 gun.Fire = true;
             }
@@ -210,7 +213,7 @@ public class Turret : MonoBehaviour
             }
         }
 
-        float rayLength = 10000;
+        float rayLength = 10;
 
         float angleUp = maxAngleUp / 180f * Mathf.PI;
         float angleDown = maxAngleDown / 180f * Mathf.PI;

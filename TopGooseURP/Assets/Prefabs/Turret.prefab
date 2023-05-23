@@ -10314,7 +10314,13 @@ MonoBehaviour:
   barrel: {fileID: 8682106633175526534}
   canon: {fileID: 8682106632892576248}
   range: 200
-  bulletData: {fileID: 11400000, guid: 0dc652202db1bf549a50059e8ee61479, type: 2}
+  maxAngleUp: 0
+  maxAngleDown: 0
+  maxAngleLeft: 0
+  maxAngleRight: 0
+  turnSpeed: 0
+  burstShootWait: 0
+  howCloseRotationForShoot: 0
 --- !u!114 &564888260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10383,7 +10389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccbd254555d2e194691820bbddc9f811, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flatShade: 1
+  flatShade: 0
   splitAmount: 100
   size: {x: 5, y: 5, z: 5}
   split: 0
