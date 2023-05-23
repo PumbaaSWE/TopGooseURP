@@ -76,7 +76,7 @@ public class Turret : MonoBehaviour
 
             float startRotationY = transform.rotation.eulerAngles.y;
             float xRotation = ClampUpDown(rotation.eulerAngles.x, maxAngleUp, maxAngleDown);
-            float yRotation = ClampLeftRight(rotation.eulerAngles.y, maxAngleLeft, maxAngleRight);
+            float yRotation = ClampLeftRight(rotation.eulerAngles.y, maxAngleLeft, maxAngleRight, startRotationY);
 
             float xRotationLeft = barrel.localRotation.eulerAngles.x - xRotation;
             float yRotationLeft = barrel.localRotation.eulerAngles.y - yRotation;
@@ -87,10 +87,8 @@ public class Turret : MonoBehaviour
             xRotation = Mathf.LerpAngle(barrel.localRotation.eulerAngles.x, xRotation, turnSpeed * evenX);
             yRotation = Mathf.LerpAngle(canon.localRotation.eulerAngles.y, yRotation, turnSpeed * evenY);
 
-
-
             Quaternion barrelRotation = Quaternion.Euler(xRotation, 0, 0);
-            Quaternion canonRotation = Quaternion.Euler(0, yRotation, 0);
+            Quaternion canonRotation = Quaternion.Euler(0, yRotation - startRotationY, 0);
 
             barrel.localRotation = barrelRotation;
             canon.localRotation = canonRotation;
@@ -118,15 +116,19 @@ public class Turret : MonoBehaviour
 
 
 
-    private float ClampLeftRight(float yRotation, float maxLeft, float maxRight)
+    private float ClampLeftRight(float yRotation, float maxLeft, float maxRight, float startAngle)
     {
-        if (yRotation >= 0 && yRotation <= 180) // right side
+        if (yRotation >= startAngle && yRotation <= 180 + startAngle) // right side
         {
-            yRotation = Mathf.Clamp(yRotation, 0, maxRight);
+            yRotation = Mathf.Clamp(yRotation, startAngle, maxRight + startAngle);
         }
-        else if (yRotation >= 180 && yRotation <= 360) // left side
+        else if (yRotation >= 180 + startAngle && yRotation <= 360 + startAngle) // left side
         {
-            yRotation = Mathf.Clamp(yRotation, 360 - maxLeft, 360);
+            yRotation = Mathf.Clamp(yRotation, 360 - maxLeft + startAngle, 360 + startAngle);
+        }
+        else if (yRotation >= 0 && yRotation <= startAngle - maxLeft)
+        {
+            yRotation = startAngle - maxLeft;
         }
 
         return yRotation;
