@@ -72,7 +72,19 @@ public class Turret : MonoBehaviour
             Vector3 direction = location - barrel.position;
             Quaternion rotation = Quaternion.LookRotation(direction.normalized);
 
-            Debug.DrawRay(transform.position, direction * 10000, Color.yellow);
+            float distance = Vector3.Distance(target.position, transform.position);
+            Vector3 outPos = direction.normalized * 10;
+            Vector3 rayPosition = barrel.position + outPos;
+            if (Physics.Raycast(rayPosition, direction.normalized, out RaycastHit hitInfo, direction.magnitude * 0.9f - outPos.magnitude, LayerMask.NameToLayer("everything"), QueryTriggerInteraction.Ignore))
+            {
+                if (hitInfo.transform != null)
+                    Debug.DrawRay(rayPosition, direction.normalized * direction.magnitude - direction.normalized * 5 - outPos, Color.red);
+                return;
+            }
+            else
+            {
+                Debug.DrawRay(rayPosition, direction.normalized * direction.magnitude - direction.normalized * 5 - outPos, Color.yellow);
+            }
 
             float startRotationY = transform.rotation.eulerAngles.y;
             float xRotation = ClampUpDown(rotation.eulerAngles.x, maxAngleUp, maxAngleDown);
@@ -97,10 +109,10 @@ public class Turret : MonoBehaviour
 
             float rotationCloseness = Vector3.Dot(fullRotation.eulerAngles.normalized, rotation.eulerAngles.normalized);
 
-            if(burstShoot)
+            if (burstShoot)
             {
                 burstShootCounter += Time.deltaTime;
-                if(burstShootCounter >= burstShootWait)
+                if (burstShootCounter >= burstShootWait)
                 {
                     burstShoot = false;
                     burstShootCounter = 0;
@@ -108,7 +120,7 @@ public class Turret : MonoBehaviour
                 else
                 {
                     gun.Fire = false;
-                    
+
                     return;
                 }
             }

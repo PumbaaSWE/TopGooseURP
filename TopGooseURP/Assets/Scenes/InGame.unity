@@ -8114,7 +8114,7 @@ PrefabInstance:
       objectReference: {fileID: 4490844213121548715}
     - target: {fileID: 1142582461, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: m_Constraints
-      value: 126
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1142582462, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: triggerForce
@@ -8516,6 +8516,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8682106633175526535, guid: 45448d72c1e389a448e6bfb309120ab3,
+        type: 3}
+      propertyPath: heatLossPerSec
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8682106633175526535, guid: 45448d72c1e389a448e6bfb309120ab3,
         type: 3}
