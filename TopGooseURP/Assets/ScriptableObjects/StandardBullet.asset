@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: StandardBullet
   m_EditorClassIdentifier: 
   timeToLive: 3
-  trailTime: 0.5
+  hasTrail: 1
+  trailConfig: {fileID: 11400000, guid: b099007d539831c4ca68d93ca5dae008, type: 2}
   speed: 800
   damage: 100
   damageType: {fileID: 11400000, guid: aa52475f8c59c9546b5b7f7cac71d29d, type: 2}
   hitLayer:
     serializedVersion: 2
-    m_Bits: 200
+    m_Bits: 984
   gravity: 10

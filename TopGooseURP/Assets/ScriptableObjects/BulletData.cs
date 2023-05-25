@@ -5,7 +5,11 @@ public class BulletData : ScriptableObject
 {
     
     public float timeToLive;
-    public float trailTime; // another ScriptableObject with trail data?
+
+    public bool hasTrail; // another ScriptableObject with trail data?
+
+    public TrailConfig trailConfig;
+
     public float speed; //m/s
 
     public float damage;

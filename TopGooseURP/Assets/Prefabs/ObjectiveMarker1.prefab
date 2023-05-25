@@ -97,4 +97,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bobDist: 5
-  bobSpeed: 30
+  bobSpeed: 5

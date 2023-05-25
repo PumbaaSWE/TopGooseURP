@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: LazerBullet
   m_EditorClassIdentifier: 
   timeToLive: 3
-  trailTime: 0.1
-  speed: 100
+  hasTrail: 1
+  trailConfig: {fileID: 11400000, guid: 46ae8a3294d19a4488a3678bf303c536, type: 2}
+  speed: 200
   damage: 34
   damageType: {fileID: 11400000, guid: aa52475f8c59c9546b5b7f7cac71d29d, type: 2}
   hitLayer:
     serializedVersion: 2
-    m_Bits: 200
-  gravity: 10
+    m_Bits: 984
+  gravity: 1

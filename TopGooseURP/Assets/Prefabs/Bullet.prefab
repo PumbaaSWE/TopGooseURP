@@ -153,8 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ecc90c5ed64f91468efa1b0ae78cd4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
+  birdLayer:
     serializedVersion: 2
-    m_Bits: 200
-  gravity: 10
-  type: {fileID: 11400000, guid: aa52475f8c59c9546b5b7f7cac71d29d, type: 2}
+    m_Bits: 768
