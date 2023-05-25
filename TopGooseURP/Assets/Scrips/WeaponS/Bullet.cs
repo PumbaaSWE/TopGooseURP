@@ -89,7 +89,7 @@ public class Bullet : MonoBehaviour
                 if ((birdLayer.value & (1 << hit.transform.gameObject.layer)) > 0)
                 {
                     HitEffectManager.Instance.SpawnEffect(hit.point, hit.normal, 3);
-                    Debug.Log("Layer HIT " + hit.collider.gameObject.name);
+                    //Debug.Log("Layer HIT " + hit.collider.gameObject.name);
                 }
                 else
                 {
