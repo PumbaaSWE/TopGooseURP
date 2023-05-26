@@ -5,14 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class DissolveGameObject : MonoBehaviour
 {
-    [SerializeField][Range(0.0f, 1.0f)] float time;
-    float dissolveTime;
     [SerializeField] float aliveTime;
     [SerializeField] float dissolveSpeed;
     [SerializeField] Material dissolveMaterial;
     List<Renderer> dissolveThese = new List<Renderer>();
-    bool doOnce;
-
+    float dissolveTime;
     Health health;
 
     // Start is called before the first frame update
@@ -20,9 +17,7 @@ public class DissolveGameObject : MonoBehaviour
     {
         health = GetComponent<Health>();
         health.OnDead += OnDead;
-        doOnce = true;
         enabled = false;
-
     }
 
     private void OnDead()
@@ -40,7 +35,6 @@ public class DissolveGameObject : MonoBehaviour
             renderers[i].sharedMaterial = dissolveMaterial;
             if (renderers[i].material.shader.name.Contains("Dissolve")) dissolveThese.Add(renderers[i]);
         }
-        doOnce = true;
     }
 
     public void Update()
@@ -51,7 +45,7 @@ public class DissolveGameObject : MonoBehaviour
             for (int i = 0; i < dissolveThese.Count; i++)
                 dissolveThese[i].material.SetFloat("_T", dissolveTime);
 
-            if (time >= 1)
+            if (dissolveTime >= 1)
                 Destroy(gameObject);
         }
     }
