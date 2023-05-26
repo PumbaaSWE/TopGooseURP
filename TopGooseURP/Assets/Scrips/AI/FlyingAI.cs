@@ -220,6 +220,30 @@ public class FlyingAI : MonoBehaviour, IUtility
             flyTarget = Vector3.Lerp(flyTarget, gunSolutionTarget, guns);
         }
 
+        //Avoid player if collision is anticipated, (for now: hardcoded distance check [50] and how tight to turn [5])
+        if (Vector3.Dot(targetTransform.forward, transform.forward) < 0 && distToTarget < 50)
+        {
+            //Vector3 diff = transform.position - targetTransform.position;
+            //float max = 0;
+            //int axis = 0;
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    if (Mathf.Abs(diff[i]) > max)
+            //    {
+            //        axis = i;
+            //        max = diff[i];
+            //    }
+            //}
+
+            //diff = Vector3.zero;
+            //diff[axis] = (max > 0) ? 1 : -1;
+
+            //flyTarget = targetTransform.position + diff * 10;
+
+
+            //Simply sets flightTarget above or below actual target depending on which is closest.
+            flyTarget = targetTransform.position + Vector3.up * Mathf.Clamp(transform.position.y - targetTransform.position.y, -1, 1) * 5;
+        }
     }
 
     private void DoZoom(float dt)
