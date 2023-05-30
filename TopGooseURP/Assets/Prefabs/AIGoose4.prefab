@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetGameObject: {fileID: 0}
-  maxInterceptDistance: 1000
+  maxInterceptDistance: 400
   maxGunRange: 50
   preferredDistance: 10
   zoomAltitude: 25

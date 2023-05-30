@@ -16,6 +16,8 @@ public class PathUtility : MonoBehaviour, IUtility
     private Vector3 prevWaypoint;
     private float distFromPath;
 
+    private Vector3 closestPoint = Vector3.zero;
+
     public bool showDebugInfo;
 
     public float Evaluate()
@@ -23,7 +25,11 @@ public class PathUtility : MonoBehaviour, IUtility
         if(currentPath == null) return -1f;
         //distFromWaypoint = Vector3.Distance(currentWaypoint, transform.position);
 
-        distFromPath = HandleUtility.DistancePointLine(transform.position, prevWaypoint, currentWaypoint);
+        closestPoint = MathUtility.ClosestPointLine(transform.position, prevWaypoint, currentWaypoint);
+
+        distFromPath = Vector3.Distance(closestPoint, transform.position);//MathUtility.DistancePointLine(transform.position, prevWaypoint, currentWaypoint);
+
+
         if (showDebugInfo) Debug.Log("Distance From  Path: " + distFromPath);
         if (distFromPath > maxDistance) //if we fly really far off find the nearest one
         {
@@ -86,6 +92,8 @@ public class PathUtility : MonoBehaviour, IUtility
             Gizmos.color = Color.magenta;
             Gizmos.DrawLine(transform.position, prevWaypoint);
             Gizmos.DrawWireSphere(prevWaypoint, 3);
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, closestPoint);
         }
     }
 }

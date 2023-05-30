@@ -9791,15 +9791,15 @@ PrefabInstance:
       objectReference: {fileID: 1642189266}
     - target: {fileID: 1827258052, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: m_Height
-      value: 500
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1827258052, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: m_Radius
-      value: 100
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1827258052, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: m_Center.z
-      value: 250
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1870864033, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: bulletSpeed
