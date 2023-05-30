@@ -6,4 +6,6 @@ public interface IUtility
 {
     public float Evaluate();
     public void Execute();
+
+    public void Exit();
 }

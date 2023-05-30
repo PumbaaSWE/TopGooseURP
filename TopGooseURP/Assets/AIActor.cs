@@ -90,6 +90,7 @@ public class AIActor : MonoBehaviour
         if (currentUtil != previusUtil)
         {
             //possible cleanup/startup calls?
+            utilities[currentUtil].Exit();
             previusUtil = currentUtil;
         }
     }

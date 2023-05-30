@@ -411,4 +411,12 @@ public class FlyingAI : MonoBehaviour, IUtility
 
         actor.SetFlyTarget(flyTarget);
     }
+
+    public void Exit()
+    {
+        for (int i = 0; i < gunArray.Length; i++)
+        {
+            gunArray[i].Fire = false;
+        }
+    }
 }

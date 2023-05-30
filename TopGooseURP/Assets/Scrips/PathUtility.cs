@@ -96,4 +96,9 @@ public class PathUtility : MonoBehaviour, IUtility
             Gizmos.DrawLine(transform.position, closestPoint);
         }
     }
+
+    public void Exit()
+    {
+        
+    }
 }
