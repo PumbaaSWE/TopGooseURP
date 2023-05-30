@@ -20,9 +20,14 @@ public class FlappyWingsModel : MonoBehaviour
     private Vector3 rightOriginal;
     private Vector3 tailOriginal;
 
+    /// <summary>
+    /// Enables this component basically and makes the flapping happen
+    /// </summary>
+    /// <param name="flap"></param>
     public void Flap(bool flap)
     {
         this.flap = flap;
+        enabled = flap;
     }
 
     // Start is called before the first frame update
@@ -36,6 +41,7 @@ public class FlappyWingsModel : MonoBehaviour
         rightOriginal = right.localEulerAngles;
         tailOriginal = tail.localEulerAngles;
         flap = false;
+       // enabled = false;
     }
 
     // Update is called once per frame

@@ -52,6 +52,22 @@ public class MissileLauncher : MonoBehaviour
         //{
         //    hardpoints[i].AddComponent<FixedJoint>();
         //}
+
+        if(TryGetComponent(out Health health))
+        {
+            health.OnDead += () =>
+            {
+                enabled = false;
+                for (int i = 0; i < hardpointData.Length; i++)
+                {
+                    if (hardpointData[i].IsLoaded)
+                    {
+                        hardpointData[i].missile.Detatch(transform.forward*4);
+                       // hardpointData[i].missile.gameObject.SetActive(false);
+                    }
+                }
+            };
+        }
     }
 
     // Update is called once per frame
@@ -232,18 +248,30 @@ public class MissileLauncher : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// The direction the selected seeker of this missile is looking in in world space
+    /// </summary>
+    /// <returns></returns>
     public Vector3 SeekerViewPositon()
     {
         if (selectedHardpoint < 0) return Vector3.zero;// transform.position+transform.forward*500;
         return hardpointData[selectedHardpoint].missile.SeekerHead.TargetPosition;
     }
 
+    /// <summary>
+    /// A reference to the selected seekerhead of this missile
+    /// </summary>
+    /// <returns></returns>
     public SeekerHead GetSeekerHead()
     {
         if (selectedHardpoint < 0) return null;// transform.position+transform.forward*500;
         return hardpointData[selectedHardpoint].missile.SeekerHead;
     }
 
+    /// <summary>
+    /// Activates the missile launcher and the current selected missile if any
+    /// </summary>
+    /// <param name="active"></param>
     public void Activate(bool active)
     {
         OnActivationChange?.Invoke(active);

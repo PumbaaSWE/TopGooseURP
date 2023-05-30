@@ -28,6 +28,7 @@ public class WeaponIndicator : MonoBehaviour
     [Header("Overheat")]
     [SerializeField] private Image heatIcon;
     [SerializeField] private Image heatBar;
+    [SerializeField] private Gradient gradient;
 
 
     [SerializeField]private float smoothing;
@@ -87,8 +88,8 @@ public class WeaponIndicator : MonoBehaviour
 
 
         heatBar.fillAmount = heat;
-        //heatImg.color = gradient.Evaluate(heat);
-        //flameImg.color = gradient.Evaluate(heat);
+        heatIcon.color = gradient.Evaluate(heat);
+        heatBar.color = gradient.Evaluate(heat);
     }
     private void MissileHandel()
     {

@@ -273,7 +273,7 @@ public class ManualFlightInput : MonoBehaviour
         float scroll = gameInput.ThrottleChangeActionNormalized();
         if (scroll != 0)
         {
-            controller.SetThrottleInput(controller.Throttle + scroll);
+            controller.SetThrottleInput(controller.Throttle + scroll*0.1f);
 
         }
 

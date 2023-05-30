@@ -125,7 +125,10 @@ public class AIActor : MonoBehaviour
     {
         ReturnRole();
     }
-
+    /// <summary>
+    /// To be used by the utilities to say where they want to go, target will changed based on ground avoidance settings before outputted to the autopilot
+    /// </summary>
+    /// <param name="flyTarget"></param>
     public void SetFlyTarget(Vector3 flyTarget)
     {
         this.flyTarget = flyTarget;

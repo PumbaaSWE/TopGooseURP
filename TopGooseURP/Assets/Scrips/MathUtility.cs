@@ -19,7 +19,7 @@ public static class MathUtility
     public static Vector3 ClosestPointLine(Vector3 point, Vector3 lineStart, Vector3 lineEnd)
     {
         Vector3 ab = lineEnd - lineStart;
-        if(ab.sqrMagnitude < Epsilon) return lineStart;
+        if(ab.sqrMagnitude < Epsilon) return lineStart; //in case the line segment is degenerate 
         float t = Vector3.Dot(point - lineStart, ab) / ab.sqrMagnitude;
         if (t < 0.0f) t = 0.0f;
         if (t > 1.0f) t = 1.0f;

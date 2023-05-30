@@ -21,6 +21,13 @@ public class BoatMissile : MonoBehaviour
     [SerializeField]
     private float engineStart = 0.5f;
 
+    [SerializeField]
+    private float damage = 1000f;
+    [SerializeField]
+    private float radius = 5.0f;
+    [SerializeField]
+    private float force = 100f;
+
     Vector3 desiredDirection;
 
     float explodeAfter;
@@ -116,7 +123,7 @@ public class BoatMissile : MonoBehaviour
     {
         audioSource.enabled = false;
         Explode explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-        explosion.ExplodeNow(3400, 5, 100);
+        explosion.ExplodeNow(damage, radius, force);
 
         GetComponent<SphereCollider>().enabled = false;
         transform.GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);

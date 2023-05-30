@@ -69,8 +69,9 @@ public class Missile : MonoBehaviour
 
     public void Launch(Vector3 initialVelocity, float intialThrottle = 1.0f)
     {
-        Rigidbody.isKinematic = false;
-        Rigidbody.velocity = initialVelocity;
+        //Rigidbody.isKinematic = false;
+        //Rigidbody.velocity = initialVelocity;
+        Detatch(initialVelocity);
         SeekerHead.Launch();
         SimpleFlight.SetThrottleInput(intialThrottle);
         //hardpoint = null;
@@ -85,8 +86,20 @@ public class Missile : MonoBehaviour
         if (missileData.proxyFuseArmTime > 0) StartCoroutine(ArmProxyFuse(missileData.proxyFuseArmTime));
         enabled = false; // remove if this prevents OnTriggerEnter from being called!
         //lifeTime = 0;
+        //Destroy(gameObject, missileData.timeToLive);
+    }
+
+    /// <summary>
+    /// Will detach the missile i.e. make the rigidbody active an set its velocity and time to live.
+    /// </summary>
+    /// <param name="initialVelocity"></param>
+    public void Detatch(Vector3 initialVelocity)
+    {
+        Rigidbody.isKinematic = false;
+        Rigidbody.velocity = initialVelocity;
         Destroy(gameObject, missileData.timeToLive);
     }
+
 
     void Update()
     {
