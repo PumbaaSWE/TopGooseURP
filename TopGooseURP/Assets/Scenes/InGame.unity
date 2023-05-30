@@ -717,7 +717,7 @@ PrefabInstance:
     - target: {fileID: 6698859464303523310, guid: 3e200975f24b50a418d0ed420334e15d,
         type: 3}
       propertyPath: m_Name
-      value: Turret 1
+      value: TurretAirfield
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e200975f24b50a418d0ed420334e15d, type: 3}
@@ -4687,6 +4687,10 @@ PrefabInstance:
       propertyPath: pool
       value: 
       objectReference: {fileID: 1642189266}
+    - target: {fileID: 1827258051, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
+      propertyPath: bulletSpeed
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 1827258052, guid: d94c9a56aa88b594fb34416ab31b476b, type: 3}
       propertyPath: m_Height
       value: 200
@@ -5099,6 +5103,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6698859464303523309, guid: 3e200975f24b50a418d0ed420334e15d,
+        type: 3}
+      propertyPath: range
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 6698859464303523309, guid: 3e200975f24b50a418d0ed420334e15d,
         type: 3}
