@@ -81,7 +81,7 @@ public class SeekerHead : MonoBehaviour
     public Vector3 TargetPosition
     {
         get { 
-            if(TargetLocked)
+            if(TargetLocked && lockedTarget != null)
                 return lockedTarget.position;
             return SeekerViewPositon;
         }
