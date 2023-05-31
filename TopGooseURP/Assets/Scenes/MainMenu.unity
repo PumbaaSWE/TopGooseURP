@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12762,6 +12762,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 4fd8de6c674ac7b49a4b097e9886b112, type: 2}
+        m_TargetAssemblyTypeName: SpeedRunTimie, Assembly-CSharp
+        m_MethodName: StartTimer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &578421261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13058,11 +13070,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "In a world where animals have advanced technology,  rogue canadian geese
+  m_text: "In a world where animals have advanced technology,  rogue Canadian geese
     are  threatening a peaceful existence between all the geese.\n\nSo the top geese,
     known for bravery and strategic skills, form their own army, with access to advanced
-    weaponry, to stop the canadian geese  and restore peace. \n\nA full-blown war
-    ensues, with the top geese fighting for survival and the canadian geese determined
+    weaponry, to stop theCanadian geese  and restore peace. \n\nA full-blown war
+    ensues, with the top geese fighting for survival and the Canadian geese determined
     to dominate. Who will emerge victorious? \n\nThat's up to you and your gaming
     skills to decide."
   m_isRightToLeft: 0

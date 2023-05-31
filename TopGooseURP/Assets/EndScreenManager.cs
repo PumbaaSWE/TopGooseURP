@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Xml.Serialization;
+using TMPro;
 using UnityEngine;
 
 public class EndScreenManager : MonoBehaviour
@@ -8,6 +10,7 @@ public class EndScreenManager : MonoBehaviour
     [SerializeField] private InGameMenu inGameMenu;
     [SerializeField] private Health playerHealth;
     [SerializeField] private ObjectiveEventManager objectiveEventManager;
+    
 
     [SerializeField]
     private float waitAfterDeath = 12;
@@ -17,11 +20,19 @@ public class EndScreenManager : MonoBehaviour
     private float waitAfterWin = 5;
 
 
+    [Space]
+    [SerializeField] private SpeedRunTimie speedRunTimie;
+    [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private TextMeshProUGUI timeHeader;
+
     private void Start()
     {
         playerHealth.OnDead += OnPlayerDeath;
         playerHealth.gameObject.GetComponent<RagdollHandler>().onRagdollEnable += OnPlayerRagdoll;
         objectiveEventManager.AllPrimaryCompleted.AddListener(OnPlayerWin);
+
+        timeHeader.enabled = false;
+        timeText.enabled = false;
     }
 
     private void OnPlayerDeath()
@@ -50,5 +61,10 @@ public class EndScreenManager : MonoBehaviour
     {
         //StopAllCoroutines();
         StartCoroutine(ShowEndScreen(waitAfterWin));
+        timeText.text = TimeSpan.FromSeconds(speedRunTimie.StopTimeer()).ToString(@"mm\:ss");
+        timeHeader.enabled = true;
+        timeText.enabled = true;
+
     }
+
 }

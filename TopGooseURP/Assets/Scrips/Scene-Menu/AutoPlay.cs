@@ -62,5 +62,6 @@ public class AutoPlay : MonoBehaviour
     public void ButtonPlay()
     {
         levelLoader.PressedPlay = true;
+        Timer.startTime = Time.time;
     }
 }
