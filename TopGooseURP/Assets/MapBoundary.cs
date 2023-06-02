@@ -30,6 +30,7 @@ public class MapBoundary : MonoBehaviour
     {
         boats = new List<Transform>();
 
+        //Save a list of all the boats and set the player as their target
         for (int i = 0; i < transform.parent.childCount; i++)
         {
             Transform child = transform.parent.GetChild(i);
@@ -66,19 +67,15 @@ public class MapBoundary : MonoBehaviour
             //Stop CountThenFire()
             onBackInBounds.Invoke();
             StopAllCoroutines();
-            //Debug.Log($"You're safe again :)");
         }
     }
 
     IEnumerator CountThenFire()
     {
-        //Here we should send out a warning of some sort
-
-        //Debug.Log($"Warning!! Return to the map within {waitForSeconds} seconds");
         yield return new WaitForSeconds(waitForSeconds);
-        //Debug.Log($"{waitForSeconds} seconds have passed <!> PREPARE FOR DOOM");
 
         //Will keep telling the closest boat to fire at player in intervals until player enters the playable area.
+        //Calculates closest boat every time a new missile is fired, since player can still move!
         while (triggered)
         {
             Transform closestBoat = boats[0];

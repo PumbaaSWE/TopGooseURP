@@ -20,7 +20,7 @@ public class Floater : MonoBehaviour
         rigidBody = GetComponentInParent<Rigidbody>();
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate()  //Simple script to simulate the bobbing up and down motion to look like a floating object.
     {
         if(transform.position.y < yOffset)
         {

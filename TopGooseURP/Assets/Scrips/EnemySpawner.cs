@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    //The enemy to spawn
     [SerializeField]
     GameObject enemy;
 
@@ -11,20 +12,21 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     Transform[] spawnPoints;
 
-    //[SerializeField]
-    //WaypointsPath path;
-
+    //Delay between spawns
     [SerializeField]
     float delay;
     float counter;
 
+    //Amount of enemies to exist at a time that are assigned to a certain spawn
     [SerializeField]
     int enemiesPerPoint;
 
+    //Max amount of enemies to spawn in the game
     [SerializeField]
     int maxTotalSpawns;
     int totalSpawns;
 
+    //How far you have to be from a point for it to be able to spawn an enemy
     [SerializeField]
     int minDistance;
 
@@ -37,7 +39,6 @@ public class EnemySpawner : MonoBehaviour
     {
         if (totalSpawns >= maxTotalSpawns)
         {
-            Debug.Log("Reached max amount of spawns");
             gameObject.SetActive(false);
         }
 
@@ -45,9 +46,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (counter > 0) return;
 
-        //Gammal
-        //Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
-
+        //Get a list of spawn points that player isn't looking at and that are out of a certain range from the player
         List<Transform> spawnPointsNotVisible = new List<Transform>();
         for (int i = 0; i < spawnPoints.Length; i++)
         {
@@ -59,7 +58,7 @@ public class EnemySpawner : MonoBehaviour
         //Return if there is no desirable spawnpoint
         if (spawnPointsNotVisible.Count == 0) return;
 
-        //Choose the spawnpoint with least enemies attached to it.
+        //Choose the spawnpoint with least enemies attached to it
         Transform spawnPoint = spawnPointsNotVisible[0];
         for (int i = 1; i < spawnPointsNotVisible.Count; i++)
         {
@@ -69,28 +68,16 @@ public class EnemySpawner : MonoBehaviour
                 spawnPoint = spawnPointsNotVisible[i];
             }
         }
-        
 
-        //If it still has too many enemies, don't spawn at all.
+        //If it still has too many enemies, don't spawn at all
         if (spawnPoint.childCount >= enemiesPerPoint) return;
 
+        //Spawn the enemy and set its path to the path that is assigned to the chosen spawnpoint
         var enemyInstance = Instantiate(enemy, spawnPoint.position, Quaternion.identity, spawnPoint);
         enemyInstance.GetComponent<PathUtility>().currentPath = spawnPoint.GetComponentInChildren<WaypointsPath>();
 
-        int spawnPointIndex = 0;
-        for (int i = 0; i < spawnPoints.Length; i++)
-        {
-            if (spawnPoints[i] == spawnPoint)
-            {
-                spawnPointIndex = i;
-                break;
-            }
-        }
-
         counter = delay;
         totalSpawns++;
-
-        //Debug.Log($"Spawned new enemy at spawnpoint {spawnPointIndex} ({spawnPoint.childCount}/{enemiesPerPoint}) Total: {totalSpawns}/{maxTotalSpawns}");
     }
 
     private bool LookingAt(Transform Object)

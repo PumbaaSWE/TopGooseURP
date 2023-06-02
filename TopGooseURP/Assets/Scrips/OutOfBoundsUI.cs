@@ -36,7 +36,7 @@ public class OutOfBoundsUI : MonoBehaviour
         StartCoroutine(CountDown());
     }
 
-    void StopCountDown()
+    void StopCountDown()    //Resets all of the OOB UI elements and stops CountDown()
     {
         var tempColor = panel.color;
         tempColor.a = 0;

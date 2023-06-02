@@ -79,6 +79,7 @@ public class BoatMissile : MonoBehaviour
         targetRigidBody = target.GetComponent<Rigidbody>();
     }
 
+    //Awesome homing missile activities
     private Vector3 DesiredTravelDirection(Vector3 pos, float maxSpeed, Vector3 targetPos, Vector3 targetVel)
     {
         Vector3 C = targetPos + targetVel * Time.deltaTime; //Circle center
@@ -104,6 +105,7 @@ public class BoatMissile : MonoBehaviour
         return (C - pointOnLOS).normalized;
     }
 
+    //Explode when near target
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == target.gameObject && !exploded)
@@ -112,12 +114,6 @@ public class BoatMissile : MonoBehaviour
             Explode();
         }
     }
-
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawLine(transform.position, transform.position + desiredDirection * rigidBody.velocity.magnitude);
-    //}
 
     private void Explode()
     {

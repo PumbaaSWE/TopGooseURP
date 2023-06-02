@@ -37,6 +37,7 @@ public class BoatController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         boundary = transform.parent.GetComponentInChildren<MapBoundary>().gameObject.transform;
 
+        //Checks which side of the boundary to travel along
         if(Mathf.Abs(boundary.position.x - transform.position.x) < Mathf.Abs(boundary.position.z - transform.position.z))
         {
             travelAxis = Vector3.right;
