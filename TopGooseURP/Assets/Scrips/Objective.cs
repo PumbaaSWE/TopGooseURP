@@ -17,6 +17,9 @@ public class Objective : MonoBehaviour
     public bool IsComplete { get; private set; }
 
     public delegate void OnCompleteEvent();
+    /// <summary>
+    /// Callback once the objective is Completed
+    /// </summary>
     public event OnCompleteEvent OnComplete;
 
     public int Score => score;

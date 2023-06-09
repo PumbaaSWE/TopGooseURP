@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/// <summary>
+/// Used to pass into Health script to give more info on what type of damage and who did it in addition to the amount.
+/// </summary>
 public readonly struct DamageInfo
 {
     public readonly TeamMember dealer;

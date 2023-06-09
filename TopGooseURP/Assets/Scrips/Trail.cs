@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/// <summary>
+/// A component to draw trail after an object, if the object is destroyed the trail will persist until its done before returning to an object pool 
+/// </summary>
 public class Trail : MonoBehaviour
 {
     

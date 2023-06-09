@@ -52,6 +52,9 @@ public class RagdollHandler : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Gets all colliders and rigidbodies in children and says they are part of the ragdoll, all in parents are part of hitbox and player.
+    /// </summary>
     private void GetRagdollBits()
     {
         //Get hitbox and rigit body of this object
@@ -95,6 +98,9 @@ public class RagdollHandler : MonoBehaviour
         DisableRagdoll();
     }
 
+    /// <summary>
+    /// Previusly defined (in GetRagdollBits) colliders and rigidbodies are enabled, hitbox colliders are disabled.
+    /// </summary>
     public void EnableRagdoll()
     {
         onRagdollEnable?.Invoke();

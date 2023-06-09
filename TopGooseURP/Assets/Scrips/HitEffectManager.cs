@@ -33,6 +33,12 @@ public class HitEffectManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Spawn a hit effect based/linked to the Material provided, if no match it will spawn the first in the list
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="normal"></param>
+    /// <param name="material"></param>
     public void SpawnEffect(Vector3 position, Vector3 normal, Material material)
     {
 
@@ -51,6 +57,12 @@ public class HitEffectManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Tell specified ParticleSystem to emit at position and in the direction of the normal
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="normal"></param>
+    /// <param name="system"></param>
     public void SpawnEffect(Vector3 position, Vector3 normal, ParticleSystem system)
     {
         system.transform.position = position;
@@ -65,6 +77,11 @@ public class HitEffectManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Spawn the first hit effect in effect list
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="normal"></param>
     internal void SpawnEffect(Vector3 position, Vector3 normal)
     {
         ObjectPool<ParticleSystem> pool = impactEffects[0].GetPool();
@@ -73,6 +90,12 @@ public class HitEffectManager : MonoBehaviour
         StartCoroutine(ReturnToPool(pool, system));
     }
 
+    /// <summary>
+    /// Spawn a hit effect based in the id in effect list instead if serching for a material, will clamp the id to fit list to avoid out of range
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="normal"></param>
+    /// <param name="id"></param>
     internal void SpawnEffect(Vector3 position, Vector3 normal, int id)
     {
         id = Math.Clamp(id, 0, impactEffects.Count-1);
