@@ -100,6 +100,9 @@ public class Destruction : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Will disable the model, show destroyed foundation if any and enable all debree and apply some explosion force to them. also Plays smoke effects if any.
+    /// </summary>
     private void StartDestruction()
     {
         if (destroyed) return;
@@ -119,6 +122,11 @@ public class Destruction : MonoBehaviour
         StartCoroutine(StartSink(sinkTime));
     }
 
+    /// <summary>
+    /// COROUTINE: Starts the sinking process after t seconds
+    /// </summary>
+    /// <param name="t"></param>
+    /// <returns></returns>
     private IEnumerator StartSink(float t)
     {
         yield return new WaitForSeconds(t);

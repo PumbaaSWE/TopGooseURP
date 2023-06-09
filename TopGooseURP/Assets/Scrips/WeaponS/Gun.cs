@@ -17,10 +17,19 @@ public class Gun : MonoBehaviour
     [SerializeField] private float heatLossPerSec = .1f;
     private float heat;
 
+    /// <summary>
+    /// Returns the heat of this gun, between 0 and 1 where 1 is overheated and will not fire
+    /// </summary>
     public float Heat { get { return Mathf.Clamp(heat, 0, 1); } }
 
+    /// <summary>
+    /// Set to true to begin shooying, false to stop
+    /// </summary>
     public bool Fire { get; set; }
 
+    /// <summary>
+    /// Returns the bullet speed of this gun in m/s
+    /// </summary>
     public float BulletSpeed => bulletData.speed;
 
     public float FireRate { get { return fireRate; } }
@@ -61,6 +70,9 @@ public class Gun : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns a bullet and computes a random spread (based on a cube, not very elegant...)
+    /// </summary>
     void FireBullet()
     {
         float randomNumberX = Random.Range(-spread, spread);
@@ -74,8 +86,13 @@ public class Gun : MonoBehaviour
         //bullet.Init(bulletData, bulletSpawn.position, bulletSpawn.rotation * rotation);
     }
 
+
+    /// <summary>
+    /// Change the direction this gun is aiming at without changing the models direction...
+    /// </summary>
+    /// <param name="aimPoint"></param>
     public void ZeroAt(Vector3 aimPoint)
     {
-        bulletSpawn.LookAt(aimPoint); //this was easy...
+        bulletSpawn.LookAt(aimPoint); //world space? that will fail...
     }
 }

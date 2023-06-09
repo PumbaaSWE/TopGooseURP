@@ -12,8 +12,8 @@ public class Objective : MonoBehaviour
     //[SerializeField] protected Texture2D icon;
     [SerializeField] protected Sprite sprite;
     [SerializeField] private bool isPrimary;
-    [SerializeField] protected bool shownOnMap;
-    [SerializeField] protected int count = 1;
+    [Tooltip("Should this objective be shown on the map?")][SerializeField] protected bool shownOnMap;
+    [Tooltip("How many times does an action/event occure befor awarding the objective")][SerializeField] protected int count = 1;
     public bool IsComplete { get; private set; }
 
     public delegate void OnCompleteEvent();
@@ -47,26 +47,38 @@ public class Objective : MonoBehaviour
         gameObject.name = Title;
     }
 
+    /// <summary>
+    /// Register self with the manager specicified in inspector
+    /// </summary>
     protected void Register()
     {
         manager.RegisterObjective(this);
     }
 
+    /// <summary>
+    /// Mark this objective as completed
+    /// </summary>
     protected void Completed()
     {
         if(IsComplete) return;
-        Debug.Assert(this != null, "Objective -> HUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUR är this null?????");
         manager.Completed(this);
         IsComplete = true;
         enabled = false;
         OnComplete?.Invoke();
     }
 
+    /// <summary>
+    /// Count this objective once
+    /// </summary>
     public void CountOne()
     {
         Count(1);
     }
 
+    /// <summary>
+    /// Count this objective a set amount of times
+    /// </summary>
+    /// <param name="value"></param>
     public void Count(int value)
     {
         count -= value;

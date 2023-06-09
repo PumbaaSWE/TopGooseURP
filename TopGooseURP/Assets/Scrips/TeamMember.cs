@@ -52,6 +52,9 @@ public class TeamMember : MonoBehaviour
         info = $"Score: {Score} Kills: {Kills} Assists: {Assists} Deaths: {Deaths}";
     }
 
+    /// <summary>
+    /// What happens when we die? Points all around!
+    /// </summary>
     private void OnDeath()
     {
         if (currAttacker != null)
@@ -70,6 +73,10 @@ public class TeamMember : MonoBehaviour
         OnDeathCallback?.Invoke(this);
     }
 
+    /// <summary>
+    /// We got a kill, value is how much damage we did to get the kill, currently unsused.
+    /// </summary>
+    /// <param name="value"></param>
     private void RewardKill(float value)
     {
         //Debug.Assert(team != null, "team == null");
@@ -78,7 +85,10 @@ public class TeamMember : MonoBehaviour
         Kills++;
         OnKillCallback?.Invoke(this, team.TeamsManager.KillScore);
     }
-
+    /// <summary>
+    /// We got an assist, value is how much damage we did to the target, if TeamsManager.DamageBasedAssistScore is true that is the score you get, otherwise you get a set amount from TeamsManager.
+    /// </summary>
+    /// <param name="value"></param>
     private void RewardAssist(float value)
     {
         Assists++;
@@ -95,6 +105,11 @@ public class TeamMember : MonoBehaviour
     //    healer.RewardHeal(team.TeamsManager.HealScore);
     //}
 
+    /// <summary>
+    /// TeamMember attacker is doing damage to this team members, used to keep track of attackers to award assist point incase this one dies.
+    /// </summary>
+    /// <param name="attacker"></param>
+    /// <param name="value"></param>
     public void Attack(TeamMember attacker, float value)
     {
         if(attacker != currAttacker)
@@ -114,11 +129,20 @@ public class TeamMember : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// The score is addted to the total score of this teammember 
+    /// </summary>
+    /// <param name="value"></param>
     public void RewardScore(int value)
     {
         Score += value;
     }
 
+    /// <summary>
+    /// See if a teammember belong to the same team
+    /// </summary>
+    /// <param name="teamMember"></param>
+    /// <returns></returns>
     public bool SameTeam(TeamMember teamMember)
     {
         if (teamMember == null) return false;

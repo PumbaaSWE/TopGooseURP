@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
-using UnityEngine.Rendering.VirtualTexturing;
-using UnityEngine.UIElements;
 
 public class HitEffectManager : MonoBehaviour
 {
@@ -62,7 +60,7 @@ public class HitEffectManager : MonoBehaviour
 
     private IEnumerator ReturnToPool(ObjectPool<ParticleSystem> pool, ParticleSystem system)
     {
-        yield return new WaitForSeconds(system.main.duration); //wait until the trail is done and disapreared...
+        yield return new WaitForSeconds(system.main.duration); //wait until the ParticleSystem is done and disapreared...
         pool.Release(system);
 
     }

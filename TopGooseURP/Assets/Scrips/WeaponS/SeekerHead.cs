@@ -41,9 +41,18 @@ public class SeekerHead : MonoBehaviour
     private float cosTrackFov; //cached to compare with dot-products for fast angle check
 
     private Transform lockedTarget;
+    /// <summary>
+    /// read only, true if this seeker has a target looked
+    /// </summary>
     public bool TargetLocked { get; private set; }
+    /// <summary>
+    /// read only, position in world space where this seeker wants to fly, input for the autopilot
+    /// </summary>
     public Vector3 FlyTarget { get; private set; }
 
+    /// <summary>
+    /// read only, true if this seeker been launched
+    /// </summary>
     public bool Launched { get; private set; } = false;
 
     public bool active = false; //maybe remove
@@ -72,12 +81,16 @@ public class SeekerHead : MonoBehaviour
 
     public bool drawDebugInfo = true;
 
-    //for the UI
+    /// <summary>
+    /// read only, for UI, what is this seeker looking at
+    /// </summary>
     public Vector3 SeekerViewPositon
     {
         get { return transform.position + seekDirection * range; }
     }
-    //for the UI
+    /// <summary>
+    /// read only, for UI, what is the locked targets position, if no target jus seekers view is returned 
+    /// </summary>
     public Vector3 TargetPosition
     {
         get { 
@@ -103,7 +116,10 @@ public class SeekerHead : MonoBehaviour
         //FlyTarget = transform.position + autoPilot.MaxSpeed * range * seekDirection; 
     }
 
-    //jus activate or deactivate the whole component?
+    /// <summary>
+    /// Will activate this seeker to look for targets, if launced it cannot be disabled
+    /// </summary>
+    /// <param name="active"></param>
     public void Activate(bool active)
     {
         if (Launched) return;
@@ -123,6 +139,9 @@ public class SeekerHead : MonoBehaviour
         Uncage(false);
     }
 
+    /// <summary>
+    /// Removes current target and allow the seeker to look a different one.
+    /// </summary>
     public void ClearTarget()
     {
         seekDirection = transform.forward; 
@@ -130,12 +149,20 @@ public class SeekerHead : MonoBehaviour
         lockedTarget = null;
     }
 
+    /// <summary>
+    /// Sets the cage direction to desired track angle, uses world space direction
+    /// </summary>
+    /// <param name="direction"></param>
     public void Track(Vector3 direction)
     {
         //move seeker head towards
         cageDirection = direction;
     }
 
+    /// <summary>
+    /// Sets cage status, uncaging is allowing the seeker itself to look in whatever direction it wants to, else it will look where ever the cage direction is telling it to look.
+    /// </summary>
+    /// <param name="uncage"></param>
     public void Uncage(bool uncage)
     {
         if (Launched) return;
@@ -190,6 +217,10 @@ public class SeekerHead : MonoBehaviour
         if(Launched) autoPilot.RunAutopilot(FlyTarget);
     }
 
+    /// <summary>
+    /// Depricated for use if the code fails
+    /// </summary>
+    /// <param name="dt"></param>
     private void WorkingTracking(float dt)
     {
         Vector3 desiredSeekerDir = transform.forward;
@@ -231,6 +262,12 @@ public class SeekerHead : MonoBehaviour
     /*
      * https://en.wikipedia.org/wiki/Proportional_navigation
      */
+    /// <summary>
+    /// I did not make this work, for future testing, dont use!
+    /// </summary>
+    /// <param name="targetPosition"></param>
+    /// <param name="dt"></param>
+    /// <returns></returns>
     private Vector3 ProNav(Vector3 targetPosition, float dt)
     {
         Vector3 targetVel = (targetPosition - prevTargetPosition) / dt; //v=ds/dt
@@ -272,7 +309,11 @@ public class SeekerHead : MonoBehaviour
         cageDirection = transform.forward; //this is so seeker is pointed forward incase Track() is not called i.e seekDir will not be connected to a world direction but local
     }
 
-
+    /// <summary>
+    /// We are uncaged so compute intercept point based on relative speed and position to target. Computes target velocity based on positional change to not rely on rigidbody.
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="dt"></param>
     private void HandleUncaged(Transform target, float dt)
     {
         Vector3 targetPosition = target.position;
@@ -291,7 +332,10 @@ public class SeekerHead : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Main logic, Point the seeker in the desired direction look for the target, of try find a new
+    /// </summary>
+    /// <param name="dt"></param>
     private void TrackTarget(float dt)
     {
         HandleSeekDirection(dt);
@@ -317,7 +361,12 @@ public class SeekerHead : MonoBehaviour
 
     }
 
-    //
+    /// <summary>
+    /// If a target is found we can tell the seeker to look on and make the seeker automatically track it, decided by uncaging the missile
+    /// </summary>
+    /// <param name="potentialTarget"></param>
+    /// <param name="trackAngle"></param>
+    /// <param name="dt"></param>
     private void LockOn(Transform potentialTarget, float trackAngle, float dt)
     {  
         lockedTarget = potentialTarget;  
@@ -347,7 +396,14 @@ public class SeekerHead : MonoBehaviour
             Tone = SeekerTone.InView;
         }
     }
-
+    /// <summary>
+    /// Search in a cone in specified direction from specified point after a transform(gameObject) on a certain layer. Cone and layer is defiended in inspector, variables of this class
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="direction"></param>
+    /// <param name="target">out: if found target is the transform of that wahat was fount</param>
+    /// <param name="offBoreAngle">please note its in cos(radians), not radians or degrees</param>
+    /// <returns>True is a target was found, else false</returns>
     private bool Seek(Vector3 position, Vector3 direction, out Transform target, out float offBoreAngle)
     {
         target = null;
@@ -397,6 +453,7 @@ public class SeekerHead : MonoBehaviour
         return true;
     }
 
+    //To draw debug info abouth the seeker as search volume and direction, seen target and intercept point
     private void OnDrawGizmos()
     {
         if (!drawDebugInfo) return;

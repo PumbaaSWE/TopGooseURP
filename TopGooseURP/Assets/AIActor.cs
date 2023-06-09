@@ -74,6 +74,10 @@ public class AIActor : MonoBehaviour
         UpdateAutopilot();
     }
 
+    /// <summary>
+    /// Run every frame to see which of attached Utilities score the hightest to then execute that one.
+    /// Also tell the current util running to exit if another utils now score higher
+    /// </summary>
     private void EvaluateUtils()
     {
         //Evaluating every frame is too often?
@@ -99,6 +103,12 @@ public class AIActor : MonoBehaviour
         enabled = false;
     }
 
+    /// <summary>
+    /// If the combat cordinator has a spot for some role this AI will accept it if its "better" than current role. //This is not optimal...
+    /// 
+    /// </summary>
+    /// <param name="role"></param>
+    /// <returns>true if role is accepted otherwise false</returns>
     public bool OfferRole(CombatCoordinator.Role role)
     {
         if(role < Role)
@@ -109,6 +119,9 @@ public class AIActor : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Returns role to combat coordinator, to be called by utils requiring a certain role to execute some behavior, like chasing
+    /// </summary>
     public void ReturnRole()
     {
         if(CombatCoordinator != null)
@@ -133,6 +146,10 @@ public class AIActor : MonoBehaviour
     {
         this.flyTarget = flyTarget;
     }
+
+    /// <summary>
+    /// Target set by utils if thay want to fly anywhere with ground avoidance checks
+    /// </summary>
     private void UpdateAutopilot()
     {
         if (Physics.SphereCast(transform.position, radius, transform.forward, out RaycastHit hit, controller.LocalVelocity.z * rangeModifier, groundLayer))

@@ -61,7 +61,12 @@ public class TrailPoolManager : MonoBehaviour
         trail.gameObject.SetActive(false);
     }
 
-
+    /// <summary>
+    /// Gets a trail defined by specified config and paranted to specified transform
+    /// </summary>
+    /// <param name="config"></param>
+    /// <param name="transform"></param>
+    /// <returns></returns>
     public TrailRenderer GetTrail(TrailConfig config, Transform transform)
     {
         TrailRenderer trail = trailPool.Get();
@@ -80,6 +85,11 @@ public class TrailPoolManager : MonoBehaviour
         return trail;
     }
 
+    /// <summary>
+    /// Returns the trail to this pool, will wait before releasing the trail to allow it to finish rendering. Optionally it can be removed immediately
+    /// </summary>
+    /// <param name="trail">Trail to be returned</param>
+    /// <param name="immediate">if true the TrailRenderer will be deactivated</param>
     public void ReturnTrail(TrailRenderer trail, bool immediate = false)
     {
         trail.emitting = false;

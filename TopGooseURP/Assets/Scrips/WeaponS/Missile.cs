@@ -7,7 +7,7 @@ public class Missile : MonoBehaviour
 
     [SerializeField] private MissileData missileData;
 
-    [SerializeField] private Explode explosion;
+    [Tooltip("The explosion to be spawned when close to target, decides damage and range for this missile")][SerializeField] private Explode explosion;
     public Rigidbody Rigidbody { get; private set; }
     public SeekerHead SeekerHead { get; private set; }
     public SimpleFlight SimpleFlight { get; private set; }
@@ -17,9 +17,6 @@ public class Missile : MonoBehaviour
     public Collider Collider { get; private set; }
 
     private SphereCollider proxyRange;
-
-    //private Transform hardpoint;
-    //private float lifeTime;
 
     private TeamMember owner;
 
@@ -37,6 +34,12 @@ public class Missile : MonoBehaviour
         //Initialize(missileData);
     }
 
+    /// <summary>
+    /// Initialize the missile with custom data and owner that should be credited with potential kills or assist.
+    /// </summary>
+    /// <param name="missileData">The data applied to this missile</param>
+    /// <param name="owner">owner to be credited </param>
+    /// <param name="enabledCollider">true by deafault, the collider of this missile</param>
     public void Initialize(MissileData missileData, TeamMember owner, bool enabledCollider = true)
     {
         this.missileData = missileData;
@@ -55,26 +58,24 @@ public class Missile : MonoBehaviour
             //trail.
         }
     }
-
+    /// <summary>
+    /// Initialize the missile with owner that should be credited with potential kills or assist. Data is whatever data missile is set to in inspector
+    /// </summary>
     public void Initialize(TeamMember owner)
     {
         Initialize(missileData, owner);
     }
 
-    //public void SetHardpoint(Transform hardpoint)
-    //{
-    //    this.hardpoint = hardpoint;
-    //    transform.SetPositionAndRotation(hardpoint.position, hardpoint.rotation);
-    //}
-
+    /// <summary>
+    /// Launch this missile with specified initial velocity, throttle can also be set
+    /// </summary>
+    /// <param name="initialVelocity"></param>
+    /// <param name="intialThrottle"></param>
     public void Launch(Vector3 initialVelocity, float intialThrottle = 1.0f)
     {
-        //Rigidbody.isKinematic = false;
-        //Rigidbody.velocity = initialVelocity;
         Detatch(initialVelocity);
         SeekerHead.Launch();
         SimpleFlight.SetThrottleInput(intialThrottle);
-        //hardpoint = null;
         if(flappyWings != null)
         {
             flappyWings.Flap(true);
@@ -100,64 +101,35 @@ public class Missile : MonoBehaviour
         Destroy(gameObject, missileData.timeToLive);
     }
 
-
-    void Update()
-    {
-        //float dt = Time.deltaTime;
-        //lifeTime += dt;
-        //if(lifeTime > missileData.timeToLive) Explode();
-
-    }
-
-    void LateUpdate()
-    {
-        //if(hardpoint != null)
-        //    transform.SetPositionAndRotation(hardpoint.position, hardpoint.rotation);
-    }
-
+    /// <summary>
+    /// COROUTINE: Will make the missile able to detect things close by and explode in their vicinity after t seconds
+    /// </summary>
+    /// <param name="t"></param>
+    /// <returns></returns>
     private IEnumerator ArmProxyFuse(float t)
     {
         yield return new WaitForSeconds(t);
-        //Debug.LogWarning("ProxyFuse Enabled");
         proxyRange.enabled = true;
         Collider.enabled = true;
     }
 
-
+    /// <summary>
+    /// Will spawn an explotion and pass on the missiles owner to it, tyhen destroy the missile game object. Damage and radius is whatever the explosion prefab is set to
+    /// </summary>
     public void Explode()
     {
         gameObject.SetActive(false);
-        //spawn explosion?
-        //return to a pool?
         if(explosion != null)
             Instantiate(explosion, transform.position, transform.rotation).ExplodeNow(owner);
 
         Destroy(gameObject);
     }
 
-    //public void OnTriggerEnter(Collider other)
-    //{
-    //    //if(!SeekerHead.Launched) return;
-    //    if ((missileData.targetLayer.value & (1 << other.transform.gameObject.layer)) > 0)
-    //    {
-    //        Debug.Log("Hit with Layermask");
-    //        //Explode();
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Hit something, but not in Layermask");
-    //    }
-    //}
     public void OnTriggerExit(Collider other)
     {
-        //if(!SeekerHead.Launched) return;
         if ((missileData.targetLayer.value & (1 << other.transform.gameObject.layer)) > 0)
         {
             Explode();
-        }
-        else
-        {
-            
         }
     }
 }

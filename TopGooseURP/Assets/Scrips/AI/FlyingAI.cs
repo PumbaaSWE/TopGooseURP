@@ -85,6 +85,10 @@ public class FlyingAI : MonoBehaviour, IUtility
         //bulletSpeed = gunArray[0].BulletSpeed;
     }
 
+    /// <summary>
+    /// To follow a specific target
+    /// </summary>
+    /// <param name="gameObject"></param>
     public void SetTarget(GameObject gameObject)
     {
         targetGameObject = gameObject;
@@ -106,6 +110,9 @@ public class FlyingAI : MonoBehaviour, IUtility
         
     }
 
+    /// <summary>
+    /// Finds out if we are lined up with a target and if we are close enough
+    /// </summary>
     private void UpdateGuns()
     {
         if(gunArray == null) return;
@@ -177,6 +184,10 @@ public class FlyingAI : MonoBehaviour, IUtility
     //    controller.SetControlInput(input);
     //}
 
+    /// <summary>
+    /// Chase the target and try keep set distance and shoot if lined up.
+    /// </summary>
+    /// <param name="dt"></param>
     private void DoChase(float dt)
     {
         //Debug.Log("DoChase");
@@ -246,6 +257,10 @@ public class FlyingAI : MonoBehaviour, IUtility
         }
     }
 
+    /// <summary>
+    /// Will try and position itself above the target, within a certain height and radius above it will DoBoom
+    /// </summary>
+    /// <param name="dt"></param>
     private void DoZoom(float dt)
     {
         //flyTarget
@@ -291,6 +306,10 @@ public class FlyingAI : MonoBehaviour, IUtility
         }
     }
 
+    /// <summary>
+    /// Will dive ontop a target and shoot when in a "good" position.
+    /// </summary>
+    /// <param name="dt"></param>
     private void DoBoom(float dt)
     {
        // Debug.Log("DoBoom");
@@ -327,6 +346,9 @@ public class FlyingAI : MonoBehaviour, IUtility
     }
 
     private static readonly Collider[] colliders = new Collider[20];
+    /// <summary>
+    /// Looks for targets in the vicinity and selects closest
+    /// </summary>
     public void SearchTarget()
     {
         int hits = Physics.OverlapCapsuleNonAlloc(transform.position, transform.position + transform.forward * 100, 100, colliders, targetLayer);
@@ -371,6 +393,10 @@ public class FlyingAI : MonoBehaviour, IUtility
         }
     }
 
+    /// <summary>
+    /// Will evaluate hight if we have a target and its close
+    /// </summary>
+    /// <returns></returns>
     public float Evaluate()
     {
         if (targetGameObject == null)
@@ -386,6 +412,10 @@ public class FlyingAI : MonoBehaviour, IUtility
         //Debug.Log("Evaluate Guns: " + (1 - ((distToTarget + 1) / maxInterceptDistance)));
         return 1-((distToTarget+1) / maxInterceptDistance);
     }
+
+    /// <summary>
+    /// Will chase the target if there is one else search for one. Another util should however score higher by that point.
+    /// </summary>
 
     public void Execute()
     {
@@ -411,7 +441,9 @@ public class FlyingAI : MonoBehaviour, IUtility
 
         actor.SetFlyTarget(flyTarget);
     }
-
+    /// <summary>
+    /// Called by AIActor if another util gets precidence, thus this have to stop shooting
+    /// </summary>
     public void Exit()
     {
         for (int i = 0; i < gunArray.Length; i++)

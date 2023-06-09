@@ -31,13 +31,22 @@ public class Explode : MonoBehaviour
     {
         //if(explodeOnStart) ExplodeNow();    
     }
-
+    /// <summary>
+    /// Starts the effect and deals damage to any game objects that have Health component attached. Also does apply force to rigidbodies. Owner if any will get credit for kills/assists.
+    /// </summary>
+    /// <param name="owner"></param>
     public void ExplodeNow( TeamMember owner = null )
     {
         ExplodeNow(damage, maxRange, force, owner);
     }
 
-
+    /// <summary>
+    /// Starts the effect and deals damage to any game objects that have Health component attached. Also does apply force to rigidbodies. Owner if any will get credit for kills/assists.
+    /// </summary>
+    /// <param name="maxDamage"></param>
+    /// <param name="maxRange"></param>
+    /// <param name="force"></param>
+    /// <param name="owner"></param>
     public void ExplodeNow(float maxDamage, float maxRange, float force, TeamMember owner = null)
     {
         for (int i = 0; i < systems.Length; i++)
@@ -89,6 +98,10 @@ public class Explode : MonoBehaviour
         rigidbody.AddExplosionForce(force, exposionCenter, maxRange);
     }
 
+    /// <summary>
+    /// Its a private method! The Pool for explosion effects does not exist yet... just deletes it after some time 
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator ReturnToPool()
     {
         yield return new WaitForSeconds(5);

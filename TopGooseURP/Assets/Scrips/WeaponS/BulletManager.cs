@@ -51,6 +51,13 @@ public class BulletManager : MonoBehaviour
         //bullet.ResetVelocities();
     }
 
+    /// <summary>
+    /// Will spawn a bullet in the world and initialize it with BulletData relevant for the bullet, owner is the one to get credit for kill/assists 
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="owner"></param>
+    /// <param name="position"></param>
+    /// <param name="rotation"></param>
     public void SpawnBullet(BulletData data, TeamMember owner, Vector3 position, Quaternion rotation)
     {
         bulletPool.Get().Init(data, owner, position, rotation);

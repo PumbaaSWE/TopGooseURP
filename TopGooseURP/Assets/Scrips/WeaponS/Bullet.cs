@@ -29,6 +29,13 @@ public class Bullet : MonoBehaviour
         //hitEffectManager = Instantiate(hitEffectManager);
     }
 
+    /// <summary>
+    /// Initialize with BulletData and owner is the one to get credit for kill/assists
+    /// </summary>
+    /// <param name="data">data, damage and spped and all that</param>
+    /// <param name="owner">credit for kill/assists</param>
+    /// <param name="position">Where to begin</param>
+    /// <param name="rotation">Direction to fly in</param>
     public void Init(BulletData data, TeamMember owner, Vector3 position, Quaternion rotation)
     {
         this.data = data;
@@ -66,6 +73,9 @@ public class Bullet : MonoBehaviour
         RayCast();
     }
 
+    /// <summary>
+    /// Will look for impacts along the flight path and spawn hit effects and if applicaple deal damage on hit.
+    /// </summary>
     private void RayCast()
     {
 
