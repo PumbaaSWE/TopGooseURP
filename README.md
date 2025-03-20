@@ -48,10 +48,10 @@ The group consist of:
 ## Roadmap
 
 - [x] Add Goose
-    - [ ] Add Animations
+    - [x] Add Animations
 - [x] Add World
-    - [ ] Add Textures/Shading
-    - [ ] Add Objects/Scenery
+    - [x] Add Textures/Shading
+    - [x] Add Objects/Scenery
     - [ ] NavMesh
 - [ ] Add more Geese
 - [x] Add Guns
@@ -62,9 +62,9 @@ The group consist of:
 - [ ] Add Garden Gnomes
     - [ ] Make them Explode
     - [ ] Add old ladies to refill gnomes
-- [ ] Add Enemies
+- [x] Add Enemies
     - [ ] Squirrels?
-    - [ ] Other Birds?
+    - [x] Other Birds?
 - [ ] Add Other Playable Character
     - [ ] Pyssling?
 
